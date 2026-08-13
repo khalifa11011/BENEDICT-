@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Help & Support - BENEDICT</title>
+<link rel="stylesheet" href="style.css?v=5">
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:#0d0d0f;
+  color:#fff;
+  font-family:Arial,sans-serif;
+}
+
+.help-page{
+  min-height:100vh;
+  padding-bottom:35px;
+}
+
+.help-header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  height:62px;
+  background:#111113;
+  border-bottom:1px solid rgba(212,175,55,.35);
+  display:flex;
+  align-items:center;
+  padding:0 15px;
+  gap:12px;
+}
+
+.help-back{
+  width:38px;
+  height:38px;
+  border:1px solid rgba(212,175,55,.3);
+  border-radius:10px;
+  background:#151518;
+  color:#d4af37;
+  font-size:25px;
+}
+
+.help-title{
+  color:#d4af37;
+  font-size:19px;
+  font-weight:700;
+}
+
+.help-content{
+  max-width:700px;
+  margin:auto;
+  padding:20px 14px 40px;
+}
+
+.help-intro{
+  color:#aaa;
+  font-size:14px;
+  line-height:1.5;
+  margin-bottom:20px;
+}
+
+.help-section{
+  background:#151518;
+  border:1px solid rgba(212,175,55,.22);
+  border-radius:15px;
+  overflow:hidden;
+  margin-bottom:16px;
+}
+
+.help-section-title{
+  padding:13px 15px;
+  color:#d4af37;
+  font-size:12px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.7px;
+  border-bottom:1px solid rgba(212,175,55,.14);
+}
+
+.help-item{
+  width:100%;
+  min-height:58px;
+  padding:10px 15px;
+  background:transparent;
+  color:#fff;
+  border:0;
+  border-bottom:1px solid rgba(255,255,255,.055);
+  display:flex;
+  align-items:center;
+  gap:13px;
+  text-align:left;
+  cursor:pointer;
+}
+
+.help-item:last-child{
+  border-bottom:0;
+}
+
+.help-item:hover{
+  background:rgba(212,175,55,.055);
+}
+
+.help-icon{
+  width:32px;
+  height:32px;
+  border:1px solid rgba(212,175,55,.25);
+  border-radius:9px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#d4af37;
+  background:#111113;
+  flex-shrink:0;
+}
+
+.help-text{
+  flex:1;
+}
+
+.help-name{
+  display:block;
+  font-size:15px;
+  font-weight:600;
+}
+
+.help-description{
+  display:block;
+  margin-top:3px;
+  color:#888;
+  font-size:12px;
+}
+
+.help-arrow{
+  color:#777;
+  font-size:20px;
+}
+
+.support-box{
+  background:#151518;
+  border:1px solid rgba(212,175,55,.3);
+  border-radius:15px;
+  padding:18px;
+  text-align:center;
+}
+
+.support-box h3{
+  margin:0 0 8px;
+  color:#d4af37;
+  font-size:16px;
+}
+
+.support-box p{
+  margin:0 0 15px;
+  color:#999;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.support-button{
+  width:100%;
+  padding:12px;
+  border:1px solid rgba(212,175,55,.45);
+  border-radius:11px;
+  background:#111113;
+  color:#d4af37;
+  font-weight:700;
+}
+</style>
+</head>
+
+<body>
+
+<div class="help-page">
+
+<header class="help-header">
+  <button class="help-back" onclick="history.back()" aria-label="Back">‹</button>
+  <div class="help-title">Help & Support</div>
+</header>
+
+<main class="help-content">
+
+  <div class="help-intro">
+    Find answers, learn how BENEDICT works, or get help with your account.
+  </div>
+
+  <section class="help-section">
+
+    <div class="help-section-title">Help Center</div>
+
+    <button class="help-item">
+      <span class="help-icon">🔐</span>
+      <span class="help-text">
+        <span class="help-name">Account & Security</span>
+        <span class="help-description">Login, password and account security</span>
+      </span>
+      <span class="help-arrow">›</span>
+    </button>
+
+    <button class="help-item">
+      <span class="help-icon">💬</span>
+      <span class="help-text">
+        <span class="help-name">Messaging</span>
+        <span class="help-description">Messages, delivery and chat features</span>
+      </span>
+      <span class="help-arrow">›</span>
+    </button>
+
+    <button class="help-item">
+      <span class="help-icon">👤</span>
+      <span class="help-text">
+        <span class="help-name">Profile</span>
+        <span class="help-description">Profile, photos and personal information</span>
+      </span>
+      <span class="help-arrow">›</span>
+    </button>
+
+    <button class="help-item">
+      <span class="help-icon">📰</span>
+      <span class="help-text">
+        <span class="help-name">Posts & Feed</span>
+        <span class="help-description">Posting, reactions and comments</span>
+      </span>
+      <span class="help-arrow">›</span>
+    </button>
+
+  </section>
+
+  <section class="help-section">
+
+    <div class="help-section-title">Safety</div>
+
+    <button class="help-item">
+      <span class="help-icon">🚩</span>
+      <span class="help-text">
+        <span class="help-name">Report a Problem</span>
+        <span class="help-description">Tell us about something that isn't working</span>
+      </span>
+      <span class="help-arrow">›</span>
+    </button>
+
+  </section>
+
+  <div class="support-box">
+    <h3>Need more help?</h3>
+    <p>
+      Contact BENEDICT Support if you need assistance with something
+      that isn't covered here.
+    </p>
+    <button class="support-button" onclick="alert('BENEDICT Support will be available here.')">
+      Contact BENEDICT Support
+    </button>
+  </div>
+
+</main>
+
+</div>
+
+</body>
+</html>

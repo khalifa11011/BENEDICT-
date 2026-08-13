@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
 .feed-section {
   background: #151518;
   border: 1px solid rgba(212,175,55,.28);
-  border-radius: 18px;
+  border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0,0,0,.28);
   margin-bottom: 18px;
 }
@@ -166,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
   border-radius: 50%;
   background: transparent;
   color: #d4af37;
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
 }
 
@@ -180,7 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
   background: #101014;
   color: #fff;
   border: 1px solid rgba(212,175,55,.22);
-  border-radius: 14px;
+  border-radius: 11px;
   padding: 13px;
   resize: vertical;
 }
@@ -242,7 +242,7 @@ document.addEventListener("DOMContentLoaded", function () {
 .story-card {
   flex: 0 0 105px;
   min-height: 145px;
-  border-radius: 14px;
+  border-radius: 11px;
   overflow: hidden;
   background: #202025;
   border: 1px solid rgba(212,175,55,.18);
@@ -278,12 +278,12 @@ document.addEventListener("DOMContentLoaded", function () {
 .discovery-heading p {
   margin: 5px 0 0;
   color: #888;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .discovery-tabs {
   display: flex;
-  gap: 8px;
+  gap: 5px;
   overflow-x: auto;
   padding: 16px 0;
   scrollbar-width: none;
@@ -347,6 +347,30 @@ document.addEventListener("DOMContentLoaded", function () {
 }
 </style>
 
+
+<style id="benedict-cross-platform-menu-lock">
+html.benedict-menu-open,
+body.benedict-menu-open {
+  overflow: hidden !important;
+  height: 100% !important;
+}
+
+body.benedict-menu-open {
+  position: fixed !important;
+  width: 100% !important;
+  left: 0 !important;
+  right: 0 !important;
+  touch-action: none !important;
+}
+
+.benedict-menu {
+  touch-action: auto !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+</style>
+
 </head>
 
 <body>
@@ -363,6 +387,14 @@ document.addEventListener("DOMContentLoaded", function () {
 <header class="social-header benedict-header">
 
   <div class="header-left">
+
+    <button
+      class="header-menu-button"
+      id="benedictMenuButton"
+      aria-label="Menu"
+      aria-expanded="false">
+      ☰
+    </button>
 
     <div class="brand-wrap">
       <div class="brand-mark">✦</div>
@@ -402,9 +434,379 @@ document.addEventListener("DOMContentLoaded", function () {
       ◉
     </button>
 
+    <button
+      class="header-icon"
+      onclick="window.location.href='/settings.html'"
+      aria-label="Settings">
+      ⚙
+    </button>
+
   </div>
 
 </header>
+<!-- =========================
+     BENEDICT MENU
+========================= -->
+<div id="benedictMenu" class="benedict-menu" hidden>
+
+  <div class="benedict-menu-header">
+    <span>Menu</span>
+    <button id="closeBenedictMenu" aria-label="Close Menu">×</button>
+  </div>
+
+  <div class="benedict-menu-grid">
+
+    <button onclick="window.location.href='/memory.html'">
+      <span>🧠</span>
+      <label>Memory</label>
+    </button>
+
+    <button onclick="window.location.href='/saved.html'">
+      <span>🔖</span>
+      <label>Saved</label>
+    </button>
+
+    <button onclick="window.location.href='/pages.html'">
+      <span>📄</span>
+      <label>Pages</label>
+    </button>
+
+    <button onclick="window.location.href='/dating.html'">
+      <span>💕</span>
+      <label>Dating</label>
+    </button>
+
+    <button onclick="window.location.href='/gaming.html'">
+      <span>🎮</span>
+      <label>Gaming</label>
+    </button>
+
+    <button onclick="window.location.href='/events.html'">
+      <span>📅</span>
+      <label>Events</label>
+    </button>
+
+    <button onclick="window.location.href='/nearby.html'">
+      <span>👥</span>
+      <label>Nearby Friends</label>
+    </button>
+
+    <button onclick="window.location.href='/jobs.html'">
+      <span>💼</span>
+      <label>Jobs</label>
+    </button>
+
+  </div>
+
+
+  <div id="benedictExtraGrid" class="benedict-menu-grid" style="display:none;">
+
+    <button onclick="window.location.href='/music.html'">
+      <span>🎵</span>
+      <label>Music</label>
+    </button>
+
+    <button onclick="window.location.href='/videos.html'">
+      <span>📺</span>
+      <label>Videos</label>
+    </button>
+
+    <button onclick="window.location.href='/marketplace.html'">
+      <span>🛍</span>
+      <label>Marketplace</label>
+    </button>
+
+    <button onclick="window.location.href='/news.html'">
+      <span>📰</span>
+      <label>News</label>
+    </button>
+
+    <button onclick="window.location.href='/places.html'">
+      <span>📍</span>
+      <label>Places</label>
+    </button>
+
+    <button onclick="window.location.href='/sports.html'">
+      <span>🏆</span>
+      <label>Sports</label>
+    </button>
+
+  </div>
+
+  <button class="benedict-see-more" id="benedictSeeMore">
+    <span>⌄</span>
+    <label>See More</label>
+  </button>
+
+  <div class="benedict-menu-list">
+
+    <button onclick="window.location.href='/benedict-info.html'">
+      <span>✦</span>
+      <label>From BENEDICT</label>
+    </button>
+
+    <button onclick="window.location.href='/help.html'">
+      <span>❓</span>
+      <label>Help & Support</label>
+    </button>
+
+    <button onclick="window.location.href='/settings.html'">
+      <span>⚙</span>
+      <label>Settings & Privacy</label>
+    </button>
+
+    <button class="benedict-logout-menu" onclick="logoutFromMenu()">
+      <span>🚪</span>
+      <label>Logout</label>
+    </button>
+
+  </div>
+
+</div>
+
+<style>
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.header-menu-button {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(212,175,55,.4);
+  border-radius: 10px;
+  background: #151518;
+  color: #d4af37;
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.benedict-menu {
+  position: fixed;
+  top: 62px;
+  left: 10px;
+  width: min(320px, calc(100vw - 32px));
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  background: #111113;
+  color: #fff;
+  border: 1px solid rgba(212,175,55,.45);
+  border-radius: 15px;
+  box-shadow: 0 18px 45px rgba(0,0,0,.65);
+  z-index: 1000;
+}
+
+.benedict-menu[hidden] {
+  display: none;
+}
+
+.benedict-menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 15px;
+  color: #d4af37;
+  font-size: 18px;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(212,175,55,.2);
+}
+
+.benedict-menu-header button {
+  background: none;
+  border: none;
+  color: #d4af37;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* GRID */
+.benedict-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 7px;
+  padding: 10px;
+}
+
+.benedict-menu-grid button {
+  min-height: 72px;
+  background: #151518;
+  border: 1px solid rgba(212,175,55,.2);
+  border-radius: 11px;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.benedict-menu-grid button span {
+  font-size: 21px;
+}
+
+.benedict-menu-grid button label {
+  color: #d4af37;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.benedict-menu-grid button:active {
+  transform: scale(.97);
+  background: #1b1b1f;
+}
+
+/* SEE MORE */
+.benedict-see-more {
+  width: calc(100% - 28px);
+  margin: 0 14px 14px;
+  padding: 10px;
+  background: #151518;
+  border: 1px solid rgba(212,175,55,.25);
+  border-radius: 13px;
+  color: #d4af37;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* LIST */
+.benedict-menu-list {
+  border-top: 1px solid rgba(212,175,55,.18);
+  padding: 5px 0;
+}
+
+.benedict-menu-list button {
+  width: 100%;
+  min-height: 46px;
+  padding: 9px 15px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,.055);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.benedict-menu-list button span {
+  width: 25px;
+  text-align: center;
+  color: #d4af37;
+  font-size: 18px;
+}
+
+.benedict-menu-list button label {
+  font-size: 15px;
+}
+
+.benedict-menu-list button:hover {
+  background: rgba(212,175,55,.07);
+}
+
+.benedict-logout-menu {
+  border-bottom: none !important;
+  color: #d4af37 !important;
+  margin-bottom: 4px;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+  .benedict-menu {
+    top: 58px;
+    left: 8px;
+    width: min(320px, calc(100vw - 32px));
+  }
+
+  .benedict-menu-grid {
+    gap: 5px;
+  }
+
+  .benedict-menu-grid button {
+    min-height: 70px;
+  }
+}
+</style>
+
+<script>
+(function () {
+  const menuButton = document.getElementById("benedictMenuButton");
+  const menu = document.getElementById("benedictMenu");
+  const closeButton = document.getElementById("closeBenedictMenu");
+
+  if (!menuButton || !menu || !closeButton) return;
+
+  let savedScrollY = 0;
+
+  function openMenu() {
+    savedScrollY = window.scrollY || window.pageYOffset || 0;
+
+    document.documentElement.classList.add("benedict-menu-open");
+    document.body.classList.add("benedict-menu-open");
+
+    document.body.style.top = `-${savedScrollY}px`;
+
+    menu.hidden = false;
+    menuButton.setAttribute("aria-expanded", "true");
+  }
+
+  function closeMenu() {
+    menu.hidden = true;
+
+    document.documentElement.classList.remove("benedict-menu-open");
+    document.body.classList.remove("benedict-menu-open");
+
+    document.body.style.top = "";
+
+    window.scrollTo(0, savedScrollY);
+
+    menuButton.setAttribute("aria-expanded", "false");
+  }
+
+  menuButton.addEventListener("click", function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (menu.hidden) {
+      openMenu();
+    } else {
+      closeMenu();
+    }
+  });
+
+  closeButton.addEventListener("click", function (event) {
+    event.preventDefault();
+    closeMenu();
+  });
+
+  document.addEventListener("click", function (event) {
+    if (
+      !menu.hidden &&
+      !menu.contains(event.target) &&
+      !menuButton.contains(event.target)
+    ) {
+      closeMenu();
+    }
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && !menu.hidden) {
+      closeMenu();
+    }
+  });
+})();
+</script>
+
 
 
 <!-- =========================
@@ -743,6 +1145,26 @@ document.addEventListener("DOMContentLoaded", function () {
 <script src="/socket.io/socket.io.js"></script>
 <script src="app.js"></script>
 
+
+<script>
+const seeMoreButton = document.getElementById("benedictSeeMore");
+const extraGrid = document.getElementById("benedictExtraGrid");
+
+if (seeMoreButton && extraGrid) {
+  seeMoreButton.onclick = function () {
+    if (extraGrid.style.display === "none") {
+      extraGrid.style.display = "grid";
+      seeMoreButton.querySelector("label").textContent = "See Less";
+      seeMoreButton.querySelector("span").textContent = "⌃";
+    } else {
+      extraGrid.style.display = "none";
+      seeMoreButton.querySelector("label").textContent = "See More";
+      seeMoreButton.querySelector("span").textContent = "⌄";
+    }
+  };
+}
+</script>
+
 </body>
 </html>
 
@@ -758,3 +1180,98 @@ body.login-screen .top-buttons {
     display: none !important;
 }
 </style>
+
+<style>
+#benedictLogoutDialog {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.75);
+  padding: 20px;
+}
+
+.benedict-logout-box {
+  width: min(360px, 100%);
+  background: #111113;
+  border: 1px solid rgba(212,175,55,.5);
+  border-radius: 18px;
+  padding: 24px 20px 20px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,.8);
+}
+
+.benedict-logout-logo {
+  color: #d4af37;
+  font-size: 21px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.benedict-logout-box h3 {
+  margin: 0 0 8px;
+  color: #fff;
+  font-size: 18px;
+}
+
+.benedict-logout-box p {
+  margin: 0 0 20px;
+  color: #999;
+  font-size: 13px;
+}
+
+.benedict-logout-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.benedict-logout-actions button {
+  flex: 1;
+  min-height: 44px;
+  border-radius: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.benedict-cancel-logout {
+  background: #151518;
+  border: 1px solid rgba(255,255,255,.15);
+  color: #aaa;
+}
+
+.benedict-confirm-logout {
+  background: #151518;
+  border: 1px solid rgba(212,175,55,.5);
+  color: #d4af37;
+}
+</style>
+
+<div id="benedictLogoutDialog">
+  <div class="benedict-logout-box">
+    <div class="benedict-logout-logo">✦ BENEDICT ✦</div>
+    <h3>Logout Account?</h3>
+    <p>Are you sure you want to logout of BENEDICT?</p>
+    <div class="benedict-logout-actions">
+      <button class="benedict-cancel-logout" onclick="closeBenedictLogout()">Cancel</button>
+      <button class="benedict-confirm-logout" onclick="confirmBenedictLogout()">Logout</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function logoutFromMenu() {
+  document.getElementById("benedictLogoutDialog").style.display = "flex";
+}
+
+function closeBenedictLogout() {
+  document.getElementById("benedictLogoutDialog").style.display = "none";
+}
+
+function confirmBenedictLogout() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  window.location.href = "/";
+}
+</script>

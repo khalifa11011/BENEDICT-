@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings & Privacy - BENEDICT</title>
+<link rel="stylesheet" href="style.css?v=5">
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #0d0d0f;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+.settings-page {
+  min-height: 100vh;
+  padding-bottom: 35px;
+}
+
+.settings-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 62px;
+  background: #111113;
+  border-bottom: 1px solid rgba(212,175,55,.35);
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  gap: 12px;
+}
+
+.settings-back {
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(212,175,55,.3);
+  border-radius: 10px;
+  background: #151518;
+  color: #d4af37;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.settings-title {
+  color: #d4af37;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.settings-content {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 18px 14px 40px;
+}
+
+.settings-intro {
+  color: #aaa;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 2px 4px 20px;
+}
+
+.settings-section {
+  background: #151518;
+  border: 1px solid rgba(212,175,55,.22);
+  border-radius: 15px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.settings-section-title {
+  padding: 13px 15px;
+  color: #d4af37;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .7px;
+  border-bottom: 1px solid rgba(212,175,55,.14);
+}
+
+.settings-item {
+  width: 100%;
+  min-height: 58px;
+  padding: 10px 15px;
+  background: transparent;
+  color: #fff;
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,.055);
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.settings-item:last-child {
+  border-bottom: none;
+}
+
+.settings-icon {
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(212,175,55,.25);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d4af37;
+  background: #111113;
+  flex-shrink: 0;
+}
+
+.settings-text {
+  flex: 1;
+}
+
+.settings-name {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.settings-description {
+  display: block;
+  margin-top: 3px;
+  color: #888;
+  font-size: 12px;
+}
+
+.settings-arrow {
+  color: #777;
+  font-size: 20px;
+}
+
+.settings-item:hover {
+  background: rgba(212,175,55,.055);
+}
+
+.logout-section {
+  margin-top: 28px;
+}
+
+.logout-button {
+  width: 100%;
+  min-height: 54px;
+  border: 1px solid rgba(212,175,55,.45);
+  border-radius: 13px;
+  background: #151518;
+  color: #d4af37;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background: rgba(212,175,55,.08);
+}
+
+.settings-version {
+  text-align: center;
+  color: #666;
+  font-size: 11px;
+  margin-top: 18px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="settings-page">
+
+  <header class="settings-header">
+    <button class="settings-back" onclick="history.back()" aria-label="Back">‹</button>
+    <div class="settings-title">Settings & Privacy</div>
+  </header>
+
+  <main class="settings-content">
+
+    <div class="settings-intro">
+      Manage your BENEDICT account, privacy, security and app preferences.
+    </div>
+
+    <section class="settings-section">
+
+      <div class="settings-section-title">Account</div>
+
+      <button class="settings-item">
+        <span class="settings-icon">👤</span>
+        <span class="settings-text">
+          <span class="settings-name">Account Information</span>
+          <span class="settings-description">Manage your personal account details</span>
+        </span>
+        <span class="settings-arrow">›</span>
+      </button>
+
+      <button class="settings-item">
+        <span class="settings-icon">🔒</span>
+        <span class="settings-text">
+          <span class="settings-name">Password & Security</span>
+          <span class="settings-description">Protect your account</span>
+        </span>
+        <span class="settings-arrow">›</span>
+      </button>
+
+    </section>
+
+    <section class="settings-section">
+
+      <div class="settings-section-title">Privacy</div>
+
+      <button class="settings-item">
+        <span class="settings-icon">🛡</span>
+        <span class="settings-text">
+          <span class="settings-name">Privacy Settings</span>
+          <span class="settings-description">Control who can see your information</span>
+        </span>
+        <span class="settings-arrow">›</span>
+      </button>
+
+      <button class="settings-item">
+        <span class="settings-icon">👁</span>
+        <span class="settings-text">
+          <span class="settings-name">Visibility</span>
+          <span class="settings-description">Manage your profile visibility</span>
+        </span>
+        <span class="settings-arrow">›</span>
+      </button>
+
+    </section>
+
+    <section class="settings-section">
+
+      <div class="settings-section-title">Preferences</div>
+
+      <button class="settings-item">
+        <span class="settings-icon">🔔</span>
+        <span class="settings-text">
+          <span class="settings-name">Notifications</span>
+          <span class="settings-description">Choose what notifications you receive</span>
+        </span>
+        <span class="settings-arrow">›</span>
+      </button>
+
+      <button class="settings-item">
+        <span class="settings-icon">🌐</span>
+        <span class="settings-text">
+          <span class="settings-name">Language</span>
+          <span class="settings-description">Choose your preferred language</span>
+        </span>
+        <span class="settings-arrow">›</span>
+      </button>
+
+    </section>
+
+    <section class="settings-section">
+
+      <div class="settings-section-title">Support</div>
+
+      <button class="settings-item">
+        <span class="settings-icon">❓</span>
+        <span class="settings-text">
+          <span class="settings-name">Help & Support</span>
+          <span class="settings-description">Get help with BENEDICT</span>
+        </span>
+        <span class="settings-arrow">›</span>
+      </button>
+
+      <button class="settings-item">
+        <span class="settings-icon">ℹ</span>
+        <span class="settings-text">
+          <span class="settings-name">About BENEDICT</span>
+          <span class="settings-description">Information about BENEDICT</span>
+        </span>
+        <span class="settings-arrow">›</span>
+      </button>
+
+    </section>
+
+    <section class="logout-section">
+      <button class="logout-button" onclick="logoutAccount()">
+        🚪 Logout Account
+      </button>
+    </section>
+
+    <div class="settings-version">
+      BENEDICT
+    </div>
+
+  </main>
+
+</div>
+
+<script>
+function logoutAccount() {
+  const confirmed = confirm("Are you sure you want to logout of BENEDICT?");
+
+  if (!confirmed) return;
+
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  window.location.href = "/";
+}
+</script>
+
+</body>
+</html>
