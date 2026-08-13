@@ -1,0 +1,4592 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  width: 100%;
+  min-height: 100vh;
+  background: #f5f6f8;
+  color: #17181c;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.luxury-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 14px 18px;
+}
+
+.logo {
+  text-align: center;
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+
+.gold {
+  color: #111827;
+  text-shadow: none;
+}
+
+.main-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.main-nav button {
+  background: #f1f3f6;
+  color: #20242b;
+  border: 0;
+  border-radius: 10px;
+  padding: 9px 13px;
+  min-height: 40px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero-banner {
+  background: #ffffff;
+  border: 0;
+  border-bottom: 1px solid #e5e7eb;
+  border-radius: 0;
+  margin: 0;
+  padding: 28px 18px;
+  text-align: center;
+  box-shadow: none;
+}
+
+.hero-banner h1 {
+  margin: 0 0 8px;
+  color: #111827;
+  font-size: 28px;
+}
+
+.hero-banner p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px;
+}
+
+.left,
+.center,
+.right {
+  width: 100%;
+}
+
+.center {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.right {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.card,
+.post {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 16px;
+  margin: 0 0 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.card h2,
+.card h3,
+.post h2,
+.post h3 {
+  color: #17181c;
+  margin-top: 0;
+}
+
+.post {
+  overflow: hidden;
+}
+
+.post img {
+  display: block;
+  width: 100%;
+  max-height: 500px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-top: 12px;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+input,
+textarea,
+select {
+  width: 100%;
+  max-width: 100%;
+  padding: 13px 14px;
+  margin: 7px 0;
+  background: #f8f9fb;
+  color: #17181c;
+  border: 1px solid #dfe3e8;
+  border-radius: 10px;
+  outline: none;
+  font-size: 16px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #9ca3af;
+  background: #ffffff;
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+button {
+  min-height: 42px;
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 15px;
+  background: #111827;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.card > button,
+#loginSection button {
+  margin-top: 6px;
+}
+
+/* =========================
+   LINKS
+========================= */
+
+a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+/* =========================
+   PROFILE
+========================= */
+
+.profile {
+  text-align: center;
+  padding: 20px;
+}
+
+#profile {
+  text-align: center;
+}
+
+#profile img {
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #e5e7eb;
+}
+
+/* =========================
+   REACTIONS
+========================= */
+
+.reactions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.reactions button {
+  background: #f1f3f6;
+  color: #252932;
+  padding: 8px 10px;
+  min-height: 38px;
+  font-size: 13px;
+}
+
+/* =========================
+   STORIES
+========================= */
+
+#stories {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 8px 0;
+}
+
+.story {
+  min-width: 150px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 8px;
+  text-align: center;
+}
+
+.story img,
+.story video {
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* =========================
+   STORY VIEWER
+========================= */
+
+.story-viewer {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.94);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+#storyContent img,
+#storyContent video {
+  max-width: 92%;
+  max-height: 88%;
+  border-radius: 12px;
+}
+
+.close-story {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  color: #ffffff;
+  font-size: 40px;
+  cursor: pointer;
+}
+
+/* =========================
+   MOBILE BOTTOM NAV
+========================= */
+
+.mobile-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+
+  .luxury-header {
+    padding: 12px 12px 10px;
+  }
+
+  .logo {
+    font-size: 21px;
+    margin-bottom: 8px;
+  }
+
+  .main-nav {
+    display: none !important;
+  }
+
+  .hero-banner {
+    padding: 22px 14px;
+  }
+
+  .hero-banner h1 {
+    font-size: 23px;
+  }
+
+  .hero-banner p {
+    font-size: 13px;
+  }
+
+  .container {
+    padding: 12px;
+    padding-bottom: 85px;
+  }
+
+  .card,
+  .post {
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+
+  .mobile-bottom-nav {
+    position: fixed;
+    display: none;
+    grid-template-columns: repeat(5, 1fr);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 5000;
+    background: #ffffff;
+    border-top: 1px solid #e5e7eb;
+    padding: 7px 4px;
+    padding-bottom: calc(7px + env(safe-area-inset-bottom));
+  }
+
+  .mobile-bottom-nav button {
+    min-height: 52px;
+    padding: 4px 2px;
+    background: transparent;
+    color: #555b66;
+    border-radius: 8px;
+    font-size: 11px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+  }
+
+  .mobile-bottom-nav button span {
+    font-size: 20px;
+    line-height: 22px;
+  }
+
+  .post img {
+    max-height: 420px;
+  }
+
+  .reactions {
+    gap: 5px;
+  }
+
+  .reactions button {
+    flex: 1 1 auto;
+  }
+}
+
+/* =========================
+   SMALL PHONES
+========================= */
+
+@media (max-width: 380px) {
+
+  .container {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .card,
+  .post {
+    padding: 12px;
+  }
+
+  .logo {
+    font-size: 19px;
+  }
+}
+
+/* =========================================================
+   BENEDICT SOCIAL FEED — NEW FACEBOOK-STYLE LAYOUT
+========================================================= */
+
+/* TOP SOCIAL HEADER */
+.social-header {
+  position: sticky;
+  top: 0;
+  z-index: 4000;
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  background: #ffffff;
+  border-bottom: 1px solid #e1e4e8;
+}
+
+.header-left,
+.header-actions {
+  display: flex;
+  align-items: center;
+}
+
+.header-left {
+  gap: 10px;
+}
+
+.header-actions {
+  gap: 5px;
+}
+
+.brand {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: #111827;
+}
+
+.header-icon {
+  width: 40px;
+  height: 40px;
+  min-height: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #f0f2f5;
+  color: #17181c;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.header-icon:hover {
+  background: #e4e6eb;
+  opacity: 1;
+}
+
+
+/* MAIN FEED AREA */
+.feed-page {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 14px 12px 90px;
+}
+
+
+/* CREATE POST */
+.composer-card {
+  background: #ffffff;
+  border: 1px solid #e1e4e8;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.composer-top {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.current-user-avatar {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #eef0f2;
+  font-size: 21px;
+}
+
+.composer-input {
+  flex: 1;
+  width: auto;
+  min-height: 42px;
+  padding: 0 16px;
+  text-align: left;
+  background: #f0f2f5;
+  color: #65676b;
+  border-radius: 22px;
+  font-weight: 400;
+  font-size: 15px;
+}
+
+.composer-input:hover {
+  background: #e4e6eb;
+  opacity: 1;
+}
+
+.photo-button {
+  width: 42px;
+  height: 42px;
+  min-height: 42px;
+  padding: 0;
+  background: transparent;
+  color: #45bd62;
+  font-size: 21px;
+}
+
+.photo-button:hover {
+  background: #f0f2f5;
+  opacity: 1;
+}
+
+.composer-expanded {
+  display: none;
+  margin-top: 12px;
+}
+
+.composer-expanded textarea {
+  min-height: 90px;
+  background: #f5f6f7;
+  border: 1px solid #dfe3e8;
+}
+
+.composer-expanded input[type="file"] {
+  background: #ffffff;
+}
+
+
+/* STORIES */
+.stories-section {
+  background: #ffffff;
+  border: 1px solid #e1e4e8;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.section-heading,
+.feed-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.section-heading h2,
+.feed-heading h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #17181c;
+}
+
+.section-heading button {
+  min-height: auto;
+  padding: 5px 8px;
+  background: transparent;
+  color: #1877f2;
+  font-size: 14px;
+}
+
+.stories-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 3px;
+  scrollbar-width: none;
+}
+
+.stories-row::-webkit-scrollbar {
+  display: none;
+}
+
+.story-card {
+  position: relative;
+  flex: 0 0 112px;
+  height: 168px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #f0f2f5;
+  border: 1px solid #e1e4e8;
+  cursor: pointer;
+}
+
+.story-image {
+  width: 100%;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e4e6eb;
+  font-size: 30px;
+}
+
+.create-story-image {
+  background: #eef0f2;
+  color: #1877f2;
+  font-size: 32px;
+}
+
+.story-card strong {
+  display: block;
+  padding: 7px 7px 5px;
+  font-size: 12px;
+  color: #17181c;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.story-placeholder {
+  background: #dfe3e8;
+}
+
+
+/* NEWS FEED */
+.feed-section {
+  width: 100%;
+}
+
+.feed-heading {
+  padding: 3px 4px 8px;
+}
+
+.feed-heading h2 {
+  font-size: 19px;
+}
+
+
+/* POSTS */
+#posts {
+  width: 100%;
+}
+
+#posts .post {
+  margin-bottom: 12px;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: none;
+}
+
+#posts .post img {
+  width: calc(100% + 24px);
+  max-width: none;
+  margin-left: -12px;
+  margin-right: -12px;
+  border-radius: 0;
+  margin-top: 10px;
+  max-height: 600px;
+  object-fit: cover;
+}
+
+
+/* PROFILE SIDE PANEL */
+#sidePanel {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 12px;
+}
+
+.profile-card {
+  background: #ffffff;
+  border: 1px solid #e1e4e8;
+  border-radius: 12px;
+  padding: 14px;
+}
+
+
+
+
+/* MOBILE NAVIGATION */
+.mobile-bottom-nav {
+  display: grid !important;
+  grid-template-columns: repeat(6, 1fr);
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5000;
+  background: #ffffff;
+  border-top: 1px solid #e1e4e8;
+  padding: 5px 2px;
+  padding-bottom: calc(5px + env(safe-area-inset-bottom));
+}
+
+.mobile-bottom-nav button {
+  min-height: 54px;
+  padding: 3px 1px;
+  background: transparent;
+  color: #65676b;
+  border-radius: 8px;
+  font-size: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+}
+
+.mobile-bottom-nav button span {
+  font-size: 20px;
+  line-height: 23px;
+}
+
+.mobile-bottom-nav button.active {
+  color: #1877f2;
+}
+
+
+/* DESKTOP */
+@media (min-width: 769px) {
+
+  .feed-page {
+    padding-top: 22px;
+  }
+
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+
+}
+
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+  body {
+    background: #f0f2f5;
+  }
+
+  .social-header {
+    height: 58px;
+    padding: 0 9px;
+  }
+
+  .brand {
+    font-size: 18px;
+  }
+
+  .header-icon {
+    width: 38px;
+    height: 38px;
+    min-height: 38px;
+    font-size: 18px;
+  }
+
+  .header-actions {
+    gap: 2px;
+  }
+
+  .feed-page {
+    max-width: 100%;
+    padding: 10px 8px 78px;
+  }
+
+  .composer-card,
+  .stories-section,
+  #posts .post {
+    border-radius: 10px;
+  }
+
+  .stories-section {
+    padding: 10px;
+  }
+
+  .story-card {
+    flex-basis: 105px;
+    height: 158px;
+  }
+
+  .story-image {
+    height: 122px;
+  }
+
+  .section-heading h2,
+  .feed-heading h2 {
+    font-size: 17px;
+  }
+
+  .current-user-avatar {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+  }
+
+  .composer-input {
+    font-size: 14px;
+  }
+
+}
+
+
+/* VERY SMALL PHONES */
+@media (max-width: 380px) {
+
+  .feed-page {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .header-actions .header-icon {
+    width: 35px;
+    height: 35px;
+    min-height: 35px;
+  }
+
+  .brand {
+    font-size: 16px;
+  }
+
+  .story-card {
+    flex-basis: 98px;
+  }
+
+}
+
+
+/* =========================
+   BENEDICT LOGIN — LUXURY
+========================= */
+
+#loginPanel {
+  min-height: 100vh;
+  background: #080808;
+}
+
+.login-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(212, 175, 55, 0.12), transparent 35%),
+    linear-gradient(135deg, #050505 0%, #111111 55%, #050505 100%);
+  padding: 20px;
+}
+
+.login-card {
+  max-width: 390px;
+  padding: 34px 24px;
+  background: rgba(20, 20, 20, 0.96);
+  border: 1px solid rgba(212, 175, 55, 0.55);
+  border-radius: 18px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.65),
+    0 0 30px rgba(212, 175, 55, 0.08);
+}
+
+.login-logo {
+  margin-bottom: 16px;
+  font-size: 58px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: 0;
+  color: #d4af37;
+  text-shadow:
+    0 0 12px rgba(212, 175, 55, 0.35),
+    0 0 28px rgba(212, 175, 55, 0.12);
+}
+
+.login-card h1 {
+  color: #ffffff;
+}
+
+.login-card p {
+  color: #a9a9a9;
+}
+
+.login-card input {
+  background: #0d0d0d;
+  color: #ffffff;
+  border: 1px solid #333333;
+}
+
+.login-card input:focus {
+  border-color: #d4af37;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.12);
+}
+
+.primary-button {
+  background: linear-gradient(135deg, #d4af37, #b8860b);
+  color: #080808;
+  font-weight: 800;
+  border: none;
+}
+
+.primary-button:hover {
+  background: linear-gradient(135deg, #e5c158, #c99716);
+}
+
+
+/* CENTER LOGIN B */
+.login-card {
+  text-align: center;
+}
+
+.login-logo {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin: 0 auto 16px;
+}
+
+
+/* LOGIN LINKS */
+.login-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.login-links a {
+  color: #d4af37;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.login-links a:hover {
+  color: #e5c158;
+  text-decoration: underline;
+}
+
+
+/* SPACE BETWEEN LOGIN LINKS */
+.login-links a:last-child {
+  margin-top: 10px;
+}
+
+
+/* FINAL LOGIN POSITION FIX */
+.login-card {
+  border: none !important;
+}
+
+.login-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.login-links a:last-child {
+  margin-top: 12px;
+}
+
+
+/* CREATE ACCOUNT — THIN GOLD FRAME */
+.login-links a:last-child {
+  margin-top: 12px;
+  padding: 10px 20px;
+  border: 1px solid rgba(212, 175, 55, 0.55);
+  border-radius: 8px;
+  color: #d4af37;
+  text-decoration: none;
+  font-weight: 600;
+  background: transparent;
+  box-shadow: none;
+}
+
+.login-links a:last-child:hover {
+  border-color: rgba(212, 175, 55, 0.75);
+}
+
+
+/* LOGIN BUTTON — SAME WIDTH AS INPUTS */
+.login-card .primary-button {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  margin: 10px 0;
+  border-radius: 8px;
+}
+
+
+/* CREATE ACCOUNT — SAME WIDTH AS LOGIN */
+.login-links a:last-child {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 12px 20px;
+  margin-top: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.55);
+  border-radius: 8px;
+  color: #d4af37;
+  text-decoration: none;
+  font-weight: 600;
+  background: transparent;
+  box-sizing: border-box;
+}
+
+
+/* MOVE CREATE ACCOUNT FURTHER DOWN */
+.login-links a:last-child {
+  margin-top: 28px;
+}
+
+
+/* AUTH PAGES */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(212, 175, 55, 0.12), transparent 35%),
+    linear-gradient(135deg, #050505 0%, #111111 55%, #050505 100%);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 390px;
+  padding: 34px 24px;
+  text-align: center;
+  background: rgba(20, 20, 20, 0.96);
+  border-radius: 18px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65);
+}
+
+.auth-logo {
+  font-size: 58px;
+  font-weight: 900;
+  color: #d4af37;
+  margin-bottom: 16px;
+}
+
+.auth-card h1 {
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.auth-card p {
+  color: #a9a9a9;
+}
+
+.auth-card input {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  margin: 10px 0;
+  box-sizing: border-box;
+  background: #0d0d0d;
+  color: #ffffff;
+  border: 1px solid #333333;
+  border-radius: 8px;
+}
+
+.auth-card .primary-button {
+  width: 100%;
+  min-height: 48px;
+  margin: 10px 0;
+}
+
+.back-login {
+  display: block;
+  margin-top: 24px;
+  color: #d4af37;
+  text-decoration: none;
+}
+
+#registerMessage,
+#forgotMessage {
+  margin-top: 16px;
+}
+
+
+/* =========================================================
+   LOGIN STATE FIX
+   Hide normal app navigation while logged out
+========================================================= */
+
+body.login-active #mainHeader,
+body.login-active #mobileBottomNav,
+body.login-active .mobile-bottom-nav,
+body.login-active .bottom-nav,
+body.login-active nav {
+  display: none !important;
+}
+
+body.login-active #loginPanel {
+  display: block !important;
+}
+
+
+/* =========================================================
+   LOGIN PAGE - HIDE APP HEADER/NAV BEFORE RENDER
+========================================================= */
+
+html.login-active .social-header,
+html.login-active .mobile-bottom-nav,
+html.login-active .luxury-header,
+html.login-active .main-nav {
+  display: none !important;
+}
+
+html.login-active #loginPanel {
+  display: block !important;
+}
+
+
+/* BENEDICT SPLASH SCREEN */
+#splashScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #000000;
+  color: #d4af37;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#splashScreen.hide {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.splash-logo {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.splash-tagline {
+  margin-top: 10px;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.splash-loader {
+  width: 45px;
+  height: 45px;
+  margin-top: 25px;
+  border: 3px solid rgba(212, 175, 55, 0.25);
+  border-top-color: #d4af37;
+  border-radius: 50%;
+  animation: splashSpin 1s linear infinite;
+}
+
+@keyframes splashSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* LOGIN LOADING */
+#loginLoading {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.92);
+  color: #d4af37;
+}
+
+#loginLoading.show {
+  display: flex;
+}
+
+.login-loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(212, 175, 55, 0.25);
+  border-top-color: #d4af37;
+  border-radius: 50%;
+  animation: loginLoadingSpin 0.8s linear infinite;
+}
+
+.login-loading-text {
+  margin-top: 18px;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+@keyframes loginLoadingSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* INTERNAL PAGE LOADING */
+.internal-loading-logo {
+  font-size: 64px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  line-height: 1;
+}
+
+.internal-loading-text {
+  margin-top: 18px;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+
+/* =========================
+   DISCOVERY FEED
+========================= */
+
+.discovery-heading {
+  margin-bottom: 14px;
+}
+
+.discovery-heading h2 {
+  margin-bottom: 4px;
+}
+
+.discovery-heading p {
+  margin: 0;
+  color: #777;
+  font-size: 14px;
+}
+
+.discovery-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 0 14px;
+  margin-bottom: 8px;
+  scrollbar-width: none;
+}
+
+.discovery-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.discovery-tab {
+  flex: 0 0 auto;
+  border: 1px solid #d4af37;
+  background: #151518;
+  color: #d4af37;
+  border-radius: 22px;
+  padding: 9px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.discovery-tab.active {
+  background: #d4af37;
+  color: #111;
+}
+
+.discovery-tab:hover {
+  background: #d4af37;
+  color: #111;
+}
+
+@media (max-width: 600px) {
+  .discovery-tabs {
+    margin-left: -2px;
+    margin-right: -2px;
+  }
+
+  .discovery-tab {
+    padding: 8px 13px;
+    font-size: 13px;
+  }
+}
+
+
+
+/* =========================
+   REAL NEWS / ENTERTAINMENT
+========================= */
+
+.news-article {
+  overflow: hidden;
+  padding: 0;
+  margin-bottom: 18px;
+}
+
+.news-article-image {
+  display: block;
+  width: 100%;
+  max-height: 360px;
+  object-fit: cover;
+}
+
+.news-article-content {
+  padding: 18px;
+}
+
+.news-source {
+  color: #d4af37;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .7px;
+  margin-bottom: 8px;
+}
+
+.news-article-content h2 {
+  margin: 0 0 10px;
+  font-size: 21px;
+  line-height: 1.3;
+  color: #ffffff;
+}
+
+.news-article-content p {
+  color: #c8c8c8;
+  line-height: 1.55;
+  margin: 0 0 12px;
+}
+
+.news-article-content small {
+  display: block;
+  color: #888;
+  margin-bottom: 15px;
+}
+
+.news-read-button {
+  display: inline-block;
+  padding: 10px 16px;
+  border: 1px solid #d4af37;
+  border-radius: 8px;
+  color: #d4af37;
+  text-decoration: none;
+  font-weight: 700;
+  transition: .2s;
+}
+
+.news-read-button:hover {
+  background: #d4af37;
+  color: #111;
+}
+
+.discovery-empty {
+  padding: 25px;
+  text-align: center;
+}
+
+.discovery-empty h3 {
+  margin-top: 0;
+  color: #d4af37;
+}
+
+/* =========================
+   PREMIUM NEWS FEED COMPOSER
+========================= */
+
+.composer-card {
+  background: linear-gradient(145deg, #171717, #0d0d0d);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 18px;
+  padding: 14px;
+  margin-bottom: 14px;
+  box-shadow:
+    0 8px 28px rgba(0, 0, 0, 0.28),
+    0 0 18px rgba(212, 175, 55, 0.05);
+}
+
+.composer-top {
+  gap: 11px;
+}
+
+.current-user-avatar {
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #d4af37, #8f6b16);
+  color: #080808;
+  border: 2px solid rgba(212, 175, 55, 0.65);
+  box-shadow: 0 0 14px rgba(212, 175, 55, 0.18);
+  font-size: 22px;
+}
+
+.composer-input {
+  min-height: 46px;
+  padding: 0 18px;
+  background: #222222;
+  color: #bdbdbd;
+  border: 1px solid #333333;
+  border-radius: 24px;
+  font-size: 15px;
+  transition: 0.2s ease;
+}
+
+.composer-input:hover {
+  background: #292929;
+  border-color: rgba(212, 175, 55, 0.45);
+  color: #ffffff;
+}
+
+.photo-button {
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
+  border-radius: 50%;
+  background: #222222;
+  color: #d4af37;
+  border: 1px solid #333333;
+  transition: 0.2s ease;
+}
+
+.photo-button:hover {
+  background: #2b2b2b;
+  border-color: rgba(212, 175, 55, 0.5);
+  color: #e5c158;
+}
+
+.composer-expanded textarea {
+  background: #171717;
+  color: #ffffff;
+  border: 1px solid #3a3a3a;
+  border-radius: 12px;
+}
+
+@media (max-width: 480px) {
+
+  .composer-card {
+    border-radius: 16px;
+    padding: 12px;
+  }
+
+  .current-user-avatar,
+  .photo-button {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+  }
+
+  .composer-input {
+    min-height: 42px;
+    padding: 0 15px;
+    font-size: 14px;
+  }
+
+}
+
+
+/* =========================================================
+   BENEDICT HOME V1 — PREMIUM SOCIAL EXPERIENCE
+   Added without removing existing styles
+========================================================= */
+
+:root {
+  --benedict-black: #080808;
+  --benedict-panel: #111111;
+  --benedict-panel-2: #151515;
+  --benedict-border: rgba(212, 175, 55, 0.18);
+  --benedict-gold: #d4af37;
+  --benedict-gold-light: #f0d77a;
+  --benedict-text: #f5f5f5;
+  --benedict-muted: #9b9b9b;
+}
+
+/* HOME BACKGROUND */
+body {
+  background:
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(212, 175, 55, 0.08),
+      transparent 32%
+    ),
+    var(--benedict-black);
+  color: var(--benedict-text);
+}
+
+/* TOP HEADER */
+.social-header {
+  height: 64px;
+  background: rgba(8, 8, 8, 0.94);
+  border-bottom: 1px solid var(--benedict-border);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.brand {
+  color: var(--benedict-gold);
+  letter-spacing: 2px;
+  text-shadow: 0 0 18px rgba(212, 175, 55, 0.16);
+}
+
+.header-icon {
+  background: #171717;
+  color: #eeeeee;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.header-icon:hover {
+  background: #202020;
+  color: var(--benedict-gold);
+}
+
+/* FEED */
+.feed-page {
+  max-width: 720px;
+  padding-top: 18px;
+}
+
+/* COMPOSER */
+.composer-card {
+  background: linear-gradient(
+    145deg,
+    #111111,
+    #0d0d0d
+  );
+  border: 1px solid var(--benedict-border);
+  border-radius: 18px;
+  box-shadow:
+    0 10px 35px rgba(0,0,0,0.35);
+}
+
+.current-user-avatar {
+  background:
+    linear-gradient(
+      145deg,
+      #242424,
+      #111111
+    );
+  border: 1px solid rgba(212,175,55,0.25);
+  color: var(--benedict-gold);
+}
+
+.composer-input {
+  background: #181818;
+  color: #a8a8a8;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.composer-input:hover {
+  background: #1d1d1d;
+  color: #dddddd;
+}
+
+.photo-button {
+  color: var(--benedict-gold);
+}
+
+/* STORIES */
+.stories-section {
+  background: linear-gradient(
+    145deg,
+    #111111,
+    #0c0c0c
+  );
+  border: 1px solid var(--benedict-border);
+  border-radius: 18px;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+}
+
+.section-heading h2,
+.feed-heading h2 {
+  color: var(--benedict-text);
+}
+
+.section-heading button {
+  color: var(--benedict-gold);
+}
+
+.stories-row {
+  gap: 10px;
+}
+
+.story-card {
+  background: #171717;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.story-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(212,175,55,0.38);
+}
+
+.story-image {
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(212,175,55,0.15),
+      transparent 65%
+    ),
+    #181818;
+}
+
+.create-story-image {
+  color: var(--benedict-gold);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(212,175,55,0.16),
+      #171717
+    );
+}
+
+.story-card strong {
+  color: #eeeeee;
+}
+
+/* DISCOVERY */
+.discovery-heading {
+  display: block;
+  padding: 10px 4px 12px;
+}
+
+.discovery-heading h2 {
+  font-size: 22px;
+  letter-spacing: 0.2px;
+}
+
+.discovery-heading p {
+  margin: 5px 0 0;
+  color: var(--benedict-muted);
+  font-size: 13px;
+}
+
+/* DISCOVERY TABS */
+.discovery-tabs {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  padding: 0 2px 12px;
+  scrollbar-width: none;
+}
+
+.discovery-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.discovery-tab {
+  flex: 0 0 auto;
+  min-height: 38px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #151515;
+  border: 1px solid rgba(255,255,255,0.07);
+  color: #aaaaaa;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.discovery-tab:hover {
+  background: #1d1d1d;
+}
+
+.discovery-tab.active {
+  background:
+    linear-gradient(
+      135deg,
+      #d4af37,
+      #a67c16
+    );
+  color: #080808;
+  border-color: transparent;
+}
+
+/* POSTS */
+#posts .post {
+  background:
+    linear-gradient(
+      145deg,
+      #121212,
+      #0d0d0d
+    );
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 18px;
+  color: var(--benedict-text);
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.28);
+}
+
+/* COMMON TEXT INSIDE POSTS */
+#posts .post h2,
+#posts .post h3,
+#posts .post strong {
+  color: #f3f3f3;
+}
+
+#posts .post p {
+  color: #d0d0d0;
+}
+
+#posts .post small {
+  color: #888888;
+}
+
+/* POST IMAGES */
+#posts .post img {
+  border-radius: 14px;
+}
+
+/* REACTION BUTTONS */
+#posts .reactions button,
+.reactions button {
+  background: #191919;
+  color: #bdbdbd;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+#posts .reactions button:hover,
+.reactions button:hover {
+  background: #222222;
+  color: var(--benedict-gold);
+}
+
+/* PROFILE SIDE */
+#sidePanel {
+  color: var(--benedict-text);
+}
+
+.profile-card {
+  background: linear-gradient(
+    145deg,
+    #111111,
+    #0c0c0c
+  );
+  border: 1px solid var(--benedict-border);
+  border-radius: 18px;
+  color: var(--benedict-text);
+}
+
+.profile-card h2,
+.profile-card h3 {
+  color: var(--benedict-text);
+}
+
+/* MOBILE NAV */
+.mobile-bottom-nav {
+  background: rgba(8,8,8,0.96);
+  border-top: 1px solid var(--benedict-border);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.mobile-bottom-nav button {
+  color: #777777;
+}
+
+.mobile-bottom-nav button span {
+  transition: transform 0.2s ease;
+}
+
+.mobile-bottom-nav button.active {
+  color: var(--benedict-gold);
+}
+
+.mobile-bottom-nav button.active span {
+  transform: translateY(-1px);
+}
+
+/* INPUTS ON HOME */
+.composer-expanded textarea,
+.composer-expanded input[type="file"] {
+  background: #101010;
+  color: #eeeeee;
+  border-color: rgba(255,255,255,0.08);
+}
+
+.composer-expanded textarea:focus {
+  border-color: rgba(212,175,55,0.5);
+}
+
+/* GOLD BUTTONS */
+.feed-page .primary-button {
+  background:
+    linear-gradient(
+      135deg,
+      #d4af37,
+      #a67c16
+    );
+  color: #080808;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+  body {
+    background:
+      radial-gradient(
+        circle at 50% -5%,
+        rgba(212,175,55,0.08),
+        transparent 28%
+      ),
+      #080808;
+  }
+
+  .social-header {
+    height: 58px;
+  }
+
+  .feed-page {
+    padding: 10px 7px 82px;
+  }
+
+  .composer-card,
+  .stories-section,
+  #posts .post {
+    border-radius: 15px;
+  }
+
+  .story-card {
+    border-radius: 13px;
+  }
+
+  .discovery-heading h2 {
+    font-size: 20px;
+  }
+
+}
+
+/* VERY SMALL PHONES */
+@media (max-width: 380px) {
+
+  .feed-page {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .brand {
+    font-size: 15px;
+  }
+
+  .discovery-tab {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+}
+
+
+/* =========================================================
+   BENEDICT NAVIGATION V2
+========================================================= */
+
+.benedict-bottom-nav {
+  grid-template-columns: repeat(5, 1fr);
+  height: auto;
+  padding-top: 6px;
+}
+
+.benedict-bottom-nav button {
+  position: relative;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.benedict-bottom-nav button:active {
+  transform: scale(0.94);
+}
+
+.benedict-bottom-nav button span {
+  font-size: 21px;
+}
+
+.benedict-bottom-nav button small {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.benedict-bottom-nav button.active {
+  color: var(--benedict-gold);
+}
+
+.benedict-bottom-nav button.active::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  width: 22px;
+  height: 2px;
+  transform: translateX(-50%);
+  background: var(--benedict-gold);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(212,175,55,0.45);
+}
+
+/* SPECIAL CREATE BUTTON */
+.benedict-bottom-nav .create-nav-button span {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    #d4af37,
+    #a67c16
+  );
+  color: #080808;
+  font-size: 25px;
+  box-shadow:
+    0 4px 18px rgba(212,175,55,0.22);
+}
+
+.benedict-bottom-nav .create-nav-button {
+  color: #bdbdbd;
+}
+
+/* KEEP DESKTOP CLEAN */
+@media (min-width: 769px) {
+  .benedict-bottom-nav {
+    display: none !important;
+  }
+}
+
+/* =========================================================
+   BENEDICT HEADER V2
+========================================================= */
+
+.benedict-header {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(12,12,12,0.98),
+      rgba(8,8,8,0.94)
+    );
+  border-bottom: 1px solid rgba(212,175,55,0.16);
+  box-shadow:
+    0 5px 25px rgba(0,0,0,0.22);
+}
+
+.brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.brand-mark {
+  color: var(--benedict-gold);
+  font-size: 15px;
+  line-height: 1;
+  text-shadow:
+    0 0 12px rgba(212,175,55,0.4);
+}
+
+.benedict-header .brand {
+  color: #f2f2f2;
+  font-size: 19px;
+  letter-spacing: 2.5px;
+}
+
+.benedict-header .header-icon {
+  position: relative;
+  background: #151515;
+  border: 1px solid rgba(255,255,255,0.06);
+  color: #e5e5e5;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.benedict-header .header-icon:hover {
+  background: #1d1d1d;
+  color: var(--benedict-gold);
+}
+
+.benedict-header .header-icon:active {
+  transform: scale(0.92);
+}
+
+.header-notification-dot {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--benedict-gold);
+  box-shadow:
+    0 0 8px rgba(212,175,55,0.65);
+}
+
+@media (max-width: 768px) {
+
+  .benedict-header {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .brand-wrap {
+    gap: 3px;
+  }
+
+  .brand-mark {
+    font-size: 12px;
+  }
+
+  .benedict-header .brand {
+    font-size: 16px;
+    letter-spacing: 2px;
+  }
+
+  .benedict-header .header-actions {
+    gap: 3px;
+  }
+
+  .benedict-header .header-icon {
+    width: 37px;
+    height: 37px;
+    min-height: 37px;
+  }
+
+}
+
+@media (max-width: 380px) {
+
+  .benedict-header .brand {
+    font-size: 14px;
+    letter-spacing: 1.6px;
+  }
+
+  .benedict-header .header-icon {
+    width: 34px;
+    height: 34px;
+    min-height: 34px;
+    font-size: 16px;
+  }
+
+}
+
+
+/* =========================================================
+   BENEDICT FEED V2
+========================================================= */
+
+:root {
+  --benedict-gold: #d4af37;
+  --benedict-gold-soft: rgba(212,175,55,0.18);
+  --benedict-dark: #090909;
+  --benedict-card: #111111;
+  --benedict-text: #f1f1f1;
+  --benedict-muted: #999999;
+}
+
+.benedict-post {
+  background: #ffffff;
+  border: 1px solid #e1e4e8;
+  overflow: hidden;
+}
+
+.benedict-post-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.benedict-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.benedict-post-avatar {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--benedict-gold);
+}
+
+.avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #111111;
+  color: var(--benedict-gold);
+  font-size: 17px;
+}
+
+.benedict-author-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.benedict-author-info strong {
+  color: #17181c;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.benedict-author-info span {
+  color: #777777;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.post-more-button {
+  width: 36px;
+  min-height: 36px;
+  padding: 0;
+  background: transparent;
+  color: #777777;
+  font-size: 24px;
+}
+
+.post-more-button:hover {
+  background: #f0f2f5;
+  color: var(--benedict-gold);
+}
+
+.benedict-post-text {
+  padding: 13px 2px 5px;
+  color: #202124;
+  font-size: 15px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.benedict-post-media {
+  margin: 12px -12px 0;
+  background: #080808;
+}
+
+.benedict-post-media img {
+  display: block;
+  width: 100%;
+  max-height: 620px;
+  object-fit: cover;
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+
+.benedict-post-stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 2px;
+  border-bottom: 1px solid #e8eaed;
+}
+
+.benedict-reaction-summary {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #666666;
+  font-size: 13px;
+}
+
+.benedict-reaction-summary.empty {
+  color: #999999;
+}
+
+.reaction-icons {
+  letter-spacing: -3px;
+  margin-right: 3px;
+}
+
+.benedict-stat-links {
+  display: flex;
+  gap: 12px;
+  color: #777777;
+  font-size: 12px;
+}
+
+.benedict-stat-links span {
+  cursor: pointer;
+}
+
+.benedict-stat-links span:hover {
+  color: var(--benedict-gold);
+}
+
+.benedict-post-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-bottom: 1px solid #e8eaed;
+}
+
+.benedict-post-actions button {
+  min-height: 44px;
+  padding: 7px 4px;
+  background: transparent;
+  color: #555b66;
+  border-radius: 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.benedict-post-actions button:hover {
+  background: #f5f6f7;
+  color: var(--benedict-gold);
+}
+
+.benedict-post-actions button span {
+  margin-left: 4px;
+}
+
+.benedict-reaction-picker {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 2px;
+}
+
+.benedict-reaction-picker button {
+  min-height: 30px;
+  width: 32px;
+  padding: 0;
+  background: transparent;
+  font-size: 17px;
+}
+
+.benedict-reaction-picker button:hover {
+  background: #f0f2f5;
+  transform: scale(1.12);
+}
+
+.benedict-post-details {
+  padding: 2px 0 5px;
+}
+
+.view-likes-button {
+  min-height: 32px;
+  padding: 4px 7px;
+  background: transparent;
+  color: #777777;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.view-likes-button:hover {
+  color: var(--benedict-gold);
+}
+
+.benedict-comments {
+  margin-top: 3px;
+}
+
+.benedict-comments p {
+  color: #888888;
+  font-size: 12px;
+}
+
+.benedict-comment-box {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 8px;
+}
+
+.benedict-comment-box input {
+  flex: 1;
+  margin: 0;
+  min-height: 40px;
+  border-radius: 20px;
+  background: #f0f2f5;
+  border: 1px solid transparent;
+  padding: 9px 14px;
+}
+
+.benedict-comment-box input:focus {
+  border-color: var(--benedict-gold);
+  background: #ffffff;
+}
+
+.benedict-comment-box button {
+  width: 40px;
+  min-height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  background: #111111;
+  color: var(--benedict-gold);
+}
+
+.benedict-post-owner-tools {
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+  margin-top: 8px;
+  padding-top: 7px;
+  border-top: 1px solid #eeeeee;
+}
+
+.benedict-post-owner-tools button {
+  min-height: 30px;
+  padding: 5px 8px;
+  background: transparent;
+  color: #888888;
+  font-size: 11px;
+}
+
+.benedict-post-owner-tools button:hover {
+  color: var(--benedict-gold);
+}
+
+.benedict-empty-state {
+  text-align: center;
+  padding: 45px 20px;
+  background: #ffffff;
+  border: 1px solid #e1e4e8;
+  border-radius: 12px;
+}
+
+.empty-icon {
+  font-size: 32px;
+  color: var(--benedict-gold);
+  margin-bottom: 8px;
+}
+
+.benedict-empty-state h3 {
+  margin: 0 0 6px;
+  color: #17181c;
+}
+
+.benedict-empty-state p {
+  margin: 0;
+  color: #777777;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+
+  .benedict-post {
+    padding: 11px;
+  }
+
+  .benedict-post-media {
+    margin-left: -11px;
+    margin-right: -11px;
+  }
+
+  .benedict-post-avatar {
+    width: 41px;
+    height: 41px;
+    min-width: 41px;
+  }
+
+  .benedict-post-text {
+    font-size: 14px;
+  }
+
+  .benedict-post-actions button {
+    font-size: 13px;
+  }
+
+  .benedict-post-actions button span {
+    margin-left: 2px;
+  }
+
+}
+
+@media (max-width: 380px) {
+
+  .benedict-post {
+    padding: 9px;
+  }
+
+  .benedict-post-media {
+    margin-left: -9px;
+    margin-right: -9px;
+  }
+
+  .benedict-post-actions button {
+    font-size: 12px;
+  }
+
+  .benedict-reaction-picker {
+    overflow-x: auto;
+  }
+
+}
+
+
+/* =========================================================
+   BENEDICT FEED V3 — RICH POST CARDS
+========================================================= */
+
+#posts .post {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #e1e4e8;
+  border-radius: 16px;
+  padding: 0;
+  margin-bottom: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.045);
+}
+
+/* POST CONTENT AREA */
+#posts .post > h3,
+#posts .post > p,
+#posts .post > .reactions,
+#posts .post > button,
+#posts .post > input,
+#posts .post > div[id^="comments-"],
+#posts .post > div[id^="likes-"] {
+  margin-left: 14px;
+  margin-right: 14px;
+}
+
+/* AUTHOR */
+#posts .post > h3 {
+  padding-top: 15px;
+  margin-bottom: 4px;
+  font-size: 15px;
+  font-weight: 800;
+  color: #17181c;
+}
+
+/* POST TEXT */
+#posts .post > p {
+  font-size: 15px;
+  line-height: 1.55;
+  color: #30343b;
+  margin-top: 8px;
+  margin-bottom: 10px;
+}
+
+/* POST IMAGE */
+#posts .post > img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  max-height: 650px;
+  object-fit: cover;
+  margin: 12px 0 0;
+  border-radius: 0;
+}
+
+/* REACTION SUMMARY */
+#posts .post > p:first-of-type {
+  color: #65676b;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+/* REACTION BUTTON AREA */
+#posts .post .reactions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 0;
+  margin-top: 4px;
+  border-top: 1px solid #edf0f2;
+  border-bottom: 1px solid #edf0f2;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+#posts .post .reactions::-webkit-scrollbar {
+  display: none;
+}
+
+#posts .post .reactions button {
+  flex: 0 0 auto;
+  min-height: 36px;
+  padding: 7px 9px;
+  background: transparent;
+  color: #65676b;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+#posts .post .reactions button:hover {
+  background: #f0f2f5;
+  color: #17181c;
+}
+
+/* ACTION BUTTONS */
+#posts .post > button {
+  min-height: 38px;
+  padding: 7px 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  background: transparent;
+  color: #65676b;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+#posts .post > button:hover {
+  background: #f0f2f5;
+  color: #17181c;
+}
+
+/* COMMENT INPUT */
+#posts .post > input {
+  width: calc(100% - 28px);
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding: 11px 14px;
+  background: #f0f2f5;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+#posts .post > input:focus {
+  background: #ffffff;
+  border-color: #d4af37;
+  box-shadow: 0 0 0 2px rgba(212,175,55,0.10);
+}
+
+/* COMMENTS */
+#posts .post > div[id^="comments-"] {
+  padding: 4px 0;
+  color: #50545b;
+  font-size: 13px;
+}
+
+/* LIKES */
+#posts .post > div[id^="likes-"] {
+  padding: 4px 0;
+  color: #50545b;
+  font-size: 13px;
+}
+
+/* GOLD ACCENT */
+#posts .post::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 42px;
+  height: 2px;
+  background: linear-gradient(90deg, #d4af37, transparent);
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+  #posts .post {
+    border-radius: 12px;
+    margin-bottom: 12px;
+  }
+
+  #posts .post > h3 {
+    padding-top: 13px;
+    font-size: 14px;
+  }
+
+  #posts .post > p {
+    font-size: 14px;
+  }
+
+  #posts .post > img {
+    max-height: 520px;
+  }
+
+  #posts .post .reactions {
+    padding: 6px 0;
+  }
+
+  #posts .post .reactions button {
+    font-size: 11px;
+    padding: 6px 8px;
+  }
+
+}
+
+/* VERY SMALL PHONES */
+@media (max-width: 380px) {
+
+  #posts .post > h3,
+  #posts .post > p,
+  #posts .post > .reactions,
+  #posts .post > button,
+  #posts .post > input,
+  #posts .post > div[id^="comments-"],
+  #posts .post > div[id^="likes-"] {
+    margin-left: 11px;
+    margin-right: 11px;
+  }
+
+  #posts .post > input {
+    width: calc(100% - 22px);
+  }
+
+}
+
+
+/* =========================================================
+   BENEDICT POST HEADER V1
+========================================================= */
+
+#posts .post {
+  position: relative;
+}
+
+/* HEADER SPACE ABOVE POST CONTENT */
+#posts .post::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+#posts .post > h3 {
+  position: relative;
+  padding-top: 16px;
+  padding-left: 48px;
+  min-height: 42px;
+  margin-top: 0;
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+/* AVATAR */
+#posts .post > h3::before {
+  content: "B";
+  position: absolute;
+  left: 0;
+  top: 13px;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #d4af37, #a67c16);
+  color: #080808;
+  font-size: 15px;
+  font-weight: 900;
+  box-shadow: 0 2px 8px rgba(212,175,55,0.25);
+}
+
+/* SMALL VERIFIED-STYLE MARK */
+#posts .post > h3::after {
+  content: "✦";
+  position: absolute;
+  left: 27px;
+  top: 39px;
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #17181c;
+  color: #d4af37;
+  border: 2px solid #ffffff;
+  font-size: 7px;
+  line-height: 1;
+}
+
+/* POST META */
+#posts .post > h3 + p {
+  margin-top: 6px;
+}
+
+/* MOBILE HEADER */
+@media (max-width: 768px) {
+
+  #posts .post > h3 {
+    padding-top: 14px;
+    padding-left: 45px;
+    min-height: 40px;
+    font-size: 14px;
+  }
+
+  #posts .post > h3::before {
+    top: 12px;
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  #posts .post > h3::after {
+    left: 25px;
+    top: 36px;
+    width: 13px;
+    height: 13px;
+  }
+
+}
+
+/* VERY SMALL PHONES */
+@media (max-width: 380px) {
+
+  #posts .post > h3 {
+    padding-left: 42px;
+    font-size: 13px;
+  }
+
+  #posts .post > h3::before {
+    width: 34px;
+    height: 34px;
+  }
+
+  #posts .post > h3::after {
+    left: 23px;
+  }
+
+}
+
+
+/* BENEDICT — SQUARE POST HEADER */
+.benedict-post-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 10px;
+  background: #111111;
+  border: 1px solid rgba(212,175,55,0.35);
+}
+
+.benedict-post-avatar {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.benedict-post-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.benedict-post-avatar span {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #222222;
+  color: #d4af37;
+  font-weight: 800;
+  font-size: 20px;
+}
+
+
+/* BENEDICT FEED POST AVATAR — SQUARE */
+.benedict-post-avatar {
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px;
+  border-radius: 8px !important;
+  overflow: hidden;
+  flex: 0 0 42px;
+}
+
+.benedict-post-avatar img {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  object-fit: cover;
+  border-radius: 0 !important;
+}
+
+.benedict-post-avatar span {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+}
+
+
+/* =========================================================
+   BENEDICT FEED CARD V3.1 — COMPACT LUXURY
+========================================================= */
+
+/* MAIN FEED POST */
+#posts .post {
+  border-radius: 16px;
+  margin-bottom: 12px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #e3e5e8;
+  box-shadow: 0 3px 14px rgba(0,0,0,0.045);
+}
+
+/* POST HEADER */
+#posts .post .benedict-post-header {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 12px 14px 8px;
+  min-height: 48px;
+}
+
+/* SQUARE POST AVATAR */
+#posts .post .benedict-post-avatar {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  flex: 0 0 48px !important;
+  border-radius: 9px !important;
+  overflow: hidden;
+  border: 2px solid var(--benedict-gold);
+  box-sizing: border-box;
+}
+
+#posts .post .benedict-post-avatar img {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  object-fit: cover;
+  border-radius: 0 !important;
+}
+
+#posts .post .benedict-post-avatar span {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+  background: #111111;
+  color: var(--benedict-gold);
+  font-size: 20px;
+  font-weight: 800;
+}
+
+/* USER IDENTITY */
+#posts .post .benedict-post-identity {
+  min-width: 0;
+  flex: 1;
+}
+
+#posts .post .benedict-post-identity strong {
+  display: block;
+  font-size: 15px;
+  line-height: 18px;
+  color: #17181c;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#posts .post .benedict-post-meta {
+  margin-top: 2px;
+  font-size: 11px;
+  line-height: 15px;
+  color: #777b82;
+}
+
+/* GOLD IDENTITY MARK */
+#posts .post .benedict-identity-mark {
+  color: var(--benedict-gold);
+  margin-left: 3px;
+}
+
+/* THREE DOT MENU */
+#posts .post .benedict-post-menu {
+  width: 36px;
+  height: 36px;
+  min-height: 36px;
+  padding: 0;
+  margin: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #777b82;
+  font-size: 22px;
+  flex: 0 0 36px;
+}
+
+#posts .post .benedict-post-menu:hover {
+  background: #f0f2f5;
+  color: var(--benedict-gold);
+}
+
+/* POST TEXT */
+#posts .post > p:first-of-type {
+  margin: 2px 14px 10px;
+  padding: 0;
+  font-size: 15px;
+  line-height: 1.45;
+  color: #24272c;
+}
+
+/* POST IMAGE */
+#posts .post > img {
+  width: 100%;
+  max-width: 100%;
+  max-height: 600px;
+  display: block;
+  object-fit: cover;
+  margin: 0;
+  border-radius: 0;
+}
+
+/* REACTION SUMMARY */
+#posts .post > p:nth-of-type(2) {
+  margin: 0 14px;
+  padding: 9px 0;
+  color: #65676b;
+  font-size: 12px;
+  line-height: 18px;
+  border-bottom: 1px solid #eceef0;
+}
+
+/* REACTION BUTTON AREA */
+#posts .post > .reactions {
+  display: flex;
+  gap: 3px;
+  padding: 5px 9px;
+  margin: 0;
+  border-bottom: 1px solid #eceef0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+#posts .post > .reactions::-webkit-scrollbar {
+  display: none;
+}
+
+#posts .post > .reactions button {
+  flex: 1 0 auto;
+  min-height: 36px;
+  padding: 5px 8px;
+  border-radius: 8px;
+  background: transparent;
+  color: #555b64;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+#posts .post > .reactions button:hover {
+  background: #f2f3f5;
+  color: var(--benedict-gold);
+}
+
+/* POST ACTION BUTTONS */
+#posts .post > button {
+  min-height: 36px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 6px 9px;
+  border-radius: 8px;
+  background: transparent;
+  color: #555b64;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+#posts .post > button:hover {
+  background: #f2f3f5;
+  color: var(--benedict-gold);
+}
+
+/* COMMENT INPUT */
+#posts .post > input {
+  width: calc(100% - 28px);
+  min-height: 38px;
+  margin: 7px 14px 5px;
+  padding: 0 13px;
+  box-sizing: border-box;
+  border-radius: 19px;
+  background: #f0f2f5;
+  border: 1px solid transparent;
+  font-size: 13px;
+}
+
+#posts .post > input:focus {
+  border-color: rgba(212,175,55,0.45);
+  outline: none;
+  background: #ffffff;
+}
+
+/* COMMENTS */
+#posts .post > div[id^="comments-"] {
+  margin: 2px 14px 5px;
+  font-size: 13px;
+}
+
+/* LIKES */
+#posts .post > div[id^="likes-"] {
+  margin: 0 14px;
+  font-size: 13px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+  #posts .post .benedict-post-header {
+    padding: 11px 12px 7px;
+  }
+
+  #posts .post .benedict-post-avatar {
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    flex-basis: 48px !important;
+  }
+
+  #posts .post > p:first-of-type {
+    margin-left: 12px;
+    margin-right: 12px;
+  }
+
+  #posts .post > p:nth-of-type(2) {
+    margin-left: 12px;
+    margin-right: 12px;
+  }
+
+}
+
+@media (max-width: 380px) {
+
+  #posts .post .benedict-post-avatar {
+    width: 46px !important;
+    height: 46px !important;
+    min-width: 46px !important;
+    flex-basis: 46px !important;
+  }
+
+  #posts .post .benedict-post-header {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+}
+
+
+/* BENEDICT FEED POST HEADER — FINAL AVATAR SPACING */
+#posts .benedict-post-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  min-height: 58px;
+  box-sizing: border-box;
+}
+
+#posts .benedict-post-avatar {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  flex: 0 0 48px !important;
+  border-radius: 9px !important;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+#posts .benedict-post-avatar img {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  object-fit: cover;
+  border-radius: 0 !important;
+}
+
+#posts .benedict-post-avatar span {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+}
+
+#posts .benedict-post-identity {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+}
+
+#posts .benedict-post-identity strong {
+  display: block;
+  line-height: 1.25;
+  margin: 0;
+  padding: 0;
+}
+
+#posts .benedict-post-meta {
+  margin-top: 3px;
+  line-height: 1.2;
+}
+
+#posts .benedict-post-menu {
+  flex: 0 0 auto;
+  margin-left: 4px;
+}
+
+@media (max-width: 380px) {
+  #posts .benedict-post-header {
+    gap: 10px;
+    padding: 12px;
+  }
+
+  #posts .benedict-post-avatar {
+    width: 45px !important;
+    height: 45px !important;
+    min-width: 45px !important;
+    flex-basis: 45px !important;
+  }
+}
+
+
+/* =========================================================
+   BENEDICT FEED V3.2 — CLEAN COMPACT POST DESIGN
+========================================================= */
+
+#posts .post {
+  background: #ffffff;
+  border: 1px solid #e3e5e8;
+  border-radius: 14px;
+  margin-bottom: 12px;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.035);
+}
+
+/* CLEAN POST HEADER */
+#posts .benedict-post-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px 9px;
+  min-height: 68px;
+  background: #ffffff;
+  border: 0;
+  border-radius: 0;
+}
+
+/* SQUARE AVATAR */
+#posts .benedict-post-avatar {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  flex: 0 0 48px !important;
+  border-radius: 9px !important;
+  overflow: hidden;
+  box-sizing: border-box;
+  border: 1px solid #e1e1e1;
+}
+
+#posts .benedict-post-avatar img {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  object-fit: cover;
+  border-radius: 0 !important;
+}
+
+#posts .benedict-post-avatar span {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #111111;
+  color: #d4af37;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+/* USER INFORMATION */
+#posts .benedict-post-identity {
+  flex: 1;
+  min-width: 0;
+}
+
+#posts .benedict-post-identity strong {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  color: #17181c;
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+#posts .benedict-identity-mark {
+  color: #d4af37;
+  font-size: 11px;
+}
+
+#posts .benedict-post-meta {
+  margin-top: 3px;
+  color: #777b82;
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+/* THREE-DOT MENU */
+#posts .benedict-post-menu {
+  width: 34px;
+  height: 34px;
+  min-height: 34px;
+  flex: 0 0 34px;
+  padding: 0;
+  margin: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #777b82;
+  font-size: 22px;
+}
+
+#posts .benedict-post-menu:hover {
+  background: #f1f2f4;
+}
+
+/* POST TEXT */
+#posts .post > p:first-of-type {
+  margin: 0 14px 10px;
+  padding: 2px 0 0;
+  color: #292d33;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+/* POST IMAGE */
+#posts .post > img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  max-height: 560px;
+  object-fit: cover;
+  margin: 6px 0 0;
+  border-radius: 0;
+}
+
+/* REACTION SUMMARY */
+#posts .post > p:nth-of-type(2) {
+  margin: 0 14px;
+  padding: 8px 0;
+  color: #777b82;
+  font-size: 12px;
+  line-height: 1.4;
+  border-bottom: 1px solid #eceef0;
+}
+
+/* REACTION BUTTONS */
+#posts .post .reactions {
+  display: flex;
+  gap: 2px;
+  padding: 4px 10px;
+  margin: 0;
+  border: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+#posts .post .reactions::-webkit-scrollbar {
+  display: none;
+}
+
+#posts .post .reactions button {
+  flex: 1 0 auto;
+  min-height: 34px;
+  padding: 5px 7px;
+  border-radius: 7px;
+  background: transparent;
+  color: #65676b;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* SECONDARY ACTIONS */
+#posts .post > button {
+  min-height: 34px;
+  padding: 5px 9px;
+  margin: 2px 4px;
+  border-radius: 7px;
+  background: transparent;
+  color: #65676b;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+#posts .post > button:hover {
+  background: #f1f2f4;
+}
+
+/* COMMENT BOX */
+#posts .post > input {
+  width: calc(100% - 28px);
+  min-height: 38px;
+  box-sizing: border-box;
+  margin: 7px 14px 9px;
+  padding: 8px 13px;
+  background: #f0f2f5;
+  border: 1px solid transparent;
+  border-radius: 19px;
+  font-size: 13px;
+}
+
+#posts .post > input:focus {
+  background: #ffffff;
+  border-color: #d4af37;
+}
+
+/* COMMENTS / LIKES */
+#posts .post > div[id^="comments-"],
+#posts .post > div[id^="likes-"] {
+  margin-left: 14px;
+  margin-right: 14px;
+  font-size: 12px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+  #posts .post {
+    border-radius: 11px;
+    margin-bottom: 10px;
+  }
+
+  #posts .benedict-post-header {
+    padding: 11px 12px 8px;
+    gap: 11px;
+    min-height: 64px;
+  }
+
+  #posts .benedict-post-avatar {
+    width: 46px !important;
+    height: 46px !important;
+    min-width: 46px !important;
+    flex-basis: 46px !important;
+  }
+
+  #posts .post > p:first-of-type {
+    margin-left: 12px;
+    margin-right: 12px;
+    font-size: 14px;
+  }
+
+  #posts .post > p:nth-of-type(2) {
+    margin-left: 12px;
+    margin-right: 12px;
+  }
+
+}
+
+@media (max-width: 380px) {
+
+  #posts .benedict-post-header {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  #posts .benedict-post-avatar {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    flex-basis: 44px !important;
+  }
+
+  #posts .post > p:first-of-type {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+}
+
+
+/* =========================================================
+   BENEDICT FEED V3.2 — BIGGER SQUARE AVATAR + COMPACT CARD
+========================================================= */
+
+#posts .benedict-post-header {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 11px 14px;
+  min-height: 68px;
+  box-sizing: border-box;
+}
+
+#posts .benedict-post-avatar {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  flex: 0 0 48px !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+  box-sizing: border-box;
+  position: relative;
+}
+
+#posts .benedict-post-avatar img {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  object-fit: cover;
+  border-radius: 0 !important;
+}
+
+#posts .benedict-post-avatar span {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+  box-sizing: border-box;
+}
+
+#posts .benedict-post-identity {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+}
+
+#posts .benedict-post-identity strong {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#posts .benedict-post-meta {
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#posts .benedict-post-menu {
+  flex: 0 0 36px;
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  min-height: 36px;
+  margin: 0 !important;
+  padding: 0;
+}
+
+/* SHORTER POST SPACING */
+
+#posts .post > p {
+  margin-top: 6px;
+  margin-bottom: 7px;
+}
+
+#posts .post .reactions {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+#posts .post .reactions button {
+  min-height: 32px;
+  padding: 5px 8px;
+}
+
+#posts .post > button {
+  min-height: 34px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  padding: 5px 8px;
+}
+
+#posts .post > input {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 9px 13px;
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+  #posts .benedict-post-header {
+    gap: 12px;
+    padding: 10px 12px;
+    min-height: 66px;
+  }
+
+  #posts .benedict-post-avatar {
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    flex-basis: 48px !important;
+  }
+
+  #posts .benedict-post-identity strong {
+    font-size: 14px;
+  }
+
+  #posts .benedict-post-meta {
+    font-size: 11px;
+  }
+
+}
+
+/* VERY SMALL PHONES */
+
+@media (max-width: 380px) {
+
+  #posts .benedict-post-header {
+    gap: 10px;
+    padding: 9px 10px;
+  }
+
+  #posts .benedict-post-avatar {
+    width: 46px !important;
+    height: 46px !important;
+    min-width: 46px !important;
+    flex-basis: 46px !important;
+  }
+
+}
+
+
+/* =========================================================
+   BENEDICT FEED V3.3 — DARK LUXURY + LARGE SQUARE AVATAR
+========================================================= */
+
+#posts .post {
+  background: #111111 !important;
+  border: 1px solid rgba(212,175,55,0.22) !important;
+  border-radius: 16px;
+  color: #eeeeee;
+  box-shadow: 0 6px 22px rgba(0,0,0,0.28);
+}
+
+/* POST HEADER */
+
+#posts .benedict-post-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  min-height: 78px;
+  padding: 11px 14px;
+  box-sizing: border-box;
+  background: #151515;
+  border-bottom: 1px solid rgba(212,175,55,0.12);
+}
+
+/* LARGE SQUARE PROFILE PHOTO */
+
+#posts .benedict-post-avatar {
+  width: 56px !important;
+  height: 56px !important;
+  min-width: 56px !important;
+  flex: 0 0 56px !important;
+  border-radius: 9px !important;
+  overflow: hidden;
+  box-sizing: border-box;
+  border: 1px solid rgba(212,175,55,0.55);
+  background: #222222;
+}
+
+#posts .benedict-post-avatar img {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  object-fit: cover;
+  border-radius: 0 !important;
+}
+
+#posts .benedict-post-avatar span {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg,#d4af37,#8d6915);
+  color: #080808;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+/* USERNAME AREA */
+
+#posts .benedict-post-identity {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-right: 4px;
+}
+
+#posts .benedict-post-identity strong {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #ffffff !important;
+  font-size: 15px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#posts .benedict-identity-mark {
+  color: #d4af37;
+  flex: 0 0 auto;
+}
+
+#posts .benedict-post-meta {
+  margin-top: 4px;
+  color: #999999 !important;
+  font-size: 11px;
+}
+
+/* THREE-DOT MENU */
+
+#posts .benedict-post-menu {
+  flex: 0 0 38px;
+  width: 38px;
+  min-width: 38px;
+  height: 38px;
+  min-height: 38px;
+  margin: 0 !important;
+  padding: 0;
+  color: #aaaaaa;
+  background: transparent;
+}
+
+/* POST TEXT */
+
+#posts .post > p {
+  color: #e8e8e8 !important;
+}
+
+/* REACTION SUMMARY */
+
+#posts .post > p:first-of-type {
+  color: #aaaaaa !important;
+}
+
+/* REACTION BAR */
+
+#posts .post .reactions {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+#posts .post .reactions button {
+  color: #bdbdbd;
+}
+
+#posts .post .reactions button:hover {
+  background: #1f1f1f;
+  color: #d4af37;
+}
+
+/* NORMAL ACTION BUTTONS */
+
+#posts .post > button {
+  color: #bdbdbd;
+}
+
+#posts .post > button:hover {
+  background: #1f1f1f;
+  color: #d4af37;
+}
+
+/* COMMENT BOX */
+
+#posts .post > input {
+  background: #1c1c1c;
+  color: #eeeeee;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+#posts .post > input::placeholder {
+  color: #888888;
+}
+
+#posts .post > input:focus {
+  background: #202020;
+  border-color: #d4af37;
+}
+
+/* COMMENTS / LIKES */
+
+#posts .post > div[id^="comments-"],
+#posts .post > div[id^="likes-"] {
+  color: #aaaaaa;
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+  #posts .benedict-post-header {
+    gap: 15px;
+    min-height: 78px;
+    padding: 11px 13px;
+  }
+
+  #posts .benedict-post-avatar {
+    width: 56px !important;
+    height: 56px !important;
+    min-width: 56px !important;
+    flex-basis: 56px !important;
+  }
+
+  #posts .benedict-post-identity strong {
+    font-size: 15px;
+  }
+
+}
+
+/* SMALL PHONES */
+
+@media (max-width: 380px) {
+
+  #posts .benedict-post-header {
+    gap: 12px;
+    padding: 10px 11px;
+  }
+
+  #posts .benedict-post-avatar {
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+    flex-basis: 52px !important;
+  }
+
+}
+
+
+/* =========================================================
+   BENEDICT FEED V3.4
+   LARGE SQUARE AVATAR + COMPACT POST CARD
+========================================================= */
+
+#posts .post {
+  background: #111111 !important;
+  border: 1px solid rgba(212,175,55,0.25) !important;
+  border-radius: 14px !important;
+  margin-bottom: 10px !important;
+  box-shadow: 0 3px 14px rgba(0,0,0,0.25) !important;
+}
+
+/* HEADER */
+
+#posts .benedict-post-header {
+  display: flex !important;
+  align-items: center !important;
+  gap: 18px !important;
+  min-height: 72px !important;
+  padding: 8px 14px !important;
+  background: #151515 !important;
+  border-bottom: 1px solid rgba(212,175,55,0.10) !important;
+}
+
+/* LARGE SQUARE */
+
+#posts .benedict-post-header .benedict-post-avatar {
+  position: relative !important;
+  width: 64px !important;
+  height: 64px !important;
+  min-width: 64px !important;
+  max-width: 64px !important;
+  flex: 0 0 64px !important;
+
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(212,175,55,0.65) !important;
+  margin: 0 !important;
+}
+
+/* REAL PHOTO */
+
+#posts .benedict-post-header .benedict-post-avatar img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+/* LETTER PLACEHOLDER */
+
+#posts .benedict-post-header .benedict-post-avatar span {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 26px !important;
+}
+
+/* IDENTITY — PUSHED CLEARLY TO THE RIGHT */
+
+#posts .benedict-post-header .benedict-post-identity {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  margin-left: 2px !important;
+  padding-left: 0 !important;
+}
+
+#posts .benedict-post-header .benedict-post-identity strong {
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  color: #ffffff !important;
+  font-size: 15px !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+#posts .benedict-post-header .benedict-post-meta {
+  margin-top: 3px !important;
+  color: #999999 !important;
+  font-size: 11px !important;
+}
+
+/* MENU */
+
+#posts .benedict-post-header .benedict-post-menu {
+  flex: 0 0 32px !important;
+  width: 32px !important;
+  min-width: 32px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* COMPACT POST CONTENT */
+
+#posts .post > p {
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+  line-height: 1.4 !important;
+}
+
+/* POST IMAGE */
+
+#posts .post > img {
+  margin-top: 7px !important;
+  max-height: 480px !important;
+}
+
+/* REACTION SUMMARY */
+
+#posts .post > p:first-of-type {
+  line-height: 1.4 !important;
+  margin-top: 5px !important;
+  margin-bottom: 4px !important;
+}
+
+/* REACTION BAR */
+
+#posts .post .reactions {
+  padding: 3px 0 !important;
+  margin-top: 2px !important;
+  margin-bottom: 2px !important;
+}
+
+#posts .post .reactions button {
+  min-height: 30px !important;
+  padding: 4px 7px !important;
+}
+
+/* ACTION BUTTONS */
+
+#posts .post > button {
+  min-height: 30px !important;
+  margin-top: 2px !important;
+  margin-bottom: 2px !important;
+  padding: 4px 7px !important;
+}
+
+/* COMMENTS */
+
+#posts .post > div[id^="comments-"],
+#posts .post > div[id^="likes-"] {
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+
+/* COMMENT INPUT */
+
+#posts .post > input {
+  margin-top: 4px !important;
+  margin-bottom: 4px !important;
+  padding: 8px 12px !important;
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+  #posts .benedict-post-header {
+    gap: 18px !important;
+    min-height: 74px !important;
+    padding: 7px 12px !important;
+  }
+
+  #posts .benedict-post-header .benedict-post-avatar {
+    width: 64px !important;
+    height: 64px !important;
+    min-width: 64px !important;
+    flex-basis: 64px !important;
+  }
+
+}
+
+/* VERY SMALL PHONES */
+
+@media (max-width: 380px) {
+
+  #posts .benedict-post-header {
+    gap: 15px !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  #posts .benedict-post-header .benedict-post-avatar {
+    width: 58px !important;
+    height: 58px !important;
+    min-width: 58px !important;
+    flex-basis: 58px !important;
+  }
+
+}
+
+
+/* =========================================================
+   BENEDICT FEED V3.5 — SHORTER CARD / SQUARE FEEL
+========================================================= */
+
+/* Reduce vertical space throughout the lower half */
+
+#posts .post {
+  margin-bottom: 8px !important;
+}
+
+/* Post text closer to header */
+
+#posts .post > p {
+  margin-top: 4px !important;
+  margin-bottom: 4px !important;
+  line-height: 1.35 !important;
+}
+
+/* Image stays strong but doesn't create unnecessary height */
+
+#posts .post > img {
+  margin-top: 5px !important;
+  max-height: 430px !important;
+}
+
+/* Reaction summary tighter */
+
+#posts .post > p:first-of-type {
+  margin-top: 3px !important;
+  margin-bottom: 2px !important;
+  line-height: 1.25 !important;
+}
+
+/* Reaction row */
+
+#posts .post .reactions {
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+  margin-top: 1px !important;
+  margin-bottom: 1px !important;
+}
+
+#posts .post .reactions button {
+  min-height: 28px !important;
+  padding: 3px 6px !important;
+}
+
+/* Lower action buttons */
+
+#posts .post > button {
+  min-height: 28px !important;
+  margin-top: 1px !important;
+  margin-bottom: 1px !important;
+  padding: 3px 6px !important;
+}
+
+/* Likes/comments areas */
+
+#posts .post > div[id^="comments-"],
+#posts .post > div[id^="likes-"] {
+  padding-top: 1px !important;
+  padding-bottom: 1px !important;
+}
+
+/* Comment box */
+
+#posts .post > input {
+  margin-top: 3px !important;
+  margin-bottom: 3px !important;
+  padding: 7px 11px !important;
+}
+
+/* Keep the bottom visually close */
+
+#posts .post > div:last-child {
+  margin-bottom: 2px !important;
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+  #posts .post {
+    margin-bottom: 7px !important;
+  }
+
+  #posts .post > img {
+    max-height: 400px !important;
+  }
+
+}
+
+/* SMALL PHONES */
+
+@media (max-width: 380px) {
+
+  #posts .post > img {
+    max-height: 360px !important;
+  }
+
+}
+
+
+/* =========================================================
+   BENEDICT OTHER USER PROFILE V2
+========================================================= */
+
+.profile-view-card {
+  max-width: 650px;
+  margin: 20px auto;
+  padding: 25px;
+  box-sizing: border-box;
+  text-align: center;
+  background: linear-gradient(145deg, #151515, #0d0d0d);
+  border: 1px solid rgba(212,175,55,.25);
+  border-radius: 18px;
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(0,0,0,.45);
+}
+
+.profile-view-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #111;
+  box-shadow:
+    0 0 0 2px #d4af37,
+    0 8px 25px rgba(0,0,0,.55);
+}
+
+.profile-view-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  background: #191919;
+  color: #d4af37;
+  font-size: 55px;
+}
+
+.profile-view-name {
+  margin: 14px 0 3px;
+  font-size: 28px;
+  color: #fff;
+}
+
+.profile-view-username {
+  margin: 0;
+  color: #999;
+}
+
+.profile-view-bio {
+  margin: 12px auto;
+  max-width: 500px;
+  color: #ddd;
+  line-height: 1.5;
+}
+
+.profile-view-stats {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+  max-width: 380px;
+  border-top: 1px solid rgba(212,175,55,.2);
+  border-bottom: 1px solid rgba(212,175,55,.2);
+}
+
+.profile-view-stats div {
+  flex: 1;
+  padding: 14px 10px;
+  border-right: 1px solid rgba(255,255,255,.08);
+}
+
+.profile-view-stats div:last-child {
+  border-right: none;
+}
+
+.profile-view-stats strong {
+  display: block;
+  color: #d4af37;
+  font-size: 22px;
+}
+
+.profile-view-stats span {
+  display: block;
+  margin-top: 4px;
+  color: #aaa;
+  font-size: 13px;
+}
+
+.profile-view-actions {
+  display: flex;
+  justify-content: center;
+  gap: 9px;
+  margin: 18px 0;
+}
+
+.profile-follow-btn,
+.profile-friends-btn {
+  min-height: 42px;
+  padding: 9px 20px;
+  border-radius: 9px;
+  border: 1px solid #d4af37;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.profile-follow-btn {
+  background: #d4af37;
+  color: #111;
+}
+
+.profile-follow-btn.following {
+  background: #191919;
+  color: #d4af37;
+}
+
+.profile-friends-btn {
+  background: #191919;
+  color: #fff;
+}
+
+.profile-view-posts {
+  margin-top: 25px;
+  text-align: left;
+}
+
+.profile-view-posts h3 {
+  color: #d4af37;
+  margin-bottom: 12px;
+}
+
+.profile-view-post {
+  margin-bottom: 14px;
+  padding: 15px;
+  background: #111;
+  border: 1px solid rgba(212,175,55,.15);
+  border-radius: 12px;
+}
+
+.profile-view-post p {
+  color: #ddd;
+  line-height: 1.5;
+}
+
+.profile-view-post img {
+  display: block;
+  width: 100%;
+  max-height: 500px;
+  object-fit: cover;
+  margin-top: 10px;
+  border-radius: 9px;
+}
+
+@media (max-width: 600px) {
+
+  .profile-view-card {
+    margin: 10px 7px;
+    padding: 18px 14px;
+  }
+
+  .profile-view-avatar {
+    width: 125px;
+    height: 125px;
+  }
+
+  .profile-view-name {
+    font-size: 25px;
+  }
+
+  .profile-view-actions {
+    gap: 7px;
+  }
+
+  .profile-follow-btn,
+  .profile-friends-btn {
+    flex: 1;
+    padding: 9px 10px;
+  }
+
+}
+
+
+/* =========================
+   BENEDICT POST POPUP MENU
+========================= */
+
+.benedict-post-popup {
+  position: absolute;
+  top: 48px;
+  right: 10px;
+  z-index: 1000;
+  min-width: 180px;
+  padding: 7px;
+  background: #151515;
+  border: 1px solid rgba(212,175,55,.45);
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.65);
+}
+
+.benedict-post-popup button {
+  display: block;
+  width: 100%;
+  margin: 2px 0;
+  padding: 11px 13px;
+  text-align: left;
+  background: transparent;
+  color: #eee;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.benedict-post-popup button:hover {
+  background: rgba(212,175,55,.12);
+  color: #d4af37;
+}
+
+.benedict-post-header {
+  position: relative;
+}
+
+@media (max-width: 600px) {
+
+  .benedict-post-popup {
+    right: 5px;
+    min-width: 165px;
+  }
+
+  .benedict-post-popup button {
+    padding: 12px;
+  }
+
+}
+
+
+/* =========================================================
+   BENEDICT PROFESSIONAL POST CARDS
+   ========================================================= */
+
+#posts .post {
+  position: relative;
+  background: #151518;
+  border: 1px solid rgba(212,175,55,.20);
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 18px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.28);
+  overflow: visible;
+}
+
+#posts .benedict-post-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding-bottom: 12px;
+}
+
+#posts .benedict-post-avatar {
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #24242a;
+  border: 1px solid rgba(212,175,55,.55);
+  color: #d4af37;
+  font-weight: 700;
+}
+
+#posts .benedict-post-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#posts .benedict-post-identity {
+  min-width: 0;
+  flex: 1;
+}
+
+#posts .benedict-post-identity strong {
+  color: #f5f5f5;
+  font-size: 15px;
+}
+
+#posts .benedict-identity-mark {
+  color: #d4af37;
+  margin-left: 3px;
+}
+
+#posts .benedict-post-meta {
+  color: #777;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+#posts .benedict-post-menu {
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #aaa;
+  font-size: 23px;
+  cursor: pointer;
+}
+
+#posts .benedict-post-menu:hover {
+  background: #24242a;
+  color: #d4af37;
+}
+
+#posts .benedict-post-popup {
+  position: absolute;
+  right: 8px;
+  top: 48px;
+  z-index: 50;
+  min-width: 170px;
+  padding: 6px;
+  background: #202025;
+  border: 1px solid rgba(212,175,55,.28);
+  border-radius: 12px;
+  box-shadow: 0 15px 35px rgba(0,0,0,.45);
+}
+
+#posts .benedict-post-popup button {
+  width: 100%;
+  display: block;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: #eee;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#posts .benedict-post-popup button:hover {
+  background: #2a2a30;
+  color: #d4af37;
+}
+
+#posts .post > p {
+  color: #e8e8e8;
+  line-height: 1.55;
+  margin: 8px 0 14px;
+  white-space: pre-wrap;
+}
+
+#posts .post > img {
+  display: block;
+  width: 100%;
+  max-height: 560px;
+  object-fit: cover;
+  border-radius: 14px;
+  margin: 12px 0;
+}
+
+#posts .reactions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0;
+}
+
+#posts .reactions button,
+#posts .post > button {
+  border: 1px solid rgba(255,255,255,.08);
+  background: #202025;
+  color: #bbb;
+  border-radius: 9px;
+  padding: 8px 11px;
+  cursor: pointer;
+  transition: .15s ease;
+}
+
+#posts .reactions button:hover,
+#posts .post > button:hover {
+  border-color: rgba(212,175,55,.45);
+  color: #d4af37;
+  background: #27272d;
+}
+
+#posts .post input[id^="comment-"] {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 10px;
+  padding: 11px 13px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: #202025;
+  color: #fff;
+  outline: none;
+}
+
+#posts .post input[id^="comment-"]:focus {
+  border-color: rgba(212,175,55,.55);
+}
+
+#posts .post input[id^="comment-"]::placeholder {
+  color: #777;
+}
+
+#posts [id^="comments-"] {
+  color: #bbb;
+  margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+  #posts .post {
+    border-radius: 15px;
+    padding: 13px;
+  }
+
+  #posts .reactions button,
+  #posts .post > button {
+    padding: 7px 9px;
+    font-size: 12px;
+  }
+
+  #posts .benedict-post-avatar {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+  }
+}
+
+
+/* =========================================================
+   BENEDICT HOME NAVIGATION — FINAL POLISH
+========================================================= */
+
+.benedict-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.benedict-header .header-left {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.benedict-header .brand-wrap {
+  white-space: nowrap;
+}
+
+.benedict-header .header-actions {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.benedict-header .header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.benedict-header .header-icon:hover {
+  box-shadow: 0 0 14px rgba(212,175,55,.12);
+}
+
+.benedict-bottom-nav {
+  z-index: 1100;
+  padding-bottom: max(7px, env(safe-area-inset-bottom));
+  background:
+    linear-gradient(
+      180deg,
+      rgba(12,12,12,.98),
+      rgba(7,7,7,.99)
+    );
+  border-top: 1px solid rgba(212,175,55,.18);
+  box-shadow: 0 -8px 25px rgba(0,0,0,.30);
+}
+
+@media (max-width: 768px) {
+  #homePanel.feed-page {
+    padding-bottom: 105px;
+  }
+
+  .benedict-bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+@media (min-width: 769px) {
+  .benedict-header {
+    position: sticky;
+  }
+}
+
+/* Keep login page clean */
+body.benedict-logged-out .benedict-header .header-actions,
+html.login-active .benedict-header .header-actions {
+  display: none !important;
+}
+

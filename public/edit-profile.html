@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BENEDICT - Edit Profile</title>
+<link rel="stylesheet" href="/style.css?v=5">
+<style>
+body{background:#080808;color:#fff}
+.page{max-width:700px;margin:auto;padding-bottom:80px}
+.top{padding:22px 16px;background:#111;border-bottom:1px solid rgba(212,175,55,.25)}
+.top h1{margin:0;color:#d4af37}
+.card{margin:18px 10px;background:#151515;border:1px solid rgba(212,175,55,.2);border-radius:14px;padding:20px}
+.card h2{margin-top:0}
+label{display:block;color:#d4af37;margin-top:14px;margin-bottom:5px}
+input,textarea,select{width:100%;padding:13px;background:#0d0d0d;color:#fff;border:1px solid #333;border-radius:8px;box-sizing:border-box}
+button{padding:11px 16px;border-radius:8px;border:1px solid #d4af37;font-weight:700}
+.save{background:#d4af37;color:#111;margin-top:18px}
+.back{background:#151515;color:#d4af37;margin-top:12px}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="top">
+    <h1>✦ BENEDICT ✦</h1>
+    <button class="back" onclick="location.href='/profile.html'">← Back to Profile</button>
+  </div>
+
+  <div class="card">
+    <h2>Edit Profile</h2>
+
+    <label>Full Name</label>
+    <input id="fullName">
+
+    <label>Bio</label>
+    <textarea id="bio" rows="4"></textarea>
+
+    <label>Current Location</label>
+    <input id="location">
+
+    <label>Hometown</label>
+    <input id="hometown">
+
+    <label>School</label>
+    <input id="school">
+
+    <label>Work / Occupation</label>
+    <input id="occupation">
+
+    <label>Relationship Status</label>
+    <select id="relationshipStatus">
+      <option value="">Select</option>
+      <option>Single</option>
+      <option>In a relationship</option>
+      <option>Married</option>
+      <option>Engaged</option>
+      <option>It's complicated</option>
+      <option>Prefer not to say</option>
+    </select>
+
+    <label>Website</label>
+    <input id="website" type="url">
+
+    <label>Birthday</label>
+    <input id="birthday" type="date">
+
+    <button class="save" onclick="saveProfile()">💾 Save Profile</button>
+  </div>
+</div>
+
+<script>
+function token(){return localStorage.getItem("token");}
+
+async function load(){
+  if(!token()){location.href="/";return;}
+
+  try{
+    const payload=JSON.parse(atob(token().split(".")[1]));
+    const res=await fetch("/api/users/"+payload.id);
+    const data=await res.json();
+    const u=data.user;
+
+    if(!u) throw new Error("Profile not found");
+
+    fullName.value=u.fullName||"";
+    bio.value=u.bio||"";
+    document.getElementById("location").value=u.location||"";
+    hometown.value=u.hometown||"";
+    school.value=u.school||"";
+    occupation.value=u.occupation||"";
+    relationshipStatus.value=u.relationshipStatus||"";
+    website.value=u.website||"";
+    birthday.value=u.birthday
+      ? new Date(u.birthday).toISOString().split("T")[0]
+      : "";
+
+  }catch(e){
+    console.error(e);
+    alert("Could not load profile.");
+  }
+}
+
+async function saveProfile(){
+  try{
+    const res=await fetch("/api/profile/update",{
+      method:"PUT",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer "+token()
+      },
+      body:JSON.stringify({
+        fullName:fullName.value,
+        bio:bio.value,
+        location:document.getElementById("location").value,
+        hometown:hometown.value,
+        school:school.value,
+        occupation:occupation.value,
+        relationshipStatus:relationshipStatus.value,
+        website:website.value,
+        birthday:birthday.value
+      })
+    });
+
+    const data=await res.json();
+
+    if(!res.ok || data.error) throw new Error(data.error||"Update failed");
+
+    window.location.href="/profile.html";
+
+  }catch(e){
+    console.error(e);
+    alert(e.message||"Profile update failed");
+  }
+}
+
+load();
+</script>
+</body>
+</html>

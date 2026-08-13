@@ -1,0 +1,45 @@
+.env
+.env.*
+!.env.example
+
+node_modules/
+uploads/
+
+*.tar.gz
+*.zip
+*.bak
+*.backup
+
+auth-upgrade-*/
+authorization-upgrade-*/
+backend-upgrade-*/
+comment-architecture-*/
+feed-pagination-*/
+feed-pagination-final-*/
+login-cleanup-*/
+messaging-upgrade-*/
+messenger-ui-*/
+notifications-upgrade-*/
+reaction-safety-*/
+server-error-handling-*/
+upload-safety-*/
+
+.DS_Store
+
+# Local development backups / old versions
+*.before-*
+*.broken
+*.working
+*.likes
+*.jss
+*.backup
+
+# Additional local backup copies
+*backup*
+*before*
+authController.jsY
+
+# Additional local backup copies
+*backup*
+*before*
+authController.jsY

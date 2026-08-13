@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Friends | BENEDICT</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: #000;
+  color: #fff;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  color: #d4af37;
+  font-size: 28px;
+  font-weight: bold;
+  letter-spacing: 3px;
+}
+
+.subtitle {
+  color: #aaa;
+  margin-top: 6px;
+}
+
+.card {
+  background: #111;
+  border: 1px solid rgba(212,175,55,.55);
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 8px 25px rgba(0,0,0,.45);
+}
+
+.section-title {
+  color: #d4af37;
+  font-size: 22px;
+  margin: 0 0 18px;
+}
+
+.request,
+.friend {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #0a0a0a;
+  border: 1px solid rgba(212,175,55,.35);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.avatar {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #d4af37;
+  background: #222;
+  flex-shrink: 0;
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+}
+
+.info h3 {
+  margin: 0 0 5px;
+  font-size: 17px;
+}
+
+.info p {
+  margin: 0;
+  color: #999;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.actions {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+button {
+  min-height: 42px;
+  padding: 9px 14px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.accept {
+  background: #d4af37;
+  color: #000;
+  border: 1px solid #d4af37;
+}
+
+.reject,
+.message,
+.back {
+  background: #111;
+  color: #fff;
+  border: 1px solid #d4af37;
+}
+
+.empty {
+  text-align: center;
+  color: #888;
+  padding: 20px 5px;
+}
+
+.back {
+  width: 100%;
+  min-height: 48px;
+  font-size: 16px;
+}
+
+button:active {
+  transform: scale(.97);
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 12px;
+  }
+
+  .card {
+    padding: 15px;
+  }
+
+  .request,
+  .friend {
+    align-items: flex-start;
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .actions button {
+    flex: 1;
+  }
+}
+</style>
+<script src="/splash.js"></script>
+</head>
+
+<body>
+
+<header class="luxury-header">
+
+  <div class="logo">
+    <span class="gold">✦ BENEDICT ✦</span>
+  </div>
+
+  <nav class="main-nav">
+    <button onclick="window.location.href='/'">🏠 Home</button>
+    <button onclick="window.location.href='/search.html'">🔍 Search</button>
+    <button onclick="window.location.href='/stories.html'">📖 Stories</button>
+    <button onclick="window.location.href='/notifications.html'">🔔 Alerts</button>
+    <button onclick="window.location.href='/profile.html'">👤 Profile</button>
+    <button onclick="window.location.href='/friends.html'">👥 Friends</button>
+    <button onclick="window.location.href='/myfriends.html'">🤝 My Friends</button>
+  </nav>
+
+</header>
+
+<div class="container">
+
+  <div class="header">
+    <div class="logo">✦ BENEDICT ✦</div>
+    <div class="subtitle">Friends</div>
+  </div>
+
+  <div class="card">
+    <h2 class="section-title">👥 Friend Requests</h2>
+
+    <div id="requests">
+      <div class="empty">Loading requests...</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 class="section-title">🤝 My Friends</h2>
+
+    <div id="friends">
+      <div class="empty">Loading friends...</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <button class="back" onclick="window.location.href='/'">
+      ⬅ Back to Home
+    </button>
+  </div>
+
+</div>
+
+<script src="friends.js?v=2"></script>
+
+</body>
+</html>

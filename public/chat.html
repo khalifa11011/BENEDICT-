@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Messenger</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0 0 30px;
+  font-family: Arial, sans-serif;
+  background: #0b0b0d;
+  color: #fff;
+}
+
+.container {
+  width: 100%;
+  max-width: 700px;
+  margin: 20px auto;
+  padding: 0 12px;
+}
+
+.card {
+  background: #151518;
+  border: 1px solid rgba(212,175,55,.45);
+  border-radius: 16px;
+  padding: 15px;
+  box-shadow: 0 8px 25px rgba(0,0,0,.4);
+}
+
+#chatHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#chatAvatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #1c1c20;
+  border: 2px solid #d4af37;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  color: #fff;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+#chatInfo h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #d4af37;
+}
+
+#chatStatus {
+  margin: 5px 0 0;
+  color: #aaa;
+  font-size: 14px;
+}
+
+#messages {
+  height: 400px;
+  overflow-y: auto;
+  border: 1px solid rgba(212,175,55,.35);
+  padding: 10px;
+  border-radius: 12px;
+  background: #0f0f11;
+  margin: 15px 0;
+}
+
+.message {
+  padding: 10px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  max-width: 75%;
+  word-wrap: break-word;
+}
+
+.mine {
+  background: #d4af37;
+  color: #000;
+  margin-left: auto;
+  text-align: right;
+}
+
+.theirs {
+  background: #1c1c20;
+  color: #fff;
+  margin-right: auto;
+  text-align: left;
+  border: 1px solid rgba(212,175,55,.25);
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 0;
+  box-sizing: border-box;
+  background: #0f0f11;
+  color: #fff;
+  border: 1px solid rgba(212,175,55,.5);
+  border-radius: 12px;
+  font-size: 16px;
+  min-width: 0;
+}
+
+button {
+  min-height: 44px;
+  padding: 10px 14px;
+  background: #1c1c20;
+  color: #fff;
+  border: 1px solid #d4af37;
+  border-radius: 10px;
+  margin: 0;
+  font-size: 15px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+#messageComposer {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto auto;
+  gap: 8px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+#messageComposer button {
+  height: 48px;
+}
+
+#messageText {
+  height: 48px;
+}
+
+#messageMedia {
+  margin-top: 10px;
+}
+
+#composerActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+#composerActions button {
+  flex: 1;
+}
+
+@media (max-width: 600px) {
+  #messageComposer {
+    grid-template-columns: 44px minmax(0, 1fr) 58px;
+  }
+
+  #recordBtn {
+    font-size: 0;
+    width: 58px;
+  }
+
+  #recordBtn::before {
+    content: "🎤";
+    font-size: 20px;
+  }
+
+  #messageComposer > button:last-child {
+    display: none;
+  }
+
+  #composerActions {
+    flex-direction: row;
+  }
+
+  #composerActions button {
+    font-size: 14px;
+  }
+}
+
+button:active {
+  transform: scale(.98);
+}
+
+#emojiPicker {
+  padding: 8px;
+  background: #0f0f11;
+  border: 1px solid rgba(212,175,55,.35);
+  border-radius: 10px;
+}
+
+#emojiPicker span {
+  display: inline-block;
+  padding: 6px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .container {
+    margin-top: 12px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+
+  #messages {
+    height: 55vh;
+  }
+}
+</style>
+
+<script src="/splash.js"></script>
+
+<style id="BENEDICT_CHAT_HORIZONTAL_NAV">
+.luxury-header {
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.luxury-header .logo {
+  text-align: center;
+  padding: 8px 6px 6px;
+}
+
+.luxury-header .main-nav {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  width: 100%;
+  box-sizing: border-box;
+  gap: 4px;
+  padding: 5px 4px 8px;
+  overflow: hidden;
+}
+
+.luxury-header .main-nav button {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  width: 25% !important;
+  box-sizing: border-box;
+  margin: 0 !important;
+  padding: 10px 2px !important;
+  white-space: nowrap !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px !important;
+  line-height: 1.2;
+}
+
+@media (max-width: 600px) {
+  .luxury-header .main-nav button {
+    font-size: 12px !important;
+    padding: 10px 1px !important;
+  }
+}
+</style>
+
+
+
+
+<style id="BENEDICT_MESSAGE_THREE_DOT_MENU">
+/* BENEDICT MESSENGER — THREE DOT MESSAGE MENU */
+
+#messages button[onclick*="deleteMessage"] {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+
+  width: 38px !important;
+  min-width: 38px !important;
+  height: 34px !important;
+
+  margin: 4px 0 0 auto !important;
+  padding: 0 !important;
+
+  border-radius: 10px !important;
+  border: 1px solid rgba(212,175,55,.35) !important;
+
+  background: #18181c !important;
+  color: #d4af37 !important;
+
+  font-size: 24px !important;
+  line-height: 1 !important;
+}
+
+#messages button[onclick*="deleteMessage"]:hover {
+  background: #222228 !important;
+}
+
+#messages button[onclick*="deleteMessage"]:active {
+  transform: scale(.94);
+}
+</style>
+
+
+
+
+
+<style id="BENEDICT_MESSAGE_POPUP_MENU">
+.benedict-message-popup-menu {
+  position: fixed !important;
+  z-index: 2147483647 !important;
+
+  display: block !important;
+
+  width: 150px !important;
+  min-height: 48px !important;
+
+  box-sizing: border-box !important;
+
+  padding: 5px !important;
+
+  background: #18181c !important;
+
+  border: 2px solid #d4af37 !important;
+  border-radius: 12px !important;
+
+  box-shadow: 0 8px 28px rgba(0,0,0,.7) !important;
+
+  pointer-events: auto !important;
+}
+
+.benedict-message-popup-menu .benedict-delete-action {
+  display: block !important;
+
+  width: 100% !important;
+
+  min-height: 42px !important;
+
+  box-sizing: border-box !important;
+
+  margin: 0 !important;
+
+  padding: 9px 12px !important;
+
+  background: #18181c !important;
+
+  border: 0 !important;
+  border-radius: 8px !important;
+
+  color: #ffffff !important;
+
+  font-size: 16px !important;
+  font-weight: 600 !important;
+
+  text-align: left !important;
+
+  cursor: pointer !important;
+
+  pointer-events: auto !important;
+}
+
+.benedict-message-popup-menu
+.benedict-delete-action:active,
+.benedict-message-popup-menu
+.benedict-delete-action:hover {
+  background: rgba(212,175,55,.2) !important;
+}
+</style>
+
+</head>
+
+<body>
+
+<header class="luxury-header">
+
+  <div class="logo">
+    <span class="gold">✦ BENEDICT ✦</span>
+  </div>
+
+  <nav class="main-nav">
+    <button onclick="window.location.href='/'">🏠 Home</button>
+    <button onclick="window.location.href='/search.html'">🔍 Search</button>
+    <button onclick="window.location.href='/stories.html'">📖 Stories</button>
+    <button onclick="window.location.href='/notifications.html'">🔔 Alerts</button>
+  </nav>
+
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<div id="chatHeader">
+  <div id="chatAvatar">👤</div>
+
+  <div id="chatInfo">
+    <h2 id="chatTitle">Messenger</h2>
+    <p id="chatStatus">🟢 Online</p>
+  </div>
+</div>
+
+<input
+id="receiver"
+type="hidden">
+
+<div id="messages"></div>
+
+<div id="messageComposer">
+
+  <button type="button" onclick="toggleEmojiPicker()" aria-label="Emoji">😊</button>
+
+  <input
+    id="messageText"
+    type="text"
+    placeholder="Type your message"
+    autocomplete="off">
+
+  <button
+    type="button"
+    id="recordBtn"
+    onclick="toggleRecording()"
+    aria-label="Record voice">🎤</button>
+
+  <button
+    type="button"
+    onclick="sendMessage()">Send</button>
+
+</div>
+
+<div id="emojiPicker" style="display:none;margin-top:8px;">
+  <span onclick="addEmoji('😀')">😀</span>
+  <span onclick="addEmoji('😂')">😂</span>
+  <span onclick="addEmoji('😍')">😍</span>
+  <span onclick="addEmoji('😎')">😎</span>
+  <span onclick="addEmoji('🥳')">🥳</span>
+  <span onclick="addEmoji('😭')">😭</span>
+  <span onclick="addEmoji('😡')">😡</span>
+  <span onclick="addEmoji('👍')">👍</span>
+  <span onclick="addEmoji('❤️')">❤️</span>
+  <span onclick="addEmoji('🔥')">🔥</span>
+  <span onclick="addEmoji('🎉')">🎉</span>
+  <span onclick="addEmoji('🙏')">🙏</span>
+</div>
+
+<input
+  id="messageMedia"
+  type="file"
+  accept="image/*,video/*">
+
+<div id="composerActions">
+  <button type="button" onclick="sendMessage()">📤 Send Message</button>
+  <button type="button" onclick="loadMessages()">🔄 Refresh</button>
+</div>
+
+</div>
+
+</div>
+
+<script src="chat.js?v=2"></script>
+
+</body>
+</html>
+
+<style id="BENEDICT_MESSENGER_SCROLL_SPACING_FIX">
+/* ==========================================
+   BENEDICT MESSENGER — MESSAGE AREA POLISH
+   ========================================== */
+
+#messages {
+  height: min(58vh, 520px) !important;
+  min-height: 280px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+
+  padding: 14px !important;
+  margin: 15px 0 10px !important;
+
+  box-sizing: border-box !important;
+
+  scroll-behavior: smooth !important;
+  overscroll-behavior: contain !important;
+
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* Individual message bubbles */
+#messages .message {
+  box-sizing: border-box !important;
+
+  padding: 9px 12px !important;
+  margin-bottom: 7px !important;
+
+  max-width: min(78%, 520px) !important;
+
+  line-height: 1.4 !important;
+
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
+
+/* Don't leave unnecessary space after the last message */
+#messages .message:last-child {
+  margin-bottom: 2px !important;
+}
+
+/* Keep the composer visually separated from the conversation */
+#messageComposer {
+  position: relative !important;
+  z-index: 5 !important;
+
+  margin-top: 10px !important;
+}
+
+/* Better mobile conversation area */
+@media (max-width: 600px) {
+
+  #messages {
+    height: 58vh !important;
+    min-height: 300px !important;
+    max-height: 58vh !important;
+
+    padding: 10px !important;
+    margin-bottom: 8px !important;
+  }
+
+  #messages .message {
+    max-width: 84% !important;
+    padding: 8px 10px !important;
+    margin-bottom: 6px !important;
+  }
+
+}
+
+/* Smaller screens */
+@media (max-height: 700px) and (max-width: 600px) {
+
+  #messages {
+    height: 52vh !important;
+    max-height: 52vh !important;
+  }
+
+}
+</style>

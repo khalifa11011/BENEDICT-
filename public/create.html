@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Create Post — BENEDICT</title>
+
+<link rel="stylesheet" href="style.css?v=5">
+<script src="/splash.js"></script>
+</head>
+
+<body>
+
+<header class="luxury-header">
+
+  <div class="logo">
+    <span class="gold">✦ BENEDICT ✦</span>
+  </div>
+
+  <nav class="main-nav">
+
+    <button onclick="window.location.href='/'">
+      🏠 Home
+    </button>
+
+    <button onclick="window.location.href='/search.html'">
+      🔍 Search
+    </button>
+
+    <button onclick="window.location.href='/notifications.html'">
+      🔔 Alerts
+    </button>
+
+    <button onclick="window.location.href='/friends.html'">
+      👥 Friends
+    </button>
+
+    <button onclick="window.location.href='/myfriends.html'">
+      🤝 My Friends
+    </button>
+
+    <button onclick="window.location.href='/profile.html'">
+      👤 Profile
+    </button>
+
+    <button onclick="localStorage.removeItem('token'); window.location.href='/'">
+      🚪 Logout
+    </button>
+
+  </nav>
+
+</header>
+
+<main class="container">
+
+  <div class="center">
+
+    <div class="card">
+
+      <h2>➕ Create Post</h2>
+
+      <textarea
+        id="content"
+        rows="6"
+        placeholder="What's on your mind?"
+      ></textarea>
+
+      <input
+        type="file"
+        id="image"
+        accept="image/*"
+      >
+
+      <button onclick="createPost()">
+        ✦ Share Post
+      </button>
+
+    </div>
+
+  </div>
+
+</main>
+
+<script src="/app.js"></script>
+
+<script>
+if (!localStorage.getItem("token")) {
+  window.location.href = "/";
+}
+</script>
+
+</body>
+</html>

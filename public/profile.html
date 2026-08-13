@@ -1,0 +1,3227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BENEDICT - Profile</title>
+
+<link rel="stylesheet" href="style.css?v=5">
+
+<style>
+
+/* =========================
+   BENEDICT FACEBOOK-STYLE PROFILE
+========================= */
+
+body {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(212,175,55,.08), transparent 32%),
+    #080808;
+  color: #f5f5f5;
+}
+
+.profile-page {
+  width: 100%;
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 0 0 90px;
+}
+
+/* COVER */
+
+.profile-cover {
+  position: relative;
+  height: 280px;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(212,175,55,.22), transparent 38%),
+    linear-gradient(135deg, #050505, #171717 55%, #080808);
+  border-bottom: 1px solid rgba(212,175,55,.35);
+  overflow: visible;
+}
+
+.profile-cover::after {
+  content: "✦ BENEDICT ✦";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(212,175,55,.12);
+  font-size: 42px;
+  font-weight: 900;
+  letter-spacing: 6px;
+}
+
+/* PROFILE HEADER */
+
+.profile-main {
+  position: relative;
+  background:
+    linear-gradient(180deg, #151515 0%, #0d0d0d 100%);
+  padding: 0 28px 18px;
+  border-bottom: 1px solid rgba(212,175,55,.22);
+  box-shadow: 0 8px 25px rgba(0,0,0,.35);
+}
+
+.profile-avatar-wrap {
+  position: relative;
+  width: 168px;
+  height: 168px;
+  margin-top: -84px;
+  z-index: 5;
+}
+
+.profile-avatar,
+.profile-picture {
+  width: 168px;
+  height: 168px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #161616;
+  border: 5px solid #111111;
+  box-shadow: 0 3px 14px rgba(0,0,0,.25);
+}
+
+.profile-avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 58px;
+  color: #d4af37;
+}
+
+/* NAME */
+
+.profile-identity {
+  margin-top: 8px;
+}
+
+.profile-name {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+  color: #f5f5f5;
+}
+
+.profile-username {
+  margin: 4px 0 8px;
+  color: #aaa;
+  font-size: 15px;
+}
+
+/* BIO */
+
+.profile-bio {
+  max-width: 650px;
+  margin: 8px 0;
+  color: #ddd;
+  line-height: 1.5;
+}
+
+.profile-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 10px;
+  color: #aaa;
+  font-size: 14px;
+}
+
+.profile-details a {
+  color: #8b6b18;
+}
+
+/* ACTIONS */
+
+.profile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.profile-actions button {
+  border: 1px solid #d4af37;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-weight: 700;
+}
+
+.profile-actions button:first-child {
+  background: #d4af37;
+  color: #111;
+}
+
+.profile-actions button:last-child {
+  background: #f0f2f5;
+  color: #222;
+}
+
+/* STATS */
+
+.profile-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin-top: 20px;
+  border-top: 1px solid #e4e6eb;
+  padding-top: 14px;
+}
+
+.stat {
+  min-width: 110px;
+  padding: 4px 18px 4px 0;
+  text-align: left;
+}
+
+.stat strong {
+  display: block;
+  color: #f5f5f5;
+  font-size: 20px;
+}
+
+.stat span {
+  color: #aaa;
+  font-size: 13px;
+}
+
+/* PROFILE TABS */
+
+.profile-tabs {
+  display: flex;
+  overflow-x: auto;
+  background: #111111;
+  border-bottom: 1px solid rgba(212,175,55,.22);
+}
+
+.profile-tabs button {
+  flex: 0 0 auto;
+  padding: 16px 22px;
+  background: transparent;
+  color: #aaa;
+  border: 0;
+  font-weight: 700;
+  border-bottom: 3px solid transparent;
+}
+
+.profile-tabs button.active {
+  color: #8b6b18;
+  border-bottom-color: #d4af37;
+}
+
+/* CONTENT */
+
+.profile-content {
+  padding: 18px 12px;
+}
+
+.profile-section {
+  background: linear-gradient(180deg, #171717, #101010);
+  border: 1px solid rgba(212,175,55,.20);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 14px;
+}
+
+.profile-section h2 {
+  margin: 0 0 15px;
+  color: #f5f5f5;
+}
+
+/* POSTS */
+
+.profile-post {
+  background: linear-gradient(180deg, #171717, #101010);
+  border: 1px solid rgba(212,175,55,.20);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.profile-post p {
+  color: #222;
+  line-height: 1.5;
+}
+
+.profile-post img {
+  display: block;
+  width: 100%;
+  max-height: 600px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-top: 12px;
+}
+
+/* EDIT */
+
+.edit-profile {
+  display: none;
+}
+
+.edit-profile.show {
+  display: block;
+}
+
+.edit-profile input,
+.edit-profile textarea {
+  width: 100%;
+  margin: 7px 0;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.edit-profile button {
+  margin-top: 8px;
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+  .profile-cover {
+    height: 190px;
+  }
+
+  .profile-cover::after {
+    font-size: 25px;
+    letter-spacing: 3px;
+  }
+
+  .profile-main {
+    padding: 0 14px 16px;
+  }
+
+  .profile-avatar-wrap {
+    width: 120px;
+    height: 120px;
+    margin-top: -60px;
+  }
+
+  .profile-avatar,
+  .profile-picture {
+    width: 120px;
+    height: 120px;
+    border-width: 4px;
+  }
+
+  .profile-name {
+    font-size: 25px;
+  }
+
+  .profile-actions button {
+    flex: 1;
+    min-width: 130px;
+  }
+
+  .stat {
+    min-width: 90px;
+    padding-right: 10px;
+  }
+
+  .profile-tabs button {
+    padding: 14px 16px;
+  }
+
+  .profile-content {
+    padding: 10px 7px;
+  }
+
+  .profile-section,
+  .profile-post {
+    border-radius: 10px;
+  }
+
+}
+
+
+/* =========================
+   DIRECT PHOTO BUTTONS
+========================= */
+
+.cover-overlay {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  z-index: 10;
+}
+
+.cover-change-btn {
+  background: rgba(10,10,10,.88) !important;
+  color: #d4af37 !important;
+  border: 1px solid rgba(212,175,55,.7) !important;
+  border-radius: 9px !important;
+  padding: 10px 15px !important;
+  font-weight: 700 !important;
+  backdrop-filter: blur(8px);
+}
+
+.profile-picture-button {
+  position: absolute;
+  right: 4px;
+  bottom: 8px;
+  width: 42px !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  background: #d4af37 !important;
+  color: #111 !important;
+  border: 4px solid #fff !important;
+  z-index: 20;
+  font-size: 18px !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-main {
+  background:
+    linear-gradient(180deg, #181818 0%, #111111 100%) !important;
+  border-bottom: 1px solid rgba(212,175,55,.25) !important;
+}
+
+.profile-name {
+  color: #ffffff !important;
+}
+
+.profile-username {
+  color: #aaa !important;
+}
+
+.profile-bio {
+  color: #ddd !important;
+}
+
+.profile-details {
+  color: #bbb !important;
+}
+
+.profile-details a {
+  color: #d4af37 !important;
+}
+
+.profile-stats {
+  border-top-color: rgba(212,175,55,.2) !important;
+}
+
+.stat strong {
+  color: #d4af37 !important;
+}
+
+.stat span {
+  color: #aaa !important;
+}
+
+.profile-tabs {
+  background: #151515 !important;
+  border-bottom-color: rgba(212,175,55,.2) !important;
+}
+
+.profile-tabs button {
+  color: #aaa !important;
+}
+
+.profile-tabs button.active {
+  color: #d4af37 !important;
+  border-bottom-color: #d4af37 !important;
+}
+
+.profile-content {
+  background:
+    radial-gradient(circle at top, rgba(212,175,55,.06), transparent 35%),
+    #0b0b0b;
+}
+
+.profile-section,
+.profile-post {
+  background: #151515 !important;
+  border-color: rgba(212,175,55,.18) !important;
+  color: #eee;
+}
+
+.profile-section h2,
+.profile-section h3 {
+  color: #fff !important;
+}
+
+.profile-post p {
+  color: #ddd !important;
+}
+
+.edit-profile input,
+.edit-profile textarea,
+.edit-profile select {
+  width: 100%;
+  margin: 7px 0;
+  padding: 13px;
+  box-sizing: border-box;
+  background: #0d0d0d;
+  color: #fff;
+  border: 1px solid #333;
+  border-radius: 8px;
+}
+
+.edit-profile select {
+  min-height: 45px;
+}
+
+.edit-profile input:focus,
+.edit-profile textarea:focus,
+.edit-profile select:focus {
+  border-color: #d4af37;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(212,175,55,.12);
+}
+
+@media (max-width: 600px) {
+
+  .cover-overlay {
+    right: 10px;
+    bottom: 10px;
+  }
+
+  .cover-change-btn {
+    padding: 8px 10px !important;
+    font-size: 12px !important;
+  }
+
+  .profile-picture-button {
+    width: 38px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+  }
+
+}
+
+
+/* =========================================================
+   BENEDICT PROFILE V1 — MAIN PROFILE REDESIGN
+========================================================= */
+
+.profile-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding-bottom: 100px;
+}
+
+.profile-cover {
+  height: 300px;
+  border-radius: 0 0 18px 18px;
+  border: 1px solid rgba(212,175,55,.25);
+  border-top: 0;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(212,175,55,.20), transparent 38%),
+    linear-gradient(135deg, #030303 0%, #151515 50%, #050505 100%);
+  box-shadow: 0 10px 35px rgba(0,0,0,.45);
+}
+
+.profile-cover::after {
+  color: rgba(212,175,55,.10);
+  font-size: 46px;
+  letter-spacing: 8px;
+}
+
+/* MAIN IDENTITY AREA */
+
+.profile-main {
+  padding: 0 30px 22px !important;
+  border-radius: 0 0 18px 18px;
+}
+
+/* PROFILE PHOTO */
+
+.profile-avatar-wrap {
+  width: 178px;
+  height: 178px;
+  margin-top: -89px;
+}
+
+.profile-avatar,
+.profile-picture {
+  width: 178px;
+  height: 178px;
+  border-radius: 50%;
+  border: 6px solid #111 !important;
+  box-shadow:
+    0 0 0 2px rgba(212,175,55,.55),
+    0 8px 30px rgba(0,0,0,.55);
+}
+
+/* NAME */
+
+.profile-identity {
+  margin-top: 14px;
+}
+
+.profile-name {
+  font-size: 32px;
+  line-height: 1.15;
+  letter-spacing: -.4px;
+}
+
+.profile-username {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #999 !important;
+}
+
+/* BIO */
+
+.profile-bio {
+  max-width: 700px;
+  margin-top: 12px;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+/* DETAILS */
+
+.profile-details {
+  gap: 9px 18px;
+  margin-top: 13px;
+}
+
+.profile-details span,
+.profile-details a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ACTIONS */
+
+.profile-actions {
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.profile-actions button {
+  min-height: 42px;
+  padding: 10px 20px;
+  border-radius: 10px !important;
+  font-size: 14px;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.profile-actions button:first-child {
+  background: linear-gradient(135deg, #d4af37, #a67c16) !important;
+  color: #080808 !important;
+  border-color: #d4af37 !important;
+  box-shadow: 0 4px 15px rgba(212,175,55,.16);
+}
+
+.profile-actions button:last-child {
+  background: #1b1b1b !important;
+  color: #eee !important;
+  border-color: rgba(212,175,55,.45) !important;
+}
+
+.profile-actions button:active {
+  transform: scale(.97);
+}
+
+/* STATS */
+
+.profile-stats {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 22px;
+  padding: 0 !important;
+  border-top: 1px solid rgba(212,175,55,.18) !important;
+  border-bottom: 1px solid rgba(212,175,55,.18);
+}
+
+.profile-stats .stat {
+  min-width: 0;
+  padding: 14px 10px;
+  text-align: center;
+  border-right: 1px solid rgba(212,175,55,.12);
+}
+
+.profile-stats .stat:last-child {
+  border-right: 0;
+}
+
+.profile-stats .stat strong {
+  font-size: 21px;
+  line-height: 1.2;
+}
+
+.profile-stats .stat span {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+}
+
+/* TABS */
+
+.profile-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  min-height: 52px;
+  box-shadow: 0 4px 15px rgba(0,0,0,.20);
+}
+
+.profile-tabs button {
+  min-width: 90px;
+  padding: 15px 20px;
+  font-size: 14px;
+}
+
+.profile-tabs button.active {
+  font-weight: 800;
+}
+
+/* CONTENT */
+
+.profile-content {
+  padding: 18px 10px 40px;
+}
+
+.profile-section {
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 5px 20px rgba(0,0,0,.22);
+}
+
+.profile-section h2 {
+  font-size: 20px;
+}
+
+/* PROFILE POSTS */
+
+.profile-post {
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.20);
+}
+
+.profile-post p {
+  margin: 0;
+  color: #ddd !important;
+  line-height: 1.55;
+}
+
+.profile-post img {
+  margin-top: 12px;
+  border-radius: 10px;
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+  .profile-page {
+    padding-bottom: 90px;
+  }
+
+  .profile-cover {
+    height: 215px;
+    border-radius: 0;
+  }
+
+  .profile-cover::after {
+    font-size: 24px;
+    letter-spacing: 4px;
+  }
+
+  .profile-main {
+    padding: 0 15px 18px !important;
+  }
+
+  .profile-avatar-wrap {
+    width: 132px;
+    height: 132px;
+    margin-top: -66px;
+  }
+
+  .profile-avatar,
+  .profile-picture {
+    width: 132px;
+    height: 132px;
+    border-width: 5px !important;
+  }
+
+  .profile-name {
+    font-size: 26px;
+  }
+
+  .profile-bio {
+    font-size: 14px;
+  }
+
+  .profile-details {
+    gap: 8px 14px;
+    font-size: 13px;
+  }
+
+  .profile-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .profile-actions button {
+    width: 100%;
+    min-width: 0 !important;
+    padding: 10px 8px;
+  }
+
+  .profile-stats .stat {
+    padding: 12px 5px;
+  }
+
+  .profile-stats .stat strong {
+    font-size: 18px;
+  }
+
+  .profile-tabs button {
+    min-width: 82px;
+    padding: 14px 13px;
+  }
+
+  .profile-content {
+    padding: 12px 7px 35px;
+  }
+
+}
+
+
+/* =========================================================
+   BENEDICT LUXURY PROFILE — LOVABLE-INSPIRED UPGRADE
+   Visual-only override. Existing JavaScript/API preserved.
+========================================================= */
+
+.profile-page {
+  max-width: 960px !important;
+  padding-bottom: 100px !important;
+}
+
+/* COVER */
+.profile-cover {
+  height: 300px !important;
+  border: 1px solid rgba(212,175,55,.28) !important;
+  border-radius: 0 0 22px 22px !important;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(212,175,55,.20), transparent 42%),
+    linear-gradient(145deg,#050505,#171717 55%,#080808) !important;
+  box-shadow: 0 18px 50px rgba(0,0,0,.45) !important;
+}
+
+.profile-cover::after {
+  color: rgba(212,175,55,.10) !important;
+  font-size: 44px !important;
+  letter-spacing: 7px !important;
+  pointer-events: none !important;
+}
+
+/* COVER BUTTON */
+.cover-change-btn {
+  border-radius: 999px !important;
+  padding: 10px 16px !important;
+  background: rgba(8,8,8,.86) !important;
+  border: 1px solid rgba(212,175,55,.65) !important;
+  color: #d4af37 !important;
+  box-shadow: 0 8px 25px rgba(0,0,0,.35) !important;
+}
+
+/* MAIN PROFILE CARD */
+.profile-main {
+  margin-top: 0 !important;
+  padding: 0 30px 24px !important;
+  border-radius: 0 0 22px 22px !important;
+  background:
+    linear-gradient(160deg,#1b1b1b,#101010) !important;
+  border: 1px solid rgba(212,175,55,.22) !important;
+  border-top: 0 !important;
+  box-shadow: 0 18px 45px rgba(0,0,0,.35) !important;
+}
+
+/* AVATAR */
+.profile-avatar-wrap {
+  width: 178px !important;
+  height: 178px !important;
+  margin-top: -89px !important;
+}
+
+.profile-avatar,
+.profile-picture {
+  width: 178px !important;
+  height: 178px !important;
+  border: 6px solid #0b0b0b !important;
+  box-shadow:
+    0 0 0 2px rgba(212,175,55,.75),
+    0 0 28px rgba(212,175,55,.18),
+    0 12px 35px rgba(0,0,0,.65) !important;
+}
+
+/* IDENTITY */
+.profile-identity {
+  margin-top: 16px !important;
+}
+
+.profile-name {
+  font-family: "Cormorant Garamond", Georgia, serif !important;
+  font-size: 34px !important;
+  font-weight: 700 !important;
+  letter-spacing: -.3px !important;
+  color: #fff !important;
+}
+
+.profile-username {
+  color: #999 !important;
+  font-size: 14px !important;
+}
+
+.profile-bio {
+  max-width: 720px !important;
+  color: #e4e4e4 !important;
+  line-height: 1.6 !important;
+}
+
+/* DETAILS */
+.profile-details {
+  color: #aaa !important;
+}
+
+.profile-details a {
+  color: #d4af37 !important;
+}
+
+.profile-details span,
+.profile-details a {
+  transition: color .2s ease;
+}
+
+.profile-details a:hover {
+  color: #f0d477 !important;
+}
+
+/* ACTIONS */
+.profile-actions {
+  gap: 10px !important;
+  margin-top: 20px !important;
+}
+
+.profile-actions button {
+  min-height: 44px !important;
+  padding: 10px 20px !important;
+  border-radius: 999px !important;
+  font-weight: 700 !important;
+  transition:
+    transform .15s ease,
+    box-shadow .15s ease,
+    background .15s ease !important;
+}
+
+.profile-actions button:first-child {
+  background: linear-gradient(135deg,#d4af37,#a67c16) !important;
+  color: #080808 !important;
+  border: 1px solid #d4af37 !important;
+  box-shadow: 0 7px 24px rgba(212,175,55,.16) !important;
+}
+
+.profile-actions button:last-child {
+  background: #191919 !important;
+  color: #eee !important;
+  border: 1px solid rgba(212,175,55,.40) !important;
+}
+
+.profile-actions button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(0,0,0,.35);
+}
+
+.profile-actions button:active {
+  transform: scale(.97);
+}
+
+/* FOLLOW / FRIEND BUTTONS */
+.profile-friend-actions button,
+#profileFollowActions button {
+  min-height: 44px !important;
+  padding: 10px 18px !important;
+  border-radius: 999px !important;
+  background: #191919 !important;
+  color: #eee !important;
+  border: 1px solid rgba(212,175,55,.45) !important;
+  font-weight: 700 !important;
+}
+
+#profileFollowActions button:first-child {
+  background: linear-gradient(135deg,#d4af37,#a67c16) !important;
+  color: #080808 !important;
+}
+
+/* STATS */
+.profile-stats {
+  margin-top: 24px !important;
+  padding: 0 !important;
+  display: grid !important;
+  grid-template-columns: repeat(3,1fr) !important;
+  border-top: 1px solid rgba(212,175,55,.20) !important;
+  border-bottom: 1px solid rgba(212,175,55,.20) !important;
+}
+
+.profile-stats .stat {
+  padding: 15px 10px !important;
+  text-align: center !important;
+  border-right: 1px solid rgba(212,175,55,.13) !important;
+}
+
+.profile-stats .stat:last-child {
+  border-right: 0 !important;
+}
+
+.profile-stats .stat strong {
+  color: #d4af37 !important;
+  font-size: 22px !important;
+}
+
+.profile-stats .stat span {
+  color: #999 !important;
+  font-size: 12px !important;
+}
+
+/* TABS */
+.profile-tabs {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 20 !important;
+  background: rgba(15,15,15,.94) !important;
+  backdrop-filter: blur(14px) !important;
+  border-bottom: 1px solid rgba(212,175,55,.22) !important;
+  box-shadow: 0 8px 25px rgba(0,0,0,.28) !important;
+}
+
+.profile-tabs button {
+  min-height: 52px !important;
+  color: #999 !important;
+  transition: color .2s ease, background .2s ease !important;
+}
+
+.profile-tabs button:hover {
+  color: #e8d28b !important;
+  background: rgba(212,175,55,.05) !important;
+}
+
+.profile-tabs button.active {
+  color: #d4af37 !important;
+  border-bottom-color: #d4af37 !important;
+  font-weight: 800 !important;
+}
+
+/* CONTENT */
+.profile-content {
+  padding: 20px 10px 45px !important;
+  background:
+    radial-gradient(circle at top,rgba(212,175,55,.055),transparent 36%),
+    #0b0b0b !important;
+}
+
+.profile-section,
+.profile-post {
+  background:
+    linear-gradient(160deg,#191919,#111111) !important;
+  border: 1px solid rgba(212,175,55,.18) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 12px 35px rgba(0,0,0,.28) !important;
+}
+
+.profile-section h2,
+.profile-section h3 {
+  color: #fff !important;
+}
+
+.profile-post p {
+  color: #ddd !important;
+}
+
+/* MOBILE */
+@media (max-width:600px) {
+
+  .profile-cover {
+    height: 215px !important;
+    border-radius: 0 !important;
+  }
+
+  .profile-cover::after {
+    font-size: 23px !important;
+    letter-spacing: 3px !important;
+  }
+
+  .profile-main {
+    padding: 0 15px 18px !important;
+    border-radius: 0 0 18px 18px !important;
+  }
+
+  .profile-avatar-wrap {
+    width: 132px !important;
+    height: 132px !important;
+    margin-top: -66px !important;
+  }
+
+  .profile-avatar,
+  .profile-picture {
+    width: 132px !important;
+    height: 132px !important;
+    border-width: 5px !important;
+  }
+
+  .profile-name {
+    font-size: 27px !important;
+  }
+
+  .profile-actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .profile-actions button {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 10px 7px !important;
+  }
+
+  .profile-stats .stat {
+    padding: 12px 5px !important;
+  }
+
+  .profile-stats .stat strong {
+    font-size: 18px !important;
+  }
+
+  .profile-tabs button {
+    min-width: 82px !important;
+    padding: 14px 13px !important;
+  }
+
+  .profile-content {
+    padding: 12px 7px 35px !important;
+  }
+}
+
+
+/* =========================================================
+   BENEDICT PROFILE — FINAL LUXURY POLISH
+   Visual-only. Existing profile JavaScript preserved.
+========================================================= */
+
+.profile-page {
+  width: 100%;
+  max-width: 960px !important;
+  margin: 0 auto !important;
+}
+
+/* HEADER */
+.luxury-header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100 !important;
+  backdrop-filter: blur(18px);
+}
+
+/* COVER */
+.profile-cover {
+  position: relative !important;
+  overflow: visible !important;
+}
+
+.profile-cover.has-cover {
+  background-size: cover !important;
+  background-position: center !important;
+}
+
+.cover-overlay {
+  position: absolute !important;
+  right: 18px !important;
+  bottom: 18px !important;
+  z-index: 5 !important;
+}
+
+/* AVATAR */
+.profile-avatar-wrap {
+  position: relative !important;
+  z-index: 10 !important;
+  flex-shrink: 0 !important;
+}
+
+.profile-picture-button {
+  position: absolute !important;
+  right: 7px !important;
+  bottom: 7px !important;
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 50% !important;
+  border: 2px solid #0b0b0b !important;
+  background: #d4af37 !important;
+  color: #080808 !important;
+  cursor: pointer !important;
+  font-size: 16px !important;
+  box-shadow: 0 5px 18px rgba(0,0,0,.55) !important;
+  z-index: 20 !important;
+}
+
+/* IDENTITY */
+.profile-identity {
+  text-align: left !important;
+}
+
+.profile-name {
+  margin-bottom: 3px !important;
+}
+
+.profile-username {
+  margin-bottom: 10px !important;
+}
+
+.profile-bio {
+  margin: 8px 0 12px !important;
+}
+
+.profile-details {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px 14px !important;
+  align-items: center !important;
+}
+
+/* ACTIONS */
+.profile-actions {
+  align-items: center !important;
+}
+
+.profile-actions button,
+.profile-friend-actions button {
+  cursor: pointer !important;
+}
+
+.profile-friend-actions {
+  display: flex !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+}
+
+.profile-friend-actions button {
+  flex: 1 1 auto !important;
+}
+
+/* STATS */
+.profile-stats {
+  overflow: hidden !important;
+  border-radius: 12px !important;
+}
+
+.profile-stats .stat {
+  transition: background .2s ease !important;
+}
+
+.profile-stats .stat:hover {
+  background: rgba(212,175,55,.045) !important;
+}
+
+.profile-stats .stat strong {
+  display: block !important;
+  margin-bottom: 3px !important;
+}
+
+/* TABS */
+.profile-tabs {
+  display: flex !important;
+  justify-content: center !important;
+  overflow-x: auto !important;
+  scrollbar-width: none !important;
+}
+
+.profile-tabs::-webkit-scrollbar {
+  display: none !important;
+}
+
+.profile-tabs button {
+  flex: 1 1 0 !important;
+  max-width: 180px !important;
+  border: 0 !important;
+  border-bottom: 2px solid transparent !important;
+  background: transparent !important;
+  cursor: pointer !important;
+}
+
+/* POSTS */
+#profilePosts {
+  display: grid !important;
+  gap: 14px !important;
+}
+
+.profile-post {
+  padding: 18px !important;
+  overflow: hidden !important;
+}
+
+.profile-post p {
+  margin: 0 0 12px !important;
+  line-height: 1.6 !important;
+}
+
+.profile-post img {
+  display: block !important;
+  width: 100% !important;
+  max-height: 560px !important;
+  object-fit: cover !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(212,175,55,.16) !important;
+}
+
+/* EMPTY / LOADING TEXT */
+#profilePosts > p,
+#profilePhotos > p {
+  padding: 22px !important;
+  text-align: center !important;
+  color: #888 !important;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+
+  .profile-page {
+    padding-bottom: 82px !important;
+  }
+
+  .cover-overlay {
+    right: 10px !important;
+    bottom: 10px !important;
+  }
+
+  .cover-change-btn {
+    padding: 8px 11px !important;
+    font-size: 12px !important;
+  }
+
+  .profile-avatar-wrap {
+    margin-left: 2px !important;
+  }
+
+  .profile-identity {
+    margin-top: 12px !important;
+  }
+
+  .profile-details {
+    gap: 6px 10px !important;
+    font-size: 12px !important;
+  }
+
+  .profile-actions {
+    gap: 8px !important;
+  }
+
+  .profile-actions button {
+    min-height: 42px !important;
+    font-size: 13px !important;
+  }
+
+  .profile-stats {
+    margin-top: 18px !important;
+  }
+
+  .profile-tabs button {
+    min-width: 0 !important;
+    padding: 13px 8px !important;
+    font-size: 13px !important;
+  }
+
+  .profile-section {
+    border-radius: 13px !important;
+  }
+
+  .profile-post {
+    border-radius: 13px !important;
+    padding: 15px !important;
+  }
+}
+
+
+/* =========================================================
+   BENEDICT — PROFILE HEADER FINAL POLISH
+========================================================= */
+
+.profile-main {
+  position: relative !important;
+}
+
+.profile-avatar-wrap {
+  margin-left: 0 !important;
+}
+
+.profile-avatar {
+  object-fit: cover !important;
+  display: block !important;
+}
+
+.profile-avatar-placeholder {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: linear-gradient(145deg,#1c1c1c,#080808) !important;
+  color: #d4af37 !important;
+  font-size: 42px !important;
+}
+
+.profile-name {
+  line-height: 1.08 !important;
+}
+
+.profile-username {
+  letter-spacing: .2px !important;
+}
+
+.profile-details span,
+.profile-details a {
+  display: inline-flex !important;
+  align-items: center !important;
+  min-height: 24px !important;
+}
+
+/* PROFILE ACTION BUTTONS */
+.profile-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+}
+
+.profile-actions > button {
+  flex: 1 1 180px !important;
+}
+
+.profile-actions #editProfileButton {
+  order: 1 !important;
+}
+
+.profile-actions > button:not(#editProfileButton) {
+  order: 2 !important;
+}
+
+#profileFollowActions {
+  display: flex !important;
+  flex: 1 1 180px !important;
+  gap: 8px !important;
+}
+
+#profileFollowActions .profile-friend-actions {
+  width: 100% !important;
+}
+
+#profileFollowActions .profile-friend-actions button {
+  min-width: 0 !important;
+}
+
+/* COVER VISIBILITY */
+.profile-cover::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,.05),
+    rgba(0,0,0,.18)
+  ) !important;
+  pointer-events: none !important;
+  border-radius: inherit !important;
+}
+
+/* KEEP COVER CONTROLS ABOVE OVERLAY */
+.profile-cover .cover-overlay {
+  z-index: 8 !important;
+}
+
+/* MOBILE HEADER */
+@media (max-width:600px) {
+
+  .profile-cover {
+    height: 220px !important;
+  }
+
+  .profile-main {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  .profile-avatar-wrap {
+    margin-top: -66px !important;
+  }
+
+  .profile-name {
+    font-size: 28px !important;
+  }
+
+  .profile-actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .profile-actions > button,
+  #profileFollowActions {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  #profileFollowActions {
+    display: flex !important;
+  }
+
+  .profile-actions button {
+    font-size: 13px !important;
+  }
+}
+
+
+/* =========================================================
+   BENEDICT — PROFILE POSTS PREMIUM POLISH
+========================================================= */
+
+#postsTab,
+#photosTab {
+  width: 100%;
+}
+
+.profile-section {
+  overflow: hidden !important;
+}
+
+.profile-section > h2 {
+  margin: 0 !important;
+  padding: 18px 18px 14px !important;
+  font-size: 18px !important;
+  font-weight: 800 !important;
+  letter-spacing: .2px !important;
+  border-bottom: 1px solid rgba(212,175,55,.14) !important;
+}
+
+#profilePosts {
+  padding: 14px !important;
+}
+
+.profile-post {
+  position: relative !important;
+  padding: 18px !important;
+  margin: 0 !important;
+  border-radius: 16px !important;
+  background:
+    linear-gradient(155deg,#1b1b1b,#101010) !important;
+  border: 1px solid rgba(212,175,55,.18) !important;
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.30) !important;
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease !important;
+}
+
+.profile-post:hover {
+  transform: translateY(-1px) !important;
+  border-color: rgba(212,175,55,.32) !important;
+  box-shadow:
+    0 14px 35px rgba(0,0,0,.40) !important;
+}
+
+.profile-post p {
+  font-size: 15px !important;
+  color: #e6e6e6 !important;
+  line-height: 1.65 !important;
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+}
+
+.profile-post img {
+  margin-top: 12px !important;
+  width: 100% !important;
+  max-height: 600px !important;
+  object-fit: cover !important;
+  border-radius: 13px !important;
+  background: #080808 !important;
+}
+
+/* PHOTO TAB */
+#photosTab .profile-section {
+  min-height: 180px;
+}
+
+#profilePhotos {
+  padding: 16px !important;
+}
+
+/* MOBILE */
+@media (max-width:600px) {
+
+  .profile-section > h2 {
+    padding: 15px 14px 12px !important;
+    font-size: 17px !important;
+  }
+
+  #profilePosts {
+    padding: 10px !important;
+    gap: 10px !important;
+  }
+
+  .profile-post {
+    padding: 15px !important;
+    border-radius: 13px !important;
+  }
+
+  .profile-post p {
+    font-size: 14px !important;
+  }
+
+  .profile-post img {
+    max-height: 500px !important;
+    border-radius: 11px !important;
+  }
+}
+
+
+/* =========================================================
+   BENEDICT — PROFILE ACTION BUTTON ALIGNMENT FIX
+========================================================= */
+
+.profile-actions {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10px !important;
+  align-items: stretch !important;
+}
+
+.profile-actions > button {
+  width: 100% !important;
+  min-width: 0 !important;
+  flex: none !important;
+}
+
+#profileFollowActions {
+  display: flex !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  flex: none !important;
+}
+
+#profileFollowActions .profile-friend-actions {
+  width: 100% !important;
+  display: flex !important;
+  gap: 8px !important;
+}
+
+#profileFollowActions button {
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+
+/* MOBILE */
+@media (max-width:600px) {
+
+  .profile-actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  .profile-actions > button {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  #profileFollowActions {
+    width: 100% !important;
+  }
+}
+
+
+/* =========================================================
+   BENEDICT — FINAL EDIT / FRIENDS BUTTON POSITION
+========================================================= */
+
+.profile-actions {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10px !important;
+  width: 100% !important;
+}
+
+.profile-actions #editProfileButton {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  width: 100% !important;
+}
+
+.profile-actions > button:not(#editProfileButton) {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  width: 100% !important;
+}
+
+.profile-actions #profileFollowActions {
+  grid-column: 1 / -1 !important;
+  grid-row: 2 !important;
+  width: 100% !important;
+}
+
+/* MOBILE */
+@media (max-width:600px) {
+
+  .profile-actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  .profile-actions #editProfileButton {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+  }
+
+  .profile-actions > button:not(#editProfileButton) {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+  }
+
+  .profile-actions #profileFollowActions {
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+  }
+}
+
+</style>
+
+<script src="/splash.js"></script>
+
+</head>
+
+<body>
+
+<header class="luxury-header">
+
+  <div class="logo">
+    <span class="gold">✦ BENEDICT ✦</span>
+  </div>
+
+  <nav class="main-nav">
+
+    <button onclick="window.location.href='/'">🏠 Home</button>
+    <button onclick="window.location.href='/search.html'">🔍 Search</button>
+    <button onclick="window.location.href='/stories.html'">📖 Stories</button>
+    <button onclick="window.location.href='/notifications.html'">🔔 Alerts</button>
+    <button onclick="window.location.href='/friends.html'">👥 Friends</button>
+    <button onclick="window.location.href='/myfriends.html'">🤝 My Friends</button>
+    <button onclick="window.location.href='/profile.html'">👤 Profile</button>
+    <button onclick="logoutProfile()">🚪 Logout</button>
+
+  </nav>
+
+</header>
+
+
+<main class="profile-page">
+
+  <!-- COVER -->
+
+  <section class="profile-cover" id="profileCover">
+
+  <div class="cover-overlay">
+    <button class="cover-change-btn"
+      onclick="document.getElementById('coverPhoto').click()">
+      🖼️ Change Cover Photo
+    </button>
+
+    <input
+      type="file"
+      id="coverPhoto"
+      accept="image/*"
+      style="display:none"
+      onchange="uploadCoverPhoto()">
+  </div>
+
+</section>
+
+
+  <!-- PROFILE IDENTITY -->
+
+  <section class="profile-main">
+
+    <div class="profile-avatar-wrap" id="profileAvatar">
+
+  <button
+    class="profile-picture-button"
+    onclick="document.getElementById('profilePictureDirect').click()">
+    🖼️
+  </button>
+
+  <input
+    type="file"
+    id="profilePictureDirect"
+    accept="image/*"
+    style="display:none"
+    onchange="uploadProfilePictureDirect()">
+
+</div>
+
+    <div id="profileIdentity"></div>
+
+    <div class="profile-actions" id="profileActions">
+
+      <button id="editProfileButton"
+        onclick="window.location.href='/edit-profile.html'">
+        ✏️ Edit Profile
+      </button>
+
+      <button onclick="window.location.href='/friends.html'">
+        👥 Friends
+      </button>
+
+      <div id="profileFollowActions"></div>
+
+    </div>
+
+    <div id="profileStats"></div>
+
+  </section>
+
+
+  <!-- TABS -->
+
+  <nav class="profile-tabs">
+
+    <button class="active" onclick="showProfileTab('posts', this)">
+      Posts
+    </button>
+
+    <button onclick="window.location.href='/about.html'">
+      About
+    </button>
+
+    <button onclick="window.location.href='/friends.html'">
+      Friends
+    </button>
+
+    <button onclick="showProfileTab('photos', this)">
+      Photos
+    </button>
+
+  </nav>
+
+
+  <section class="profile-content">
+
+    <!-- POSTS -->
+
+    <div id="postsTab">
+
+      <section class="profile-section">
+
+        <h2>Posts</h2>
+
+        <div id="profilePosts">
+          <p>Loading posts...</p>
+        </div>
+
+      </section>
+
+    </div>
+
+
+    <!-- PHOTOS -->
+
+    <div id="photosTab" style="display:none;">
+
+      <section class="profile-section">
+
+        <h2>Photos</h2>
+
+        <div id="profilePhotos">
+          <p>No photos yet.</p>
+        </div>
+
+      </section>
+
+    </div>
+
+
+  </section>
+
+</main>
+
+
+<script>
+
+function getToken() {
+  return localStorage.getItem("token");
+}
+
+
+function logoutProfile() {
+
+  localStorage.removeItem("token");
+
+  window.location.href = "/";
+
+}
+
+
+function showProfileTab(tab, button) {
+
+  document.getElementById("postsTab").style.display =
+    tab === "posts" ? "block" : "none";
+
+  document.getElementById("photosTab").style.display =
+    tab === "photos" ? "block" : "none";
+
+  document.querySelectorAll(".profile-tabs button")
+    .forEach(btn => btn.classList.remove("active"));
+
+  if (button) {
+    button.classList.add("active");
+  }
+
+}
+
+
+function loadProfilePage() {
+
+  const token = getToken();
+
+  if (!token) {
+    window.location.href = "/";
+    return;
+  }
+
+  const payload = JSON.parse(atob(token.split(".")[1]));
+
+  const params = new URLSearchParams(window.location.search);
+  const requestedUserId = params.get("id");
+
+  const profileUserId = requestedUserId || payload.id;
+
+
+  fetch("/api/users/" + profileUserId)
+
+    .then(res => res.json())
+
+    .then(data => {
+
+      if (!data.user) {
+        throw new Error("Profile not found");
+      }
+
+      const user = data.user;
+
+      /* COVER PHOTO */
+
+      const cover = document.getElementById("profileCover");
+
+      if (user.coverPhoto) {
+        cover.style.backgroundImage =
+          "url('" + user.coverPhoto + "?t=" + Date.now() + "')";
+        cover.classList.add("has-cover");
+      } else {
+        cover.style.backgroundImage = "";
+        cover.classList.remove("has-cover");
+      }
+
+
+
+      /* PROFILE PICTURE */
+
+      document.getElementById("profileAvatar").innerHTML =
+
+        user.profilePicture
+
+        ? `<img class="profile-avatar"
+             src="${user.profilePicture}?t=${Date.now()}">`
+
+        : `<div class="profile-avatar profile-avatar-placeholder">
+             👤
+           </div>`;
+
+
+      /* NAME + BIO */
+
+      document.getElementById("profileIdentity").innerHTML = `
+
+        <div class="profile-identity">
+
+          <h1 class="profile-name">
+            ${user.fullName || user.username}
+          </h1>
+
+          <div class="profile-username">
+            @${user.username}
+          </div>
+
+          ${
+            user.bio
+            ? `<div class="profile-bio">${user.bio}</div>`
+            : ""
+          }
+
+          <div class="profile-details">
+
+            ${
+              user.location
+              ? `<span>📍 ${user.location}</span>`
+              : ""
+            }
+
+            ${
+              user.school
+              ? `<span>🏫 ${user.school}</span>`
+              : ""
+            }
+
+            ${
+              user.occupation
+              ? `<span>💼 ${user.occupation}</span>`
+              : ""
+            }
+
+            ${
+              user.website
+              ? `<a href="${user.website}" target="_blank">
+                   🔗 Website
+                 </a>`
+              : ""
+            }
+
+            ${
+              user.birthday
+              ? `<span>
+                   🎂 ${new Date(user.birthday).toLocaleDateString()}
+                 </span>`
+              : ""
+            }
+
+          </div>
+
+        </div>
+
+      `;
+
+
+      /* PROFILE ACTIONS */
+
+      const isOwnProfile =
+        String(profileUserId) === String(payload.id);
+
+      const editButton =
+        document.getElementById("editProfileButton");
+
+      const followActions =
+        document.getElementById("profileFollowActions");
+
+      if (isOwnProfile) {
+
+        editButton.style.display = "inline-block";
+
+        followActions.innerHTML = "";
+
+      } else {
+
+        editButton.style.display = "none";
+
+        const isFollowing =
+          Array.isArray(user.followers) &&
+          user.followers.some(
+            follower =>
+              String(follower._id || follower) === String(payload.id)
+          );
+
+        followActions.innerHTML = isFollowing
+          ? `
+            <button
+              type="button"
+              onclick="unfollowProfileUser('${profileUserId}')">
+              ✓ Following
+            </button>
+          `
+          : `
+            <button
+              type="button"
+              onclick="followProfileUser('${profileUserId}')">
+              ➕ Follow
+            </button>
+          `;
+
+      }
+
+
+      /* FRIEND ACTIONS */
+
+      const friendActions =
+        document.getElementById("profileFollowActions");
+
+      if (!isOwnProfile) {
+
+        fetch("/api/friends/status/" + profileUserId, {
+          headers: {
+            "Authorization": "Bearer " + getToken()
+          }
+        })
+        .then(res => res.json())
+        .then(friendData => {
+
+          const status = friendData.status;
+
+          let friendButton = "";
+
+          if (status === "friends") {
+
+            friendButton = `
+              <button
+                type="button"
+                disabled
+                style="opacity:.8;cursor:default;">
+                🤝 Friends
+              </button>
+            `;
+
+          } else if (status === "sent") {
+
+            friendButton = `
+              <button
+                type="button"
+                disabled
+                style="opacity:.8;cursor:default;">
+                🕐 Request Sent
+              </button>
+            `;
+
+          } else if (status === "received") {
+
+            friendButton = `
+              <button
+                type="button"
+                onclick="acceptProfileFriendRequest('${friendData.requestId}')">
+                ✓ Accept Request
+              </button>
+
+              <button
+                type="button"
+                onclick="rejectProfileFriendRequest('${friendData.requestId}')">
+                ✕ Reject
+              </button>
+            `;
+
+          } else {
+
+            friendButton = `
+              <button
+                type="button"
+                onclick="sendProfileFriendRequest('${profileUserId}')">
+                👥 Add Friend
+              </button>
+            `;
+
+          }
+
+          friendActions.insertAdjacentHTML(
+            "beforeend",
+            `<div class="profile-friend-actions">${friendButton}</div>`
+          );
+
+        })
+        .catch(err => {
+          console.error("Friend status error:", err);
+        });
+
+      }
+
+      /* STATS */
+
+      document.getElementById("profileStats").innerHTML = `
+
+        <div class="profile-stats">
+
+          <div class="stat">
+            <strong>
+              ${user.followers ? user.followers.length : 0}
+            </strong>
+            <span>Followers</span>
+          </div>
+
+          <div class="stat">
+            <strong>
+              ${user.following ? user.following.length : 0}
+            </strong>
+            <span>Following</span>
+          </div>
+
+          <div class="stat">
+            <strong id="profilePostCount">0</strong>
+            <span>Posts</span>
+          </div>
+
+        </div>
+
+      `;
+
+
+
+
+    })
+
+    .catch(err => {
+
+      console.error(err);
+
+      document.getElementById("profileIdentity").innerHTML =
+        "<p>Failed to load profile.</p>";
+
+    });
+
+
+  /* POSTS */
+
+  fetch("/api/posts")
+
+    .then(res => res.json())
+
+    .then(data => {
+
+      const posts = Array.isArray(data)
+        ? data
+        : (data.posts || []);
+
+      const myPosts = posts.filter(post => {
+
+        const authorId =
+          post.user?._id ||
+          post.user ||
+          post.author?._id ||
+          post.author;
+
+        return String(authorId) === String(profileUserId);
+
+      });
+
+
+      const postCount =
+        document.getElementById("profilePostCount");
+
+      if (postCount) {
+        postCount.textContent = myPosts.length;
+      }
+
+
+      document.getElementById("profilePosts").innerHTML =
+
+        myPosts.length
+
+        ? myPosts.map(post => `
+
+            <article class="profile-post">
+
+              ${
+                post.content
+                ? `<p>${post.content}</p>`
+                : ""
+              }
+
+              ${
+                post.image
+                ? `<img src="${post.image}">`
+                : ""
+              }
+
+            </article>
+
+          `).join("")
+
+        : "<p>No posts yet. Create your first post!</p>";
+
+    })
+
+    .catch(err => {
+
+      console.error(err);
+
+      document.getElementById("profilePosts").innerHTML =
+        "<p>Could not load posts.</p>";
+
+    });
+
+}
+
+
+async function uploadCoverPhoto() {
+  const file = document.getElementById("coverPhoto").files[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append("coverPhoto", file);
+
+  try {
+    const res = await fetch("/api/profile/cover-upload", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + getToken()
+      },
+      body: formData
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || data.error) {
+      throw new Error(data.error || "Cover photo upload failed");
+    }
+
+    document.getElementById("profileCover").style.backgroundImage =
+      "url('" + data.coverPhoto + "?t=" + Date.now() + "')";
+
+    document.getElementById("profileCover").classList.add("has-cover");
+
+  } catch (err) {
+    console.error(err);
+    alert(err.message || "Cover photo upload failed");
+  }
+}
+
+
+async function uploadProfilePictureDirect() {
+  const file = document.getElementById("profilePictureDirect").files[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append("profilePicture", file);
+
+  try {
+    const res = await fetch("/api/profile/upload", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + getToken()
+      },
+      body: formData
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || data.error) {
+      throw new Error(data.error || "Profile picture upload failed");
+    }
+
+
+  } catch (err) {
+    console.error(err);
+    alert(err.message || "Profile picture upload failed");
+  }
+}
+
+
+function uploadProfilePicturePage() {
+
+  const file =
+    document.getElementById("profilePicture").files[0];
+
+  if (!file) {
+
+    alert("Please choose a picture first.");
+
+    return;
+  }
+
+
+  const formData = new FormData();
+
+  formData.append("profilePicture", file);
+
+
+  fetch("/api/profile/upload", {
+
+    method: "POST",
+
+    headers: {
+      "Authorization": "Bearer " + getToken()
+    },
+
+    body: formData
+
+  })
+
+  .then(res => res.json())
+
+  .then(data => {
+
+    if (data.error) {
+
+      alert(data.error);
+
+      return;
+    }
+
+    alert(data.message || "Profile picture updated");
+
+    
+
+
+  })
+
+  .catch(err => {
+
+    console.error(err);
+
+    alert("Profile picture upload failed");
+
+  });
+
+}
+
+
+
+
+
+
+
+async function sendProfileFriendRequest(userId) {
+
+  try {
+
+    const token = getToken();
+
+    if (!token) {
+      alert("Please login first.");
+      return;
+    }
+
+    const res = await fetch("/api/friends/request", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + token,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        receiver: userId
+      })
+    });
+
+    const data = await res.json();
+
+    console.log("FRIEND REQUEST RESPONSE:", res.status, data);
+
+    if (!res.ok) {
+      alert(data.message || "Unable to send friend request");
+      return;
+    }
+
+    loadProfilePage();
+
+  } catch (err) {
+
+    console.error("FRIEND REQUEST ERROR:", err);
+    alert("Unable to send friend request");
+
+  }
+
+}
+
+
+async function acceptProfileFriendRequest(requestId) {
+
+  try {
+
+    const token = getToken();
+
+    const res = await fetch(
+      "/api/friends/accept/" + requestId,
+      {
+        method: "PUT",
+        headers: {
+          "Authorization": "Bearer " + token
+        }
+      }
+    );
+
+    const data = await res.json();
+
+    console.log("ACCEPT FRIEND RESPONSE:", res.status, data);
+
+    if (!res.ok) {
+      alert(data.message || "Unable to accept request");
+      return;
+    }
+
+    loadProfilePage();
+
+  } catch (err) {
+
+    console.error("ACCEPT FRIEND ERROR:", err);
+    alert("Unable to accept friend request");
+
+  }
+
+}
+
+
+async function rejectProfileFriendRequest(requestId) {
+
+  try {
+
+    const token = getToken();
+
+    const res = await fetch(
+      "/api/friends/reject/" + requestId,
+      {
+        method: "PUT",
+        headers: {
+          "Authorization": "Bearer " + token
+        }
+      }
+    );
+
+    const data = await res.json();
+
+    console.log("REJECT FRIEND RESPONSE:", res.status, data);
+
+    if (!res.ok) {
+      alert(data.message || "Unable to reject request");
+      return;
+    }
+
+    loadProfilePage();
+
+  } catch (err) {
+
+    console.error("REJECT FRIEND ERROR:", err);
+    alert("Unable to reject friend request");
+
+  }
+
+}
+
+
+async function unfollowProfileUser(userId) {
+
+  try {
+
+    const token = getToken();
+
+    if (!token) {
+      alert("Please login first.");
+      return;
+    }
+
+    const res = await fetch("/api/users/" + userId + "/unfollow", {
+      method: "PUT",
+      headers: {
+        "Authorization": "Bearer " + token,
+        "Content-Type": "application/json"
+      }
+    });
+
+    const data = await res.json();
+
+    console.log("UNFOLLOW RESPONSE:", res.status, data);
+
+    if (!res.ok) {
+      alert(data.error || ("Unfollow failed: HTTP " + res.status));
+      return;
+    }
+
+    loadProfilePage();
+
+  } catch (err) {
+
+    console.error("UNFOLLOW ERROR:", err);
+    alert("Unable to unfollow user: " + err.message);
+
+  }
+
+}
+
+
+async function followProfileUser(userId) {
+
+  try {
+
+    const res = await fetch("/api/users/" + userId + "/follow", {
+      method: "PUT",
+      headers: {
+        "Authorization": "Bearer " + getToken()
+      }
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || data.error) {
+      alert(data.error || "Unable to follow user");
+      return;
+    }
+
+    alert(data.message || "Following user");
+
+    loadProfilePage();
+
+  } catch (err) {
+
+    console.error(err);
+    alert("Unable to follow user");
+
+  }
+
+}
+
+
+loadProfilePage();
+
+</script>
+
+
+<style>
+/* =========================================================
+   BENEDICT — MOBILE BOTTOM NAVIGATION
+========================================================= */
+
+.benedict-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 600px) {
+
+  .benedict-bottom-nav {
+    position: fixed;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    height: 64px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: center;
+    z-index: 9999;
+    background: rgba(15,15,15,.94);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(212,175,55,.35);
+    border-radius: 20px;
+    box-shadow:
+      0 12px 35px rgba(0,0,0,.65),
+      0 0 25px rgba(212,175,55,.08);
+    padding: 5px;
+  }
+
+  .benedict-bottom-nav a {
+    height: 54px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    text-decoration: none;
+    color: #888;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 15px;
+    transition: .2s ease;
+  }
+
+  .benedict-bottom-nav a span {
+    font-size: 20px;
+    line-height: 20px;
+  }
+
+  .benedict-bottom-nav a.active {
+    color: #d4af37;
+    background: rgba(212,175,55,.10);
+  }
+
+  .benedict-bottom-nav a:active {
+    transform: scale(.92);
+  }
+
+  .profile-page {
+    padding-bottom: 100px !important;
+  }
+}
+</style>
+
+
+<nav class="benedict-bottom-nav" aria-label="BENEDICT navigation">
+
+  <a href="/" aria-label="Home">
+    <span>⌂</span>
+    Home
+  </a>
+
+  <a href="/search.html" aria-label="Search">
+    <span>⌕</span>
+    Search
+  </a>
+
+  <a href="/stories.html" aria-label="Stories">
+    <span>◉</span>
+    Stories
+  </a>
+
+  <a href="/notifications.html" aria-label="Notifications">
+    <span>♢</span>
+    Alerts
+  </a>
+
+  <a href="/profile.html" class="active" aria-label="Profile">
+    <span>◉</span>
+    Profile
+  </a>
+
+</nav>
+
+</body>
+</html>
+
+<style>
+
+/* =========================
+   DARK BENEDICT PROFILE
+========================= */
+
+body {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(212,175,55,.08), transparent 35%),
+    #080808 !important;
+  color: #ffffff;
+}
+
+.profile-main {
+  background: #111111 !important;
+  border-bottom: 1px solid rgba(212,175,55,.25) !important;
+}
+
+.profile-name {
+  color: #ffffff !important;
+}
+
+.profile-username {
+  color: #a9a9a9 !important;
+}
+
+.profile-bio {
+  color: #dddddd !important;
+}
+
+.profile-details {
+  color: #aaaaaa !important;
+}
+
+.profile-details a {
+  color: #d4af37 !important;
+}
+
+.profile-avatar,
+.profile-picture {
+  border-color: #111111 !important;
+  box-shadow:
+    0 0 0 2px #d4af37,
+    0 5px 25px rgba(0,0,0,.6);
+}
+
+.profile-stats {
+  border-top-color: rgba(212,175,55,.2) !important;
+}
+
+.stat strong {
+  color: #d4af37 !important;
+}
+
+.stat span {
+  color: #999999 !important;
+}
+
+.profile-tabs {
+  background: #111111 !important;
+  border-bottom-color: rgba(212,175,55,.2) !important;
+}
+
+.profile-tabs button {
+  color: #999999 !important;
+}
+
+.profile-tabs button.active {
+  color: #d4af37 !important;
+  border-bottom-color: #d4af37 !important;
+}
+
+.profile-content {
+  background: transparent !important;
+}
+
+.profile-section,
+.profile-post {
+  background: #111111 !important;
+  border-color: rgba(212,175,55,.18) !important;
+  color: #ffffff;
+  box-shadow: 0 6px 25px rgba(0,0,0,.25);
+}
+
+.profile-section h2 {
+  color: #ffffff !important;
+}
+
+.profile-post p {
+  color: #dddddd !important;
+}
+
+.edit-profile input,
+.edit-profile textarea {
+  background: #080808 !important;
+  color: #ffffff !important;
+  border: 1px solid #333333 !important;
+}
+
+</style>
+
+<style>
+.about-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.about-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 15px 8px;
+  border-bottom: 1px solid rgba(212,175,55,.12);
+}
+
+.about-item:last-child {
+  border-bottom: 0;
+}
+
+.about-icon {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(212,175,55,.10);
+  font-size: 20px;
+}
+
+.about-item strong {
+  display: block;
+  color: #d4af37;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.about-item p {
+  margin: 0;
+  color: #ddd;
+  line-height: 1.5;
+}
+
+.about-item a {
+  color: #d4af37;
+}
+
+.profile-section h2 {
+  color: #f5f5f5;
+}
+
+.profile-post {
+  background: linear-gradient(180deg, #171717, #101010);
+  border-color: rgba(212,175,55,.18);
+}
+
+.profile-post p {
+  color: #eee;
+}
+
+.edit-profile input,
+.edit-profile textarea,
+.edit-profile select {
+  background: #0b0b0b;
+  color: #fff;
+  border: 1px solid rgba(212,175,55,.30);
+  border-radius: 9px;
+}
+
+.edit-profile input:focus,
+.edit-profile textarea:focus,
+.edit-profile select:focus {
+  outline: none;
+  border-color: #d4af37;
+  box-shadow: 0 0 0 2px rgba(212,175,55,.10);
+}
+
+.edit-profile label {
+  color: #aaa;
+}
+
+.cover-change-btn {
+  position: absolute;
+  right: 18px;
+  bottom: 16px;
+  z-index: 10;
+  background: rgba(10,10,10,.88);
+  color: #d4af37;
+  border: 1px solid #d4af37;
+  border-radius: 9px;
+  padding: 10px 14px;
+  font-weight: 700;
+}
+
+.profile-picture-button {
+  position: absolute;
+  right: 4px;
+  bottom: 8px;
+  z-index: 10;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #d4af37;
+  color: #111;
+  border: 4px solid #111;
+  cursor: pointer;
+  font-size: 17px;
+}
+
+@media (max-width: 600px) {
+  .cover-change-btn {
+    right: 10px;
+    bottom: 10px;
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .about-item {
+    padding: 13px 4px;
+  }
+}
+</style>
+
+<style>
+/* =========================================================
+
+/* =========================================================
+   BENEDICT PROFILE MAIN — V2
+========================================================= */
+
+.profile-page {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* COVER */
+.profile-cover {
+  height: 270px !important;
+  border-radius: 0 0 20px 20px;
+  border: 1px solid rgba(212,175,55,.30);
+  background-size: cover !important;
+  background-position: center !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,.50);
+}
+
+/* PROFILE MAIN */
+.profile-main {
+  padding: 0 26px 22px !important;
+}
+
+/* PROFILE PHOTO */
+.profile-avatar-wrap {
+  width: 170px !important;
+  height: 170px !important;
+  margin-top: -85px !important;
+}
+
+.profile-avatar,
+.profile-picture {
+  width: 170px !important;
+  height: 170px !important;
+  border: 5px solid #111 !important;
+  box-shadow:
+    0 0 0 2px #d4af37,
+    0 8px 28px rgba(0,0,0,.65) !important;
+}
+
+/* NAME */
+.profile-identity {
+  margin-top: 10px !important;
+}
+
+.profile-name {
+  font-size: 32px !important;
+  line-height: 1.15;
+  letter-spacing: .2px;
+  margin-bottom: 3px !important;
+}
+
+.profile-username {
+  margin-top: 3px !important;
+  font-size: 15px !important;
+}
+
+/* BIO */
+.profile-bio {
+  max-width: 680px;
+  margin-top: 9px !important;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* DETAILS */
+.profile-details {
+  margin-top: 11px !important;
+  gap: 9px 18px !important;
+}
+
+/* ACTIONS */
+.profile-actions {
+  margin-top: 16px !important;
+  gap: 9px !important;
+}
+
+.profile-actions button {
+  min-height: 43px;
+  border-radius: 9px !important;
+}
+
+/* STATS */
+.profile-stats {
+  margin-top: 18px !important;
+  padding-top: 14px !important;
+}
+
+.stat {
+  min-width: 110px !important;
+}
+
+.stat strong {
+  font-size: 21px !important;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+
+  .profile-page {
+    width: 100%;
+  }
+
+  .profile-cover {
+    height: 205px !important;
+    border-radius: 0 0 16px 16px;
+  }
+
+  .profile-main {
+    padding: 0 14px 18px !important;
+  }
+
+  .profile-avatar-wrap {
+    width: 140px !important;
+    height: 140px !important;
+    margin-top: -70px !important;
+  }
+
+  .profile-avatar,
+  .profile-picture {
+    width: 140px !important;
+    height: 140px !important;
+  }
+
+  .profile-name {
+    font-size: 27px !important;
+  }
+
+  .profile-username {
+    font-size: 14px !important;
+  }
+
+  .profile-actions {
+    gap: 8px !important;
+  }
+
+  .profile-actions button {
+    min-width: 0 !important;
+    padding: 9px 13px !important;
+  }
+
+  .stat {
+    min-width: 90px !important;
+  }
+}
+
+<style>
+
+/* =========================================================
+   BENEDICT PROFILE STATS — V2
+========================================================= */
+
+.profile-stats {
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  width: 100% !important;
+  margin-top: 20px !important;
+  padding: 16px 0 4px !important;
+  border-top: 1px solid rgba(212,175,55,.22) !important;
+  gap: 0 !important;
+}
+
+.profile-stats .stat {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  padding: 4px 14px !important;
+  text-align: center !important;
+  border-right: 1px solid rgba(255,255,255,.08);
+}
+
+.profile-stats .stat:first-child {
+  padding-left: 0 !important;
+}
+
+.profile-stats .stat:last-child {
+  border-right: none;
+}
+
+.profile-stats .stat strong {
+  display: block !important;
+  color: #d4af37 !important;
+  font-size: 23px !important;
+  font-weight: 800 !important;
+  line-height: 1.1 !important;
+}
+
+.profile-stats .stat span {
+  display: block !important;
+  margin-top: 5px !important;
+  color: #aaa !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+
+  .profile-stats {
+    margin-top: 17px !important;
+    padding-top: 14px !important;
+  }
+
+  .profile-stats .stat {
+    padding: 4px 7px !important;
+  }
+
+  .profile-stats .stat strong {
+    font-size: 21px !important;
+  }
+
+  .profile-stats .stat span {
+    font-size: 12px !important;
+  }
+}
+
+
+/* =========================================================
+   BENEDICT HEADER + COVER BUTTON + AVATAR POSITION UPGRADE
+========================================================= */
+
+/* LUXURY HEADER */
+.luxury-header {
+  background:
+    linear-gradient(180deg, #111111 0%, #080808 100%) !important;
+  border-bottom: 1px solid rgba(212,175,55,.45) !important;
+  box-shadow: 0 6px 25px rgba(0,0,0,.45) !important;
+  color: #d4af37 !important;
+}
+
+.luxury-header .logo,
+.luxury-header .logo .gold {
+  color: #d4af37 !important;
+}
+
+.luxury-header .logo {
+  text-shadow: 0 0 14px rgba(212,175,55,.16);
+}
+
+.luxury-header .main-nav button {
+  background: transparent !important;
+  color: #cccccc !important;
+  border: 1px solid transparent !important;
+  transition: color .2s ease, background .2s ease, border-color .2s ease;
+}
+
+.luxury-header .main-nav button:hover {
+  color: #d4af37 !important;
+  background: rgba(212,175,55,.07) !important;
+  border-color: rgba(212,175,55,.25) !important;
+}
+
+/* COVER BUTTON */
+.cover-overlay {
+  right: 16px !important;
+  bottom: 16px !important;
+}
+
+.cover-change-btn {
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 190px !important;
+  padding: 9px 15px !important;
+  border-radius: 999px !important;
+  font-size: 13px !important;
+  line-height: 1.2 !important;
+  background: rgba(8,8,8,.90) !important;
+  color: #d4af37 !important;
+  border: 1px solid rgba(212,175,55,.65) !important;
+  box-shadow: 0 7px 22px rgba(0,0,0,.45) !important;
+  backdrop-filter: blur(10px);
+}
+
+/* AVATAR POSITION */
+.profile-avatar-wrap {
+  transform: translateY(-18px) !important;
+  margin-bottom: -18px !important;
+}
+
+.profile-avatar,
+.profile-picture {
+  box-shadow:
+    0 0 0 2px rgba(212,175,55,.85),
+    0 0 28px rgba(212,175,55,.20),
+    0 12px 35px rgba(0,0,0,.65) !important;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+
+  .luxury-header {
+    min-height: 58px !important;
+  }
+
+  .luxury-header .logo {
+    font-size: 18px !important;
+  }
+
+  .luxury-header .main-nav {
+    gap: 4px !important;
+  }
+
+  .luxury-header .main-nav button {
+    padding: 7px 8px !important;
+    font-size: 12px !important;
+  }
+
+  .cover-overlay {
+    right: 10px !important;
+    bottom: 10px !important;
+  }
+
+  .cover-change-btn {
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+  }
+
+  .profile-avatar-wrap {
+    transform: translateY(-15px) !important;
+    margin-bottom: -15px !important;
+  }
+}
+
+</style>

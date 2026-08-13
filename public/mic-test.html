@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<button onclick="testMic()">Test Microphone</button>
+
+<script>
+async function testMic() {
+  alert("Start");
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    alert("Microphone works");
+    stream.getTracks().forEach(track => track.stop());
+  } catch (e) {
+    alert("Error: " + e.message);
+  }
+}
+</script>
+
+</body>
+</html>

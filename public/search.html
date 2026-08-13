@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Search — BENEDICT</title>
+<script src="/splash.js"></script>
+<link rel="stylesheet" href="style.css?v=5">
+
+<style id="BENEDICT_SEARCH_PAGE">
+
+.benedict-page-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  background: rgba(10,10,10,.97);
+  border-bottom: 1px solid rgba(212,175,55,.16);
+  box-shadow: 0 5px 25px rgba(0,0,0,.25);
+}
+
+.page-back-button,
+.page-profile-button {
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 50%;
+  background: #171719;
+  color: #ddd;
+  font-size: 23px;
+  cursor: pointer;
+}
+
+.page-back-button:hover,
+.page-profile-button:hover {
+  color: #d4af37;
+  border-color: rgba(212,175,55,.35);
+}
+
+.page-brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #f2f2f2;
+  letter-spacing: 2.5px;
+  font-size: 17px;
+}
+
+.page-brand-mark {
+  color: #d4af37;
+}
+
+.benedict-explore-page {
+  width: min(720px, calc(100% - 28px));
+  margin: 24px auto 110px;
+}
+
+.explore-hero,
+.search-results-card {
+  background: #151518;
+  border: 1px solid rgba(212,175,55,.16);
+  border-radius: 20px;
+  box-shadow: 0 14px 35px rgba(0,0,0,.25);
+}
+
+.explore-hero {
+  padding: 22px;
+}
+
+.explore-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.explore-eyebrow {
+  color: #d4af37;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.explore-title-row h1 {
+  margin: 5px 0;
+  color: #f5f5f5;
+  font-size: 27px;
+}
+
+.explore-title-row p {
+  margin: 0 0 20px;
+  color: #888;
+}
+
+.explore-symbol {
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #202025;
+  color: #d4af37;
+  font-size: 27px;
+}
+
+.benedict-search-box {
+  display: flex;
+  gap: 9px;
+}
+
+.benedict-search-box input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 13px;
+  background: #202025;
+  color: #fff;
+  padding: 13px 15px;
+  outline: none;
+}
+
+.benedict-search-box input:focus {
+  border-color: rgba(212,175,55,.55);
+}
+
+.benedict-search-box button {
+  border: none;
+  border-radius: 13px;
+  padding: 0 19px;
+  background: linear-gradient(135deg,#d4af37,#a67c16);
+  color: #090909;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.search-results-card {
+  margin-top: 16px;
+  padding: 18px;
+}
+
+.results-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+}
+
+.results-heading h2 {
+  margin: 0;
+  color: #eee;
+  font-size: 18px;
+}
+
+.results-heading span {
+  color: #777;
+  font-size: 11px;
+}
+
+.search-empty-state {
+  text-align: center;
+  padding: 42px 15px;
+  color: #777;
+}
+
+.search-empty-state div {
+  color: #d4af37;
+  font-size: 34px;
+  margin-bottom: 8px;
+}
+
+.search-empty-state strong {
+  display: block;
+  color: #ddd;
+}
+
+.search-empty-state p {
+  font-size: 13px;
+}
+
+@media (max-width: 600px) {
+  .benedict-explore-page {
+    width: calc(100% - 18px);
+    margin-top: 14px;
+  }
+
+  .explore-hero {
+    padding: 17px;
+  }
+
+  .explore-title-row h1 {
+    font-size: 23px;
+  }
+
+  .benedict-search-box button {
+    padding: 0 14px;
+  }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header class="benedict-page-header">
+
+  <button
+    class="page-back-button"
+    onclick="window.location.href='/'"
+    aria-label="Back to Home">
+    ‹
+  </button>
+
+  <div class="page-brand">
+    <span class="page-brand-mark">✦</span>
+    <strong>BENEDICT</strong>
+  </div>
+
+  <button
+    class="page-profile-button"
+    onclick="window.location.href='/profile.html'"
+    aria-label="Profile">
+    ●
+  </button>
+
+</header>
+
+<main class="benedict-explore-page">
+
+  <section class="explore-hero">
+
+    <div class="explore-title-row">
+
+      <div>
+        <span class="explore-eyebrow">DISCOVER</span>
+        <h1>Explore BENEDICT</h1>
+        <p>Find people and discover new connections.</p>
+      </div>
+
+      <div class="explore-symbol">⌕</div>
+
+    </div>
+
+    <div class="benedict-search-box">
+
+      <input
+        id="searchUser"
+        type="text"
+        autocomplete="off"
+        placeholder="Search username...">
+
+      <button
+        type="button"
+        onclick="searchUsers()">
+        Search
+      </button>
+
+    </div>
+
+  </section>
+
+  <section class="search-results-card">
+
+    <div class="results-heading">
+      <h2>People</h2>
+      <span>BENEDICT community</span>
+    </div>
+
+    <div id="searchResults">
+
+      <div class="search-empty-state">
+        <div>⌕</div>
+        <strong>Search for someone</strong>
+        <p>Enter a username above to find people on BENEDICT.</p>
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+<nav class="mobile-bottom-nav benedict-bottom-nav">
+
+  <button onclick="window.location.href='/'">
+    <span>⌂</span>
+    <small>Home</small>
+  </button>
+
+  <button class="active">
+    <span>◇</span>
+    <small>Explore</small>
+  </button>
+
+  <button
+    class="create-nav-button"
+    onclick="window.location.href='/create.html'">
+    <span>＋</span>
+    <small>Create</small>
+  </button>
+
+  <button onclick="window.location.href='/chat.html'">
+    <span>◉</span>
+    <small>Messages</small>
+  </button>
+
+  <button onclick="window.location.href='/profile.html'">
+    <span>●</span>
+    <small>Profile</small>
+  </button>
+
+</nav>
+
+<script src="/app.js"></script>
+
+</body>
+</html>

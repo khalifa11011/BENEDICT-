@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BENEDICT</title>
+
+<link rel="stylesheet" href="style.css?v=5">
+
+<style id="benedict-login-cleanup">
+body.benedict-logged-out .luxury-header,
+body.benedict-logged-out .bottom-nav,
+body.benedict-logged-out .mobile-bottom-nav,
+body.benedict-logged-out nav.bottom-navigation {
+  display: none !important;
+}
+
+/* BENEDICT LOGIN HEADER CLEANUP */
+body.benedict-logged-out .benedict-header .header-actions,
+html.login-active .benedict-header .header-actions {
+  display: none !important;
+}
+
+.benedict-language-selector {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 0 0 8px;
+  position: relative;
+  z-index: 10;
+}
+
+.benedict-language-selector {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 0 0 4px;
+  z-index: 10;
+}
+
+.benedict-language-selector select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  color: #d4af37;
+  border: none;
+  padding: 3px 20px 3px 6px;
+  font-size: 14px;
+  font-weight: 600;
+  outline: none;
+  text-align: center;
+  cursor: pointer;
+}
+
+.benedict-language-selector::after {
+  content: "▼";
+  color: #d4af37;
+  font-size: 9px;
+  position: absolute;
+  margin-left: 70px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.benedict-language-selector select:focus {
+  outline: none;
+  box-shadow: none;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const loggedIn = !!localStorage.getItem("token");
+
+  if (!loggedIn) {
+    document.body.classList.add("benedict-logged-out");
+
+    const logo =
+      document.querySelector(".login-logo") ||
+      document.querySelector("#loginLogo") ||
+      [...document.querySelectorAll("*")].find(el =>
+        el.children.length === 0 &&
+        el.textContent.trim() === "B"
+      );
+
+    if (logo && !document.querySelector(".benedict-language-selector")) {
+      const selector = document.createElement("div");
+      selector.className = "benedict-language-selector";
+      selector.innerHTML = `
+        <select aria-label="Select language">
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+          <option value="es">Español</option>
+          <option value="pt">Português</option>
+        </select>
+      `;
+      logo.parentNode.insertBefore(selector, logo);
+    }
+  }
+});
+</script>
+
+
+<style id="BENEDICT_PROFESSIONAL_HOME">
+/* BENEDICT PROFESSIONAL HOME */
+#appSection {
+  min-height: 100vh;
+}
+
+#homePanel.feed-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 16px 100px;
+}
+
+.composer-card,
+.stories-section,
+.feed-section {
+  background: #151518;
+  border: 1px solid rgba(212,175,55,.28);
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.28);
+  margin-bottom: 18px;
+}
+
+.composer-card {
+  padding: 16px;
+}
+
+.composer-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.current-user-avatar {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #222228;
+  border: 1px solid rgba(212,175,55,.55);
+}
+
+.composer-input {
+  flex: 1;
+  min-height: 44px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 24px;
+  background: #202025;
+  color: #aaa;
+  text-align: left;
+  padding: 0 16px;
+  cursor: pointer;
+}
+
+.photo-button {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #d4af37;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.composer-expanded {
+  margin-top: 14px;
+}
+
+.composer-expanded textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: #101014;
+  color: #fff;
+  border: 1px solid rgba(212,175,55,.22);
+  border-radius: 14px;
+  padding: 13px;
+  resize: vertical;
+}
+
+.composer-expanded input[type="file"] {
+  margin: 12px 0;
+  max-width: 100%;
+  color: #aaa;
+}
+
+.primary-button {
+  background: linear-gradient(135deg,#d4af37,#b88a16);
+  color: #111;
+  border: none;
+  border-radius: 10px;
+  padding: 11px 20px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.stories-section {
+  padding: 16px;
+}
+
+.section-heading,
+.feed-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.section-heading h2,
+.feed-heading h2 {
+  margin: 0;
+  color: #fff;
+}
+
+.section-heading button {
+  background: transparent;
+  color: #d4af37;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.stories-row {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 14px 2px 4px;
+  scrollbar-width: none;
+}
+
+.stories-row::-webkit-scrollbar {
+  display: none;
+}
+
+.story-card {
+  flex: 0 0 105px;
+  min-height: 145px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #202025;
+  border: 1px solid rgba(212,175,55,.18);
+  padding: 8px;
+  cursor: pointer;
+}
+
+.story-image {
+  height: 105px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #292930;
+  color: #d4af37;
+  font-size: 30px;
+  margin-bottom: 8px;
+}
+
+.story-card strong {
+  color: #eee;
+  font-size: 12px;
+}
+
+.feed-section {
+  padding: 18px 16px;
+}
+
+.discovery-heading {
+  display: block;
+}
+
+.discovery-heading p {
+  margin: 5px 0 0;
+  color: #888;
+  font-size: 13px;
+}
+
+.discovery-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 16px 0;
+  scrollbar-width: none;
+}
+
+.discovery-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.discovery-tab {
+  flex: 0 0 auto;
+  background: #202025;
+  color: #aaa;
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 20px;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+.discovery-tab.active {
+  background: #d4af37;
+  color: #111;
+  border-color: #d4af37;
+  font-weight: 700;
+}
+
+#posts > article,
+#posts > .post {
+  border: 1px solid rgba(212,175,55,.18);
+  border-radius: 16px;
+  background: #101014;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+@media (max-width: 600px) {
+  #homePanel.feed-page {
+    padding: 12px 10px 90px;
+  }
+
+  .benedict-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-actions {
+    gap: 2px;
+  }
+
+  .header-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .composer-card,
+  .stories-section,
+  .feed-section {
+    border-radius: 15px;
+  }
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- =========================
+     BENEDICT TOP HEADER
+<script>
+  if (!localStorage.getItem("token")) {
+    document.documentElement.classList.add("login-active");
+  }
+</script>
+========================= -->
+
+<header class="social-header benedict-header">
+
+  <div class="header-left">
+
+    <div class="brand-wrap">
+      <div class="brand-mark">✦</div>
+      <div class="brand">BENEDICT</div>
+    </div>
+
+  </div>
+
+  <div class="header-actions">
+
+    <button
+      class="header-icon"
+      onclick="window.location.href='/search.html'"
+      aria-label="Search">
+      ⌕
+    </button>
+
+    <button
+      class="header-icon"
+      onclick="window.location.href='/create.html'"
+      aria-label="Create">
+      ＋
+    </button>
+
+    <button
+      class="header-icon notification-header-button"
+      onclick="window.location.href='/notifications.html'"
+      aria-label="Notifications">
+      ♧
+      <span class="header-notification-dot"></span>
+    </button>
+
+    <button
+      class="header-icon"
+      onclick="window.location.href='/messages.html'"
+      aria-label="Messages">
+      ◉
+    </button>
+
+  </div>
+
+</header>
+
+
+<!-- =========================
+     LOGIN
+========================= -->
+
+<div id="loginPanel">
+
+  <div class="login-page">
+
+    <div class="login-card">
+
+      <div class="login-logo">B</div>
+
+
+
+      <input
+        id="email"
+        type="text"
+        placeholder="Email or phone number">
+
+      <input
+        id="password"
+        type="password"
+        placeholder="Password">
+
+      <button class="primary-button" onclick="login()">
+        Login
+      </button>
+
+      <div class="login-links">
+        <a href="/forgot-password.html">Forgot password?</a>
+        <a href="/register.html">Create new account</a>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     MAIN APP
+========================= -->
+
+<div id="appSection" style="display:none;">
+
+  <main id="homePanel" class="feed-page" style="display:none;">
+
+    <!-- =====================
+         CREATE POST
+    ====================== -->
+
+    <section class="composer-card">
+
+      <div class="composer-top">
+
+        <div class="current-user-avatar">
+          👤
+        </div>
+
+        <button
+          class="composer-input"
+          onclick="document.getElementById('content').focus()">
+          What's on your mind?
+        </button>
+
+        <button
+          class="photo-button"
+          onclick="document.getElementById('image').click()">
+          🖼️
+        </button>
+
+      </div>
+
+      <div class="composer-expanded">
+
+        <textarea
+          id="content"
+          rows="3"
+          placeholder="What's on your mind?"></textarea>
+
+        <input
+          type="file"
+          id="image"
+          accept="image/*">
+
+        <button
+          class="primary-button"
+          onclick="createPost()">
+          Share Post
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================
+         STORIES
+    ====================== -->
+
+    <section class="stories-section">
+
+      <div class="section-heading">
+        <h2>Stories</h2>
+
+        <button onclick="window.location.href='/stories.html'">
+          See all
+        </button>
+      </div>
+
+      <div class="stories-row">
+
+        <div class="story-card create-story"
+          onclick="window.location.href='/stories.html'">
+
+          <div class="story-image create-story-image">
+            ＋
+          </div>
+
+          <strong>Create story</strong>
+
+        </div>
+
+
+        <div class="story-card"
+          onclick="window.location.href='/stories.html'">
+
+          <div class="story-image story-placeholder">
+            👤
+          </div>
+
+          <strong>Stories</strong>
+
+        </div>
+
+
+        <div class="story-card"
+          onclick="window.location.href='/stories.html'">
+
+          <div class="story-image story-placeholder">
+            📷
+          </div>
+
+          <strong>Friends</strong>
+
+        </div>
+
+
+        <div class="story-card"
+          onclick="window.location.href='/stories.html'">
+
+          <div class="story-image story-placeholder">
+            ✨
+          </div>
+
+          <strong>Recent</strong>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================
+         NEWS FEED
+    ====================== -->
+
+    <section class="feed-section">
+
+      <div class="feed-heading discovery-heading">
+        <h2>Discover</h2>
+        <p>Explore what's happening on BENEDICT</p>
+      </div>
+
+      <div class="discovery-tabs">
+        <button class="discovery-tab active" onclick="switchDiscovery('for-you', this)">
+          For You
+        </button>
+
+        <button class="discovery-tab" onclick="switchDiscovery('news', this)">
+          📰 News
+        </button>
+
+        <button class="discovery-tab" onclick="switchDiscovery('entertainment', this)">
+          🎬 Entertainment
+        </button>
+
+        <button class="discovery-tab" onclick="switchDiscovery('trending', this)">
+          🔥 Trending
+        </button>
+      </div>
+
+      <div id="posts"></div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================
+       PROFILE / SIDE PANEL
+  ========================= -->
+
+  <aside id="sidePanel" style="display:none;">
+
+    <div class="profile-card">
+
+      <div class="profile-card-header">
+        <h2>My Profile</h2>
+      </div>
+
+      <div id="profile"></div>
+
+      <button onclick="loadMyProfile()">
+        Refresh Profile
+      </button>
+
+      <hr>
+
+      <h3>Edit Profile</h3>
+
+      <input
+        id="editFullName"
+        placeholder="Full Name">
+
+      <textarea
+        id="editBio"
+        placeholder="Bio"></textarea>
+
+      <input
+        id="editLocation"
+        placeholder="Location">
+
+      <input
+        id="editWebsite"
+        type="url"
+        placeholder="Website">
+
+      <label for="editBirthday">
+        Birthday
+      </label>
+
+      <input
+        id="editBirthday"
+        type="date">
+
+      <button onclick="updateProfile()">
+        💾 Save Profile
+      </button>
+
+      <input
+        type="file"
+        id="profilePicture">
+
+      <button onclick="uploadProfilePicture()">
+        🖼 Change Profile Picture
+      </button>
+
+    </div>
+
+  </aside>
+
+</div>
+
+
+<!-- =========================
+     HIDDEN COMPATIBILITY AREAS
+========================= -->
+
+<div id="notifications" style="display:none;"></div>
+<div id="searchResults" style="display:none;"></div>
+
+
+<!-- =========================
+     STORY VIEWER
+========================= -->
+
+<div
+  id="storyViewer"
+  class="story-viewer"
+  onclick="closeStory()">
+
+  <span class="close-story">&times;</span>
+
+  <div
+    id="storyContent"
+    onclick="event.stopPropagation()">
+  </div>
+
+</div>
+
+
+<!-- =========================
+     MOBILE BOTTOM NAV
+========================= -->
+
+<nav class="mobile-bottom-nav benedict-bottom-nav">
+
+  <button class="active" onclick="loadPosts()">
+    <span>⌂</span>
+    <small>Home</small>
+  </button>
+
+  <button onclick="window.location.href='/search.html'">
+    <span>◇</span>
+    <small>Explore</small>
+  </button>
+
+  <button class="create-nav-button" onclick="window.location.href='/create.html'">
+    <span>＋</span>
+    <small>Create</small>
+  </button>
+
+  <button onclick="window.location.href='/messages.html'">
+    <span>◉</span>
+    <small>Messages</small>
+  </button>
+
+  <button onclick="window.location.href='/profile.html'">
+    <span>●</span>
+    <small>Profile</small>
+  </button>
+
+</nav>
+
+
+<div id="loginLoading">
+  <div class="login-loading-spinner"></div>
+  <div class="login-loading-text">Loading...</div>
+</div>
+<script src="/splash.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
+
+<style id="BENEDICT_LOGIN_NAV_CLEANUP">
+body.login-screen nav,
+body.login-screen .top-nav,
+body.login-screen .navbar,
+body.login-screen .menu,
+body.login-screen .menu-btn,
+body.login-screen .hamburger,
+body.login-screen .nav-buttons,
+body.login-screen .top-buttons {
+    display: none !important;
+}
+</style>
