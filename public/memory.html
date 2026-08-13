@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory - BENEDICT</title>
+<link rel="stylesheet" href="style.css?v=5">
+
+<style>
+body{
+  margin:0;
+  background:#0d0d0f;
+  color:#fff;
+  font-family:Arial,sans-serif;
+}
+
+.memory-header{
+  height:62px;
+  background:#111113;
+  border-bottom:1px solid rgba(212,175,55,.35);
+  display:flex;
+  align-items:center;
+  padding:0 15px;
+  gap:12px;
+}
+
+.memory-back{
+  width:38px;
+  height:38px;
+  border:1px solid rgba(212,175,55,.3);
+  border-radius:10px;
+  background:#151518;
+  color:#d4af37;
+  font-size:25px;
+}
+
+.memory-title{
+  color:#d4af37;
+  font-size:19px;
+  font-weight:700;
+}
+
+.memory-content{
+  max-width:760px;
+  margin:auto;
+  padding:24px 14px 40px;
+}
+
+.memory-hero{
+  text-align:center;
+  padding:20px 10px;
+}
+
+.memory-icon-main{
+  font-size:46px;
+}
+
+.memory-hero h1{
+  color:#d4af37;
+  font-size:25px;
+  margin:10px 0;
+}
+
+.memory-hero p{
+  color:#999;
+  font-size:14px;
+  line-height:1.5;
+}
+
+.memory-card{
+  background:#151518;
+  border:1px solid rgba(212,175,55,.22);
+  border-radius:16px;
+  overflow:hidden;
+  margin-top:18px;
+}
+
+.memory-empty{
+  padding:35px 20px;
+  text-align:center;
+}
+
+.memory-empty-icon{
+  font-size:38px;
+  margin-bottom:10px;
+}
+
+.memory-empty h2{
+  color:#d4af37;
+  font-size:18px;
+  margin:8px 0;
+}
+
+.memory-empty p{
+  color:#888;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.memory-status{
+  margin-top:18px;
+  padding:15px;
+  border:1px solid rgba(212,175,55,.18);
+  border-radius:13px;
+  background:#111113;
+  color:#999;
+  text-align:center;
+  font-size:12px;
+  line-height:1.5;
+}
+</style>
+
+<style>
+.memory-post{
+  padding:18px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.memory-post:last-child{
+  border-bottom:0;
+}
+
+.memory-date{
+  color:#d4af37;
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:9px;
+}
+
+.memory-text{
+  color:#eee;
+  font-size:15px;
+  line-height:1.5;
+  white-space:pre-wrap;
+}
+
+.memory-post-image{
+  display:block;
+  width:100%;
+  max-height:420px;
+  object-fit:cover;
+  border-radius:12px;
+  margin-top:12px;
+}
+
+.memory-error{
+  padding:30px 18px;
+  text-align:center;
+  color:#aaa;
+}
+
+.memory-error strong{
+  display:block;
+  color:#d4af37;
+  margin-bottom:7px;
+}
+</style>
+</head>
+
+<body>
+
+<header class="memory-header">
+  <button class="memory-back" onclick="history.back()">‹</button>
+  <div class="memory-title">Memory</div>
+</header>
+
+<main class="memory-content">
+
+<section class="memory-hero">
+  <div class="memory-icon-main">🧠</div>
+  <h1>BENEDICT Memory</h1>
+  <p>
+    Look back at moments you've shared on BENEDICT.
+  </p>
+</section>
+
+<section class="memory-card" id="memoryCard">
+
+  <div class="memory-empty" id="memoryLoading">
+    <div class="memory-empty-icon">⏳</div>
+    <h2>Loading Memories</h2>
+    <p>Looking through your BENEDICT posts...</p>
+  </div>
+
+  <div id="memoryPosts"></div>
+
+</section>
+
+
+
+</main>
+
+
+<script>
+async function loadMemories(){
+  const token = localStorage.getItem("token");
+  const loading = document.getElementById("memoryLoading");
+  const postsBox = document.getElementById("memoryPosts");
+
+  if (!token) {
+    window.location.href = "/";
+    return;
+  }
+
+  try {
+    const response = await fetch("/api/posts/memory", {
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Unable to load memories");
+    }
+
+    loading.style.display = "none";
+
+    if (!data.posts || data.posts.length === 0) {
+      postsBox.innerHTML = `
+        <div class="memory-empty">
+          <div class="memory-empty-icon">✨</div>
+          <h2>No Memories Yet</h2>
+          <p>Your posts will appear here as memories.</p>
+        </div>
+      `;
+      return;
+    }
+
+    postsBox.innerHTML = data.posts.map(post => {
+      const date = post.createdAt
+        ? new Date(post.createdAt).toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+          })
+        : "Unknown date";
+
+      const image = post.image
+        ? `<img class="memory-post-image" src="${post.image}" alt="Memory">`
+        : "";
+
+      return `
+        <article class="memory-post">
+          <div class="memory-date">${date}</div>
+          <div class="memory-text">${escapeMemoryText(post.content || "")}</div>
+          ${image}
+        </article>
+      `;
+    }).join("");
+
+  } catch (error) {
+    console.error("Memory loading error:", error);
+
+    loading.style.display = "none";
+
+    postsBox.innerHTML = `
+      <div class="memory-error">
+        <strong>Unable to load Memories</strong>
+        Please try again later.
+      </div>
+    `;
+  }
+}
+
+function escapeMemoryText(text){
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+loadMemories();
+</script>
+</body>
+</html>

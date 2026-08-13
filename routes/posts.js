@@ -45,6 +45,23 @@ if (io) {
 
 });
 
+// BENEDICT Memory - current user's posts
+router.get("/memory", auth, async (req, res) => {
+  try {
+    const posts = await Post.find({ user: req.user.id })
+      .populate("user", "_id username fullName profilePicture")
+      .sort({ createdAt: -1 })
+      .lean();
+
+    res.json({ posts });
+  } catch (error) {
+    console.error("Memory error:", error);
+    res.status(500).json({
+      message: "Unable to load memories"
+    });
+  }
+});
+
 // Feed
 router.get("/", auth, async (req, res) => {
   try {
