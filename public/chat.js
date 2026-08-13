@@ -5,7 +5,6 @@ let mediaRecorder = null;
 let audioChunks = [];
 
 async function toggleRecording() {
-  alert("toggleRecording called");
 
 const btn = document.getElementById("recordBtn");
 
@@ -17,19 +16,16 @@ const btn = document.getElementById("recordBtn");
   }
 
   try {
-      alert("A");
 
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: true
     });
 
-    alert("B");
 
     audioChunks = [];
 
     mediaRecorder = new MediaRecorder(stream);
 
-    alert("C");
 
     mediaRecorder.ondataavailable = (event) => {
       if (event.data.size > 0) {
@@ -44,13 +40,11 @@ const btn = document.getElementById("recordBtn");
 
       stream.getTracks().forEach(track => track.stop());
 
-      alert("Recording saved");
     };
 
     mediaRecorder.start();
 
     btn.innerText = "⏹ Stop";
-    alert("Recording started");
 
   } catch (err) {
     alert("Microphone error: " + err.message);
@@ -164,14 +158,6 @@ ${msg.media
         : `<video controls style="max-width:250px;border-radius:10px;">
              <source src="${msg.media}">
            </video>`)
-  : ""}
-
-${msg.media
-  ? (msg.media.match(/\.(jpg|jpeg|png|gif)$/i)
-      ? `<img src="${msg.media}" style="max-width:250px;border-radius:10px;">`
-      : `<video controls style="max-width:250px;border-radius:10px;">
-           <source src="${msg.media}">
-         </video>`)
   : ""}
 
 <small>
@@ -337,11 +323,14 @@ window.onload = function () {
     alert("No user selected.");
   }
 
-  setInterval(loadMessages, 3000);
 
 };
 
 socket.on("newMessage", function(message) {
+  loadMessages();
+});
+
+socket.on("messageDeleted", function(messageId) {
   loadMessages();
 });
 
