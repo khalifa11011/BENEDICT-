@@ -243,7 +243,7 @@ router.get("/:userId", auth, async (req, res) => {
       .populate("sender", "username profilePicture")
       .populate("receiver", "username profilePicture");
 
-    await Message.updateMany(
+    const readResult = await Message.updateMany(
       {
         sender: userId,
         receiver: req.user.id,
@@ -253,6 +253,20 @@ router.get("/:userId", auth, async (req, res) => {
         $set: { read: true }
       }
     );
+
+    // Tell the other user's Messenger inbox that
+    // messages in this conversation have been seen.
+    if (readResult.modifiedCount > 0) {
+      const io = req.app.get("io");
+
+      if (io) {
+        const room = [req.user.id, userId]
+          .sort()
+          .join("_");
+
+        io.to(room).emit("messageSeen");
+      }
+    }
 
     res.json(messages);
 
