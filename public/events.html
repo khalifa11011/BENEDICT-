@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Events - BENEDICT</title>
+<link rel="stylesheet" href="style.css?v=5">
+<style>
+body{margin:0;background:#0d0d0f;color:#fff;font-family:Arial,sans-serif}
+.events-header{height:62px;background:#111113;border-bottom:1px solid rgba(212,175,55,.35);display:flex;align-items:center;padding:0 15px;gap:12px}
+.events-back{width:38px;height:38px;border:1px solid rgba(212,175,55,.3);border-radius:10px;background:#151518;color:#d4af37;font-size:25px}
+.events-title{color:#d4af37;font-size:19px;font-weight:700}
+.events-content{max-width:760px;margin:auto;padding:24px 14px 40px}
+.events-hero{text-align:center;padding:20px 10px}
+.events-icon-main{font-size:46px}
+.events-hero h1{color:#d4af37;font-size:25px;margin:10px 0}
+.events-hero p{color:#999;font-size:14px;line-height:1.5}
+.events-card{background:#151518;border:1px solid rgba(212,175,55,.22);border-radius:16px;overflow:hidden;margin-top:18px}
+.events-option{width:100%;min-height:72px;padding:12px 16px;background:transparent;color:#fff;border:0;border-bottom:1px solid rgba(255,255,255,.055);display:flex;align-items:center;gap:14px;text-align:left}
+.events-option:last-child{border-bottom:0}
+.events-icon{font-size:22px;width:36px;text-align:center}
+.events-text{flex:1}
+.events-name{display:block;font-weight:700;font-size:15px}
+.events-desc{display:block;color:#888;font-size:12px;margin-top:4px}
+.events-status{margin-top:18px;padding:14px;border:1px solid rgba(212,175,55,.18);border-radius:13px;background:#111113;color:#888;text-align:center;font-size:12px}
+</style>
+</head>
+<body>
+
+<header class="events-header">
+<button class="events-back" onclick="history.back()">‹</button>
+<div class="events-title">Events</div>
+</header>
+
+<main class="events-content">
+
+<section class="events-hero">
+<div class="events-icon-main">📅</div>
+<h1>BENEDICT Events</h1>
+<p>Discover events, meet people and find activities happening around you.</p>
+</section>
+
+<section class="events-card">
+
+<button class="events-option">
+<span class="events-icon">📅</span>
+<span class="events-text">
+<span class="events-name">Discover Events</span>
+<span class="events-desc">Find events that may interest you.</span>
+</span>
+<span>›</span>
+</button>
+
+<button class="events-option">
+<span class="events-icon">📍</span>
+<span class="events-text">
+<span class="events-name">Nearby Events</span>
+<span class="events-desc">Explore events near your location.</span>
+</span>
+<span>›</span>
+</button>
+
+<button class="events-option">
+<span class="events-icon">✚</span>
+<span class="events-text">
+<span class="events-name">Create an Event</span>
+<span class="events-desc">Create and share your own event.</span>
+</span>
+<span>›</span>
+</button>
+
+<button class="events-option">
+<span class="events-icon">✓</span>
+<span class="events-text">
+<span class="events-name">My Events</span>
+<span class="events-desc">See events you've joined or created.</span>
+</span>
+<span>›</span>
+</button>
+
+</section>
+
+<div class="events-status">
+BENEDICT Events is being prepared. More event features will be added here.
+</div>
+
+</main>
+</body>
+</html>
