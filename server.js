@@ -22,7 +22,36 @@ const server = http.createServer(app);
 
 const { Server } = require("socket.io");
 const io = new Server(server);
+// BENEDICT realtime presence
+// Each user can have multiple active Socket.IO connections.
 const onlineUsers = new Map();
+
+function addOnlineSocket(userId, socketId) {
+  const id = String(userId);
+
+  if (!onlineUsers.has(id)) {
+    onlineUsers.set(id, new Set());
+  }
+
+  onlineUsers.get(id).add(socketId);
+}
+
+function removeOnlineSocket(userId, socketId) {
+  const id = String(userId);
+  const sockets = onlineUsers.get(id);
+
+  if (!sockets) return;
+
+  sockets.delete(socketId);
+
+  if (sockets.size === 0) {
+    onlineUsers.delete(id);
+  }
+}
+
+function getOnlineUserIds() {
+  return [...onlineUsers.keys()];
+}
 
 app.set("io", io);
 app.set("onlineUsers", onlineUsers);
@@ -72,12 +101,12 @@ io.on("connection", (socket) => {
 
 socket.on("userOnline", (userId) => {
 
-  onlineUsers.set(userId, socket.id);
+  addOnlineSocket(userId, socket.id);
+
+  socket.data.userId = String(userId);
 
   console.log("User online:", userId, "Socket:", socket.id);
-  console.log("Online users:", [...onlineUsers.entries()]);
-
-  io.emit("onlineUsers", [...onlineUsers.keys()]);
+  io.emit("onlineUsers", getOnlineUserIds());
 
 });
 
@@ -109,20 +138,15 @@ socket.on("messageSeen", (data) => {
 
    socket.on("disconnect", () => {
 
-  for (const [userId, id] of onlineUsers.entries()) {
-
-    if (id === socket.id) {
-      onlineUsers.delete(userId);
-      break;
+    if (socket.data.userId) {
+      removeOnlineSocket(socket.data.userId, socket.id);
     }
 
-  }
+    io.emit("onlineUsers", getOnlineUserIds());
 
-  io.emit("onlineUsers", [...onlineUsers.keys()]);
+    console.log("User disconnected:", socket.id);
 
-  console.log("User disconnected:", socket.id);
-
-});
+  });
 
 });
 
