@@ -24,6 +24,14 @@ function validEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+function normalizePhone(phone) {
+  return typeof phone === "string" ? phone.replace(/[\s()-]/g, "").trim() : "";
+}
+
+function validPhone(phone) {
+  return /^\+?[0-9]{7,15}$/.test(phone);
+}
+
 function validPassword(password) {
   return typeof password === "string" &&
     password.length >= MIN_PASSWORD_LENGTH &&
@@ -51,11 +59,16 @@ router.post("/register", async (req, res) => {
   try {
     const username = normalizeUsername(req.body.username);
     const email = normalizeEmail(req.body.email);
+    const phone = normalizePhone(req.body.phone);
+    const fullName = typeof req.body.fullName === "string"
+      ? req.body.fullName.trim()
+      : "";
     const password = req.body.password;
 
-    if (!username || !email || !password) {
+    // Phase 3: registration accepts an email or a phone number.
+    if (!username || (!email && !phone) || !password) {
       return res.status(400).json({
-        message: "Username, email and password are required"
+        message: "Username, email or phone number, and password are required"
       });
     }
 
@@ -65,9 +78,15 @@ router.post("/register", async (req, res) => {
       });
     }
 
-    if (!validEmail(email)) {
+    if (email && !validEmail(email)) {
       return res.status(400).json({
         message: "Please enter a valid email address"
+      });
+    }
+
+    if (phone && !validPhone(phone)) {
+      return res.status(400).json({
+        message: "Please enter a valid phone number"
       });
     }
 
@@ -77,27 +96,33 @@ router.post("/register", async (req, res) => {
       });
     }
 
-    const existingUser = await User.findOne({
-      $or: [
-        { email },
-        { username }
-      ]
-    });
+    const identityFilters = [{ username }];
+
+    if (email) identityFilters.push({ email });
+    if (phone) identityFilters.push({ phone });
+
+    const existingUser = await User.findOne({ $or: identityFilters });
 
     if (existingUser) {
-      return res.status(409).json({
-        message: existingUser.email === email
-          ? "Email is already registered"
-          : "Username is already taken"
-      });
+      let message = "Username is already taken";
+
+      if (email && existingUser.email === email) {
+        message = "Email is already registered";
+      } else if (phone && existingUser.phone === phone) {
+        message = "Phone number is already registered";
+      }
+
+      return res.status(409).json({ message });
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = new User({
       username,
-      email,
-      password: hashedPassword
+      password: hashedPassword,
+      ...(email ? { email } : {}),
+      ...(phone ? { phone } : {}),
+      ...(fullName ? { fullName } : {})
     });
 
     await user.save();
@@ -107,7 +132,8 @@ router.post("/register", async (req, res) => {
       user: {
         id: user._id,
         username: user.username,
-        email: user.email
+        email: user.email,
+        phone: user.phone
       }
     });
 
@@ -130,9 +156,7 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const email = normalizeEmail(req.body.email);
-    const phone = typeof req.body.phone === "string"
-      ? req.body.phone.trim()
-      : "";
+    const phone = normalizePhone(req.body.phone);
     const password = req.body.password;
 
     if ((!email && !phone) || !password) {
@@ -187,9 +211,7 @@ router.post("/login", async (req, res) => {
 router.post("/forgot-password", async (req, res) => {
   try {
     const email = normalizeEmail(req.body.email);
-    const phone = typeof req.body.phone === "string"
-      ? req.body.phone.trim()
-      : "";
+    const phone = normalizePhone(req.body.phone);
 
     if (!email && !phone) {
       return res.status(400).json({
@@ -244,9 +266,7 @@ router.post("/forgot-password", async (req, res) => {
 router.post("/reset-password", async (req, res) => {
   try {
     const email = normalizeEmail(req.body.email);
-    const phone = typeof req.body.phone === "string"
-      ? req.body.phone.trim()
-      : "";
+    const phone = normalizePhone(req.body.phone);
     const code = typeof req.body.code === "string"
       ? req.body.code.trim()
       : "";

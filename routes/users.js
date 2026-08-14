@@ -3,21 +3,34 @@ const router = express.Router();
 
 const User = require("../models/User");
 const Post = require("../models/Post");
+const Friend = require("../models/Friend");
 const auth = require("../middleware/auth");
+const { createNotification } = require("../utils/notify");
 
 
 // Search users
 router.get("/search", auth, async (req, res) => {
   try {
 
-    const keyword = req.query.username || "";
+    const keyword = typeof req.query.username === "string"
+      ? req.query.username.trim()
+      : "";
+
+    if (!keyword) {
+      return res.json([]);
+    }
+
+    // Phase 7: escape user input before it reaches the regex engine.
+    const safeKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
     const users = await User.find({
       username: {
-        $regex: keyword,
+        $regex: safeKeyword,
         $options: "i"
       }
-    }).select("-password");
+    })
+      .select("-password")
+      .limit(20);
 
     res.json(users);
 
@@ -153,9 +166,10 @@ router.put("/:id/unfollow", auth, async (req, res) => {
 });
 
 // Send friend request
+// Phase 5: rewritten on top of the Friend collection (the old version used
+// User fields that do not exist on the schema).
 router.put("/:id/friend-request", auth, async (req, res) => {
   try {
-    const me = await User.findById(req.user.id);
     const other = await User.findById(req.params.id);
 
     if (!other) {
@@ -164,37 +178,63 @@ router.put("/:id/friend-request", auth, async (req, res) => {
       });
     }
 
-    if (me._id.equals(other._id)) {
+    if (String(other._id) === String(req.user.id)) {
       return res.status(400).json({
         error: "You cannot send a friend request to yourself"
       });
     }
 
-    if (me.friends.includes(other._id)) {
+    const existing = await Friend.findOne({
+      $or: [
+        { sender: req.user.id, receiver: other._id },
+        { sender: other._id, receiver: req.user.id }
+      ]
+    });
+
+    if (existing && existing.status === "accepted") {
       return res.status(400).json({
         error: "You are already friends"
       });
     }
 
-    if (me.sentRequests.includes(other._id)) {
+    if (existing && existing.status === "pending") {
       return res.status(400).json({
         error: "Friend request already sent"
       });
     }
 
-    me.sentRequests.push(other._id);
-    other.friendRequests.push(me._id);
+    let request;
 
-    await me.save();
-    await other.save();
+    if (existing) {
+      existing.sender = req.user.id;
+      existing.receiver = other._id;
+      existing.status = "pending";
+      await existing.save();
+      request = existing;
+    } else {
+      request = await Friend.create({
+        sender: req.user.id,
+        receiver: other._id
+      });
+    }
+
+    await createNotification(req, {
+      user: other._id,
+      fromUser: req.user.id,
+      type: "friend_request",
+      message: "Someone sent you a friend request"
+    });
 
     res.json({
-      message: "Friend request sent successfully"
+      message: "Friend request sent successfully",
+      request
     });
 
   } catch (error) {
+    console.error("Friend request error:", error);
+
     res.status(500).json({
-      error: error.message
+      error: "Unable to send friend request"
     });
   }
 });

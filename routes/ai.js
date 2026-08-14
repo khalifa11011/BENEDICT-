@@ -3,9 +3,23 @@ const OpenAI = require("openai");
 
 const router = express.Router();
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
+// Phase 8: build the client lazily. Creating it at module load crashed the
+// whole server on boot whenever OPENAI_API_KEY was not configured.
+let client = null;
+
+function getClient() {
+  if (!process.env.OPENAI_API_KEY) {
+    return null;
+  }
+
+  if (!client) {
+    client = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY
+    });
+  }
+
+  return client;
+}
 
 router.post("/chat", async (req, res) => {
   try {
@@ -17,8 +31,16 @@ router.post("/chat", async (req, res) => {
       });
     }
 
-    const response = await client.responses.create({
-      model: "gpt-5-mini",
+    const openai = getClient();
+
+    if (!openai) {
+      return res.status(503).json({
+        message: "BENEDICT AI is not configured."
+      });
+    }
+
+    const response = await openai.responses.create({
+      model: process.env.OPENAI_MODEL || "gpt-5-mini",
       input: message.trim()
     });
 

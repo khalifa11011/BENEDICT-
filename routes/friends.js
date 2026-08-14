@@ -3,6 +3,7 @@ const router = express.Router();
 const Friend = require("../models/Friend");
 const Notification = require("../models/Notification");
 const auth = require("../middleware/auth");
+const { createNotification } = require("../utils/notify");
 
 // Send a friend request
 router.post("/request", auth, async (req, res) => {
@@ -70,7 +71,9 @@ router.post("/request", auth, async (req, res) => {
 
     await request.save();
 
-    await Notification.create({
+    // Phase 4/6: push to the receiver's personal room (onlineUsers holds a Set
+    // of socket ids, so the old single-socket lookup never matched).
+    await createNotification(req, {
       user: receiver,
       fromUser: req.user.id,
       type: "friend_request",
@@ -78,17 +81,9 @@ router.post("/request", auth, async (req, res) => {
     });
 
     const io = req.app.get("io");
-    const onlineUsers = req.app.get("onlineUsers");
-    const receiverSocketId =
-      onlineUsers ? onlineUsers.get(receiver) : null;
 
-    const receiverSocket =
-      io && receiverSocketId
-        ? io.sockets.sockets.get(receiverSocketId)
-        : null;
-
-    if (receiverSocket) {
-      receiverSocket.emit("browserNotification", {
+    if (io) {
+      io.to("user:" + String(receiver)).emit("browserNotification", {
         title: "BENEDICT",
         message: "You have a new friend request"
       });
@@ -214,6 +209,13 @@ router.put("/accept/:id", auth, async (req, res) => {
 
     request.status = "accepted";
     await request.save();
+
+    await createNotification(req, {
+      user: request.sender,
+      fromUser: req.user.id,
+      type: "friend_accept",
+      message: "Your friend request was accepted"
+    });
 
     res.json({
       message: "Friend request accepted",
