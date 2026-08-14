@@ -1,9 +1,16 @@
 require("dotenv").config();
 
+const fs = require("fs");
+const path = require("path");
+
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const http = require("http");
+const helmet = require("helmet");
+const cors = require("cors");
+const rateLimit = require("express-rate-limit");
+const jwt = require("jsonwebtoken");
 
 const authRoutes = require("./routes/auth");
 const profileRoutes = require("./routes/profile");
@@ -19,6 +26,16 @@ const aiRoutes = require("./routes/ai");
 
 const app = express();
 const server = http.createServer(app);
+
+// Phase 1: make sure upload folders exist before multer writes to them.
+const uploadDirs = [
+  path.join(__dirname, "uploads"),
+  path.join(__dirname, "uploads", "messages")
+];
+
+for (const dir of uploadDirs) {
+  fs.mkdirSync(dir, { recursive: true });
+}
 
 const { Server } = require("socket.io");
 const io = new Server(server);
@@ -56,11 +73,41 @@ function getOnlineUserIds() {
 app.set("io", io);
 app.set("onlineUsers", onlineUsers);
 
+// Phase 8: baseline security headers and CORS.
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
+
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || true,
+  credentials: true
+}));
+
 app.use(express.static("public"));
 app.use("/uploads", express.static("uploads"));
 
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
+
+// Phase 8: rate limiting (auth endpoints are stricter than the rest of the API).
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 600,
+  standardHeaders: true,
+  legacyHeaders: false
+});
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 40,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: "Too many attempts. Please try again later." }
+});
+
+app.use("/api/", apiLimiter);
+app.use("/api/auth", authLimiter);
 
 if (!process.env.MONGODB_URI) {
   console.error("MONGODB_URI is missing from .env");
@@ -96,48 +143,69 @@ app.get("/hello", (req, res) => {
   });
 });
 
+// Phase 4: authenticate every socket with the same JWT used by the REST API.
+io.use((socket, next) => {
+  const token =
+    (socket.handshake.auth && socket.handshake.auth.token) ||
+    (socket.handshake.query && socket.handshake.query.token) ||
+    "";
+
+  if (!token) {
+    return next(new Error("Authentication required"));
+  }
+
+  try {
+    const decoded = jwt.verify(String(token), process.env.JWT_SECRET);
+
+    if (!decoded || !decoded.id) {
+      return next(new Error("Invalid authentication token"));
+    }
+
+    socket.data.userId = String(decoded.id);
+    next();
+  } catch (error) {
+    next(new Error("Invalid authentication token"));
+  }
+});
+
 io.on("connection", (socket) => {
   console.log("User connected:", socket.id);
 
-socket.on("userOnline", (userId) => {
+  // Personal room so the server can push notifications to one user.
+  socket.join("user:" + socket.data.userId);
 
-  addOnlineSocket(userId, socket.id);
-
-  socket.data.userId = String(userId);
-
-  console.log("User online:", userId, "Socket:", socket.id);
+  // Presence is registered from the verified token, not from client input.
+  addOnlineSocket(socket.data.userId, socket.id);
   io.emit("onlineUsers", getOnlineUserIds());
 
-});
+  socket.on("userOnline", () => {
+    addOnlineSocket(socket.data.userId, socket.id);
+    io.emit("onlineUsers", getOnlineUserIds());
+  });
 
   socket.on("joinChat", (data) => {
-    const room = [data.userId, data.receiverId].sort().join("_");
+    const room = [socket.data.userId, data.receiverId].sort().join("_");
 
     socket.join(room);
 
     console.log("Joined chat room:", room);
   });
 
-socket.on("typing", (data) => {
+  socket.on("typing", (data) => {
+    const room = [socket.data.userId, data.receiverId].sort().join("_");
 
-  const room = [data.userId, data.receiverId].sort().join("_");
-
-  socket.to(room).emit("typing", {
-    userId: data.userId
+    socket.to(room).emit("typing", {
+      userId: socket.data.userId
+    });
   });
 
-});
+  socket.on("messageSeen", (data) => {
+    const room = [socket.data.userId, data.receiverId].sort().join("_");
 
-socket.on("messageSeen", (data) => {
+    socket.to(room).emit("messageSeen");
+  });
 
-  const room = [data.userId, data.receiverId].sort().join("_");
-
-  socket.to(room).emit("messageSeen");
-
-});
-
-   socket.on("disconnect", () => {
-
+  socket.on("disconnect", () => {
     if (socket.data.userId) {
       removeOnlineSocket(socket.data.userId, socket.id);
     }
@@ -145,9 +213,7 @@ socket.on("messageSeen", (data) => {
     io.emit("onlineUsers", getOnlineUserIds());
 
     console.log("User disconnected:", socket.id);
-
   });
-
 });
 
 
@@ -179,6 +245,8 @@ app.use((err, req, res, next) => {
   });
 });
 
-server.listen(3000, () => {
-  console.log("Server running on http://localhost:3000");
+const PORT = process.env.PORT || 3000;
+
+server.listen(PORT, () => {
+  console.log("Server running on http://localhost:" + PORT);
 });

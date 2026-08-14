@@ -2,7 +2,19 @@ function normalizePostsResponse(data) {
   return Array.isArray(data) ? data : (data.posts || []);
 }
 
-const socket = io();
+// Phase 4: the server now requires a JWT on the socket handshake.
+const socket = io({
+  auth: {
+    token: localStorage.getItem("token") || ""
+  }
+});
+
+function reconnectSocketWithToken() {
+  socket.auth = { token: localStorage.getItem("token") || "" };
+  socket.disconnect();
+  socket.connect();
+}
+
 
 socket.on("newPost", () => {
 
@@ -223,6 +235,7 @@ function login() {
 
     const payload = JSON.parse(atob(data.token.split(".")[1]));
 
+    reconnectSocketWithToken();
     socket.emit("userOnline", payload.id);
 
     const loginPanel = document.getElementById("loginPanel");
@@ -1844,6 +1857,7 @@ function restoreSession() {
     if (sidePanel) sidePanel.style.display = "none";
     setLoginPageUI(false);
 
+    reconnectSocketWithToken();
     socket.emit("userOnline", payload.id);
 
     /* Load fresh content */

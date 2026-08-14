@@ -1,24 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
-const path = require("path");
 
 const Story = require("../models/Story");
 const auth = require("../middleware/auth");
-
-const storage = multer.diskStorage({
-  destination: "uploads/",
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
-});
-
-const upload = multer({ storage });
+const { mediaUpload } = require("../middleware/upload");
 
 router.post(
   "/",
   auth,
-  upload.single("media"),
+  mediaUpload.single("media"),
   async (req, res) => {
     try {
       if (!req.file) {
@@ -54,8 +44,13 @@ router.post(
 
 router.get("/", async (req, res) => {
   try {
-    const stories = await Story.find()
-      .populate("user", "username")
+    // Phase 6: only stories from the last 24 hours (matches the TTL index).
+    const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000);
+
+    const stories = await Story.find({
+      createdAt: { $gte: cutoff }
+    })
+      .populate("user", "username profilePicture")
       .sort({ createdAt: -1 });
 
     res.json(stories);

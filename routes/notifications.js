@@ -59,6 +59,34 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
+// Mark all notifications as read
+router.put("/read-all", auth, async (req, res) => {
+  try {
+    const result = await Notification.updateMany(
+      {
+        user: req.user.id,
+        read: false
+      },
+      {
+        $set: {
+          read: true
+        }
+      }
+    );
+
+    res.json({
+      message: "All notifications marked as read",
+      updated: result.modifiedCount
+    });
+  } catch (error) {
+    console.error("Mark all notifications read error:", error);
+
+    res.status(500).json({
+      message: "Unable to update notifications"
+    });
+  }
+});
+
 // Mark one notification as read
 router.put("/:id/read", auth, async (req, res) => {
   try {
@@ -98,34 +126,6 @@ router.put("/:id/read", auth, async (req, res) => {
 
     res.status(500).json({
       message: "Unable to update notification"
-    });
-  }
-});
-
-// Mark all notifications as read
-router.put("/read-all", auth, async (req, res) => {
-  try {
-    const result = await Notification.updateMany(
-      {
-        user: req.user.id,
-        read: false
-      },
-      {
-        $set: {
-          read: true
-        }
-      }
-    );
-
-    res.json({
-      message: "All notifications marked as read",
-      updated: result.modifiedCount
-    });
-  } catch (error) {
-    console.error("Mark all notifications read error:", error);
-
-    res.status(500).json({
-      message: "Unable to update notifications"
     });
   }
 });

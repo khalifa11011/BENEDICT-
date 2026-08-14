@@ -34,9 +34,16 @@ router.post("/:postId", auth, async (req, res) => {
 
     await comment.save();
 
+    // Phase 2: return the author details and the up-to-date comment count.
+    const populated = await Comment.findById(comment._id)
+      .populate("user", "username profilePicture");
+
+    const commentCount = await Comment.countDocuments({ post: post._id });
+
     res.json({
       message: "Comment added",
-      comment
+      comment: populated,
+      commentCount
     });
 
   } catch (err) {

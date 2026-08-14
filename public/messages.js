@@ -1,4 +1,8 @@
-const socket = io();
+const socket = io({
+  auth: {
+    token: localStorage.getItem("token") || ""
+  }
+});
 
 let allConversations = [];
 let searchUsersTimer = null;

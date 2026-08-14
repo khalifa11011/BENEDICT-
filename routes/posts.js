@@ -6,6 +6,8 @@ const Post = require("../models/Post");
 const Comment = require("../models/Comment");
 const User = require("../models/User");
 const Notification = require("../models/Notification");
+const Friend = require("../models/Friend");
+const { createNotification } = require("../utils/notify");
 const auth = require("../middleware/auth");
 const upload = require("../middleware/upload");
 
@@ -73,7 +75,26 @@ router.get("/", auth, async (req, res) => {
       });
     }
 
-    const following = [...user.following, user._id];
+    // Phase 5: the feed covers people you follow, your accepted friends and yourself.
+    const friendships = await Friend.find({
+      status: "accepted",
+      $or: [
+        { sender: user._id },
+        { receiver: user._id }
+      ]
+    }).select("sender receiver").lean();
+
+    const friendIds = friendships.map(friendship =>
+      String(friendship.sender) === String(user._id)
+        ? friendship.receiver
+        : friendship.sender
+    );
+
+    const authorIds = [...user.following, ...friendIds, user._id];
+
+    const following = [
+      ...new Map(authorIds.map(id => [String(id), id])).values()
+    ];
 
     let page = Number.parseInt(req.query.page, 10);
     let limit = Number.parseInt(req.query.limit, 10);
@@ -184,7 +205,7 @@ router.put("/:id/react", auth, async (req, res) => {
 
     if (post.user.toString() !== req.user.id) {
 
-      await Notification.create({
+      await createNotification(req, {
         user: post.user,
         fromUser: req.user.id,
         type: "reaction",
@@ -214,7 +235,13 @@ router.post("/:id/comment", auth, async(req,res)=>{
 
 try{
 
-const {text}=req.body;
+const text = typeof req.body.text === "string" ? req.body.text.trim() : "";
+
+if(!text){
+return res.status(400).json({
+error:"Comment cannot be empty"
+});
+}
 
 
 const post=await Post.findById(req.params.id);
@@ -232,14 +259,14 @@ error:"Post not found"
 const comment = new Comment({
   post: post._id,
   user: req.user.id,
-  text: text.trim()
+  text
 });
 
 await comment.save();
 
 if(post.user.toString() !== req.user.id){
 
-await Notification.create({
+await createNotification(req, {
 
 user:post.user,
 
@@ -257,11 +284,18 @@ message:"Someone commented on your post"
 
 
 
+const populatedComment = await Comment.findById(comment._id)
+  .populate("user", "username profilePicture");
+
+const commentCount = await Comment.countDocuments({ post: post._id });
+
 res.json({
 
 message:"Comment added successfully",
 
-comments:post.comments
+comment: populatedComment,
+
+commentCount
 
 });
 
