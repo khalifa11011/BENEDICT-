@@ -327,6 +327,8 @@ function loadMyProfile() {
     });
 }
 
+let currentUserId = null;
+
 function loadProfile(id) {
 
   const token = getToken();
@@ -335,8 +337,6 @@ function loadProfile(id) {
     alert("Please login first.");
     return;
   }
-
-  let currentUserId = null;
 
   try {
     const payload = JSON.parse(atob(token.split(".")[1]));
