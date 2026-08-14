@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Saved - BENEDICT</title>
-<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="style.css?v=6">
 
 <style>
 body{
@@ -150,6 +150,41 @@ body{
   cursor:pointer;
   font-size:12px;
 }
+
+.saved-reactions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:14px;
+}
+
+.saved-reactions button,
+.saved-action-button{
+  padding:7px 10px;
+  border:1px solid rgba(212,175,55,.25);
+  border-radius:9px;
+  background:#111113;
+  color:#ddd;
+  cursor:pointer;
+  font-size:12px;
+}
+
+.saved-reactions button:active,
+.saved-action-button:active,
+.unsave-button:active{
+  transform:scale(.97);
+}
+
+.saved-post-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:8px;
+}
+
+.saved-action-button{
+  color:#d4af37;
+}
 </style>
 </head>
 
@@ -255,11 +290,28 @@ async function loadSavedPosts(){
 
           ${image}
 
-          <button
-            class="unsave-button"
-            onclick="removeSavedPost('${post._id}')">
-            Remove from Saved
-          </button>
+          <div class="saved-reactions">
+            <button onclick="reactSavedPost('${post._id}','like')">❤️ Like</button>
+            <button onclick="reactSavedPost('${post._id}','love')">😍 Love</button>
+            <button onclick="reactSavedPost('${post._id}','haha')">😂 Haha</button>
+            <button onclick="reactSavedPost('${post._id}','wow')">😮 Wow</button>
+            <button onclick="reactSavedPost('${post._id}','sad')">😢 Sad</button>
+            <button onclick="reactSavedPost('${post._id}','angry')">😡 Angry</button>
+          </div>
+
+          <div class="saved-post-actions">
+            <button
+              class="saved-action-button"
+              onclick="shareSavedPost('${post._id}')">
+              ↗ Share
+            </button>
+
+            <button
+              class="unsave-button"
+              onclick="removeSavedPost('${post._id}')">
+              🔖 Remove from Saved
+            </button>
+          </div>
         </article>
       `;
 
@@ -277,6 +329,82 @@ async function loadSavedPosts(){
         Please try again later.
       </div>
     `;
+  }
+}
+
+async function reactSavedPost(postId, type){
+
+  const token = localStorage.getItem("token");
+
+  if(!token){
+    window.location.href = "/";
+    return;
+  }
+
+  try{
+
+    const response = await fetch(
+      "/api/posts/" + postId + "/react",
+      {
+        method:"PUT",
+        headers:{
+          "Content-Type":"application/json",
+          Authorization:"Bearer " + token
+        },
+        body:JSON.stringify({ type })
+      }
+    );
+
+    const data = await response.json();
+
+    if(!response.ok){
+      throw new Error(data.error || "Unable to react to post");
+    }
+
+    loadSavedPosts();
+
+  }catch(error){
+
+    console.error("Saved post reaction error:",error);
+    alert(error.message || "Unable to add reaction.");
+
+  }
+}
+
+async function shareSavedPost(postId){
+
+  const token = localStorage.getItem("token");
+
+  if(!token){
+    window.location.href = "/";
+    return;
+  }
+
+  try{
+
+    const response = await fetch(
+      "/api/posts/" + postId + "/share",
+      {
+        method:"POST",
+        headers:{
+          Authorization:"Bearer " + token
+        }
+      }
+    );
+
+    const data = await response.json();
+
+    if(!response.ok){
+      throw new Error(data.error || "Unable to share post");
+    }
+
+    alert("Post shared successfully!");
+
+  }catch(error){
+
+    console.error("Saved post share error:",error);
+    alert(error.message || "Unable to share post.");
+
   }
 }
 
