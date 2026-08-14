@@ -1,5 +1,13 @@
 function normalizePostsResponse(data) {
-  return Array.isArray(data) ? data : (data.posts || []);
+  if (Array.isArray(data)) {
+    return data;
+  }
+
+  if (data && Array.isArray(data.posts)) {
+    return data.posts;
+  }
+
+  return [];
 }
 
 const socket = io();
@@ -556,7 +564,7 @@ function togglePostMenu(postId) {
 document.addEventListener("click", function(event) {
 
   if (
-    !event.target.closest(".benedict-post-menu") &&
+    !event.target.closest(".post-more-button") &&
     !event.target.closest(".benedict-post-popup")
   ) {
     document.querySelectorAll(".benedict-post-popup").forEach(menu => {
@@ -567,224 +575,8 @@ document.addEventListener("click", function(event) {
 });
 
 
-function loadPosts() {
-
-  const token = getToken();
-
-  if (!token) return;
-
-  fetch("/api/posts", {
-    headers: {
-      "Authorization": "Bearer " + token
-    }
-  })
-  .then(res => res.json())
-  .then(posts => {
-
-    discoveryPosts = posts;
-
-    const box = document.getElementById("posts");
-    box.innerHTML = "";
-
-    posts.forEach(post => {
-
-      box.innerHTML += `
-      <div class="post">
-
-        <div class="benedict-post-header">
-
-          <div
-            class="benedict-post-avatar"
-            onclick="openUserProfile('${post.user?._id || post.user}')"
-            style="cursor:pointer;">
-            ${
-              post.user && post.user.profilePicture
-                ? `<img src="${escapeHtml(post.user.profilePicture)}" alt="">`
-                : `<span>${escapeHtml(
-                    ((post.user && (post.user.fullName || post.user.username)) || "B")
-                      .charAt(0)
-                      .toUpperCase()
-                  )}</span>`
-            }
-          </div>
-
-          <div
-            class="benedict-post-identity"
-            onclick="openUserProfile('${post.user?._id || post.user}')"
-            style="cursor:pointer;">
-            <strong>
-              ${escapeHtml(
-                (post.user && (post.user.fullName || post.user.username)) || "BENEDICT User"
-              )}
-              <span class="benedict-identity-mark">✦</span>
-            </strong>
-
-            <div class="benedict-post-meta">
-              @${escapeHtml((post.user && post.user.username) || "user")}
-              <span>·</span>
-              ${post.createdAt
-                ? new Date(post.createdAt).toLocaleString([], {
-                    month: "short",
-                    day: "numeric",
-                    hour: "numeric",
-                    minute: "2-digit"
-                  })
-                : "Just now"}
-            </div>
-          </div>
-
-          <button
-            class="benedict-post-menu"
-            type="button"
-            aria-label="Post options"
-            onclick="togglePostMenu('${post._id}')">
-            ⋯
-          </button>
-
-          <div
-            id="post-menu-${post._id}"
-            class="benedict-post-popup"
-            style="display:none;">
-            ${
-              String(post.user?._id || post.user) === String(currentUserId)
-                ? `
-                  <button onclick="editPost('${post._id}', \`${post.content || ""}\`)">
-                    ✏️ Edit Post
-                  </button>
-                  <button onclick="deletePost('${post._id}')">
-                    🗑️ Delete Post
-                  </button>
-                `
-                : `
-                  <button onclick="openUserProfile('${post.user?._id || post.user}')">
-                    👤 View Profile
-                  </button>
-                  <button onclick="followUser('${post.user?._id || post.user}')">
-                    ➕ Follow
-                  </button>
-                  <button onclick="alert('Report feature coming soon.')">
-                    🚩 Report Post
-                  </button>
-                `
-            }
-          </div>
-
-        </div>
-
-        <p>${escapeHtml(post.content || "")}</p>
-
-        ${post.image ? `<img src="${post.image}" alt="Post Image">` : ""}
-
-        <p>
-❤️ ${post.reactions ? post.reactions.filter(r => r.type === "like").length : 0}
-😍 ${post.reactions ? post.reactions.filter(r => r.type === "love").length : 0}
-😂 ${post.reactions ? post.reactions.filter(r => r.type === "haha").length : 0}
-😮 ${post.reactions ? post.reactions.filter(r => r.type === "wow").length : 0}
-😢 ${post.reactions ? post.reactions.filter(r => r.type === "sad").length : 0}
-😡 ${post.reactions ? post.reactions.filter(r => r.type === "angry").length : 0}
-</p>
-
-<button onclick="showLikes('${post._id}')">
-👥 View Likes
-</button>
-
-<div id="likes-${post._id}"></div>
-
-<div class="reactions">
-
-<button onclick="reactPost('${post._id}','like')">
-❤️ Like
-</button>
-
-<button onclick="reactPost('${post._id}','love')">
-😍 Love
-</button>
-
-<button onclick="reactPost('${post._id}','haha')">
-😂 Haha
-</button>
-
-<button onclick="reactPost('${post._id}','wow')">
-😮 Wow
-</button>
-
-<button onclick="reactPost('${post._id}','sad')">
-😢 Sad
-</button>
-
-<button onclick="reactPost('${post._id}','angry')">
-😡 Angry
-</button>
-
-</div>
-
-
-        <div id="comments-${post._id}">
-          <p>Loading comments...</p>
-        </div>
-
-        <input
-          id="comment-${post._id}"
-          placeholder="Write a comment...">
-
-
-        <button onclick="addComment('${post._id}')">
-  💬 Comment
-</button>
-
-<button onclick="sharePost('${post._id}')">
-  ↗ Share
-</button>
-
-${
-  String(post.user?._id || post.user) === String(currentUserId)
-    ? `
-      <button onclick="editPost('${post._id}', \`${post.content || ""}\`)">
-        ✏️ Edit
-      </button>
-
-      <button onclick="deletePost('${post._id}')">
-        🗑 Delete
-      </button>
-    `
-    : `
-      <button onclick="openUserProfile('${post.user?._id || post.user}')">
-        👤 View Profile
-      </button>
-
-      <button onclick="followUser('${post.user?._id || post.user}')">
-        ➕ Follow
-      </button>
-    `
-}
-
-      </div>
-      `;
-
-      loadComments(post._id);
-
-    });
-
-    if (currentDiscoveryTab === "news") {
-      loadRealNews("news");
-    } else if (currentDiscoveryTab === "entertainment") {
-      loadRealNews("entertainment");
-    } else {
-      renderDiscoveryPosts();
-    }
-
-  })
-  .catch(err => {
-    console.error(err);
-    document.getElementById("posts").innerHTML =
-      "<p>Unable to load posts.</p>";
-  });
-
-}
-
-
 let discoveryPosts = [];
-let currentDiscoveryTab = "news";
+let currentDiscoveryTab = "for-you";
 
 function switchDiscovery(tab, button) {
   currentDiscoveryTab = tab;
@@ -896,6 +688,79 @@ function escapeHtml(value) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+}
+
+function loadPosts() {
+
+  const token = getToken();
+
+  if (!token) {
+    console.warn("BENEDICT: No login token available.");
+    return;
+  }
+
+  fetch("/api/posts", {
+    headers: {
+      "Authorization": "Bearer " + token
+    }
+  })
+  .then(async res => {
+
+    const data = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+
+      console.error("BENEDICT feed error:", res.status, data);
+
+      if (res.status === 401) {
+        alert("Your login session is no longer valid. Please log in again.");
+        localStorage.removeItem("token");
+        restoreSession();
+        return null;
+      }
+
+      throw new Error(
+        "HTTP " + res.status + ": " +
+        (data.message || data.error || "Unable to load your feed.")
+      );
+    }
+
+    return data;
+
+  })
+  .then(data => {
+
+    if (!data) return;
+
+    const posts = normalizePostsResponse(data);
+
+    discoveryPosts = posts;
+
+    renderDiscoveryPosts();
+
+  })
+  .catch(error => {
+
+    console.error("BENEDICT loadPosts error:", error);
+
+    const box = document.getElementById("posts");
+
+    if (box) {
+      box.innerHTML = `
+        <div class="post" style="text-align:center;padding:25px;">
+          <strong>Unable to load your feed.</strong>
+          <p style="opacity:.75;">
+            ${escapeHtml(error.message || "Unknown feed error")}
+          </p>
+          <button onclick="loadPosts()">
+            🔄 Try Again
+          </button>
+        </div>
+      `;
+    }
+
+  });
+
 }
 
 function renderDiscoveryPosts() {
@@ -1076,9 +941,52 @@ function renderDiscoveryPosts() {
 
           <button
             class="post-more-button"
-            aria-label="Post options">
+            type="button"
+            aria-label="Post options"
+            onclick="togglePostMenu('${post._id}')">
             ⋯
           </button>
+
+          <div
+            id="post-menu-${post._id}"
+            class="benedict-post-popup"
+            style="display:none;">
+
+            ${
+              String(post.user?._id || post.user) === String(currentUserId)
+                ? `
+                  <button onclick="savePost('${post._id}')">
+                    🔖 Save Post
+                  </button>
+
+                  <button onclick="editPost('${post._id}', \`${content}\`)">
+                    ✏️ Edit Post
+                  </button>
+
+                  <button onclick="deletePost('${post._id}')">
+                    🗑️ Delete Post
+                  </button>
+                `
+                : `
+                  <button onclick="savePost('${post._id}')">
+                    🔖 Save Post
+                  </button>
+
+                  <button onclick="openUserProfile('${post.user?._id || post.user}')">
+                    👤 View Profile
+                  </button>
+
+                  <button onclick="followUser('${post.user?._id || post.user}')">
+                    ➕ Follow
+                  </button>
+
+                  <button onclick="alert('Report feature coming soon.')">
+                    🚩 Report Post
+                  </button>
+                `
+            }
+
+          </div>
 
         </div>
 
@@ -1195,20 +1103,6 @@ function renderDiscoveryPosts() {
 
         </div>
 
-
-        <div class="benedict-post-owner-tools">
-
-          <button
-            onclick="editPost('${post._id}', \`${content}\`)">
-            ✏️ Edit
-          </button>
-
-          <button
-            onclick="deletePost('${post._id}')">
-            🗑 Delete
-          </button>
-
-        </div>
 
       </article>
 
@@ -1872,3 +1766,41 @@ window.addEventListener("load", function () {
   restoreSession();
 
 });
+
+
+async function savePost(postId) {
+
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    alert("Please login to save posts.");
+    return;
+  }
+
+  try {
+
+    const response = await fetch(
+      "/api/posts/" + postId + "/save",
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Unable to save post");
+    }
+
+    alert("🔖 Post saved to BENEDICT.");
+
+  } catch (error) {
+
+    console.error("Save post error:", error);
+
+    alert(error.message || "Unable to save post.");
+  }
+}

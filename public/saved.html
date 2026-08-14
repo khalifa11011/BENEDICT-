@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saved - BENEDICT</title>
+<link rel="stylesheet" href="style.css?v=5">
+
+<style>
+body{
+  margin:0;
+  background:#0d0d0f;
+  color:#fff;
+  font-family:Arial,sans-serif;
+}
+
+.saved-header{
+  height:62px;
+  background:#111113;
+  border-bottom:1px solid rgba(212,175,55,.35);
+  display:flex;
+  align-items:center;
+  padding:0 15px;
+  gap:12px;
+}
+
+.saved-back{
+  width:38px;
+  height:38px;
+  border:1px solid rgba(212,175,55,.3);
+  border-radius:10px;
+  background:#151518;
+  color:#d4af37;
+  font-size:25px;
+}
+
+.saved-title{
+  color:#d4af37;
+  font-size:19px;
+  font-weight:700;
+}
+
+.saved-content{
+  max-width:760px;
+  margin:auto;
+  padding:24px 14px 40px;
+}
+
+.saved-hero{
+  text-align:center;
+  padding:20px 10px;
+}
+
+.saved-icon-main{
+  font-size:46px;
+}
+
+.saved-hero h1{
+  color:#d4af37;
+  font-size:25px;
+  margin:10px 0;
+}
+
+.saved-hero p{
+  color:#999;
+  font-size:14px;
+}
+
+.saved-card{
+  background:#151518;
+  border:1px solid rgba(212,175,55,.22);
+  border-radius:16px;
+  overflow:hidden;
+}
+
+.saved-loading,
+.saved-empty,
+.saved-error{
+  padding:35px 20px;
+  text-align:center;
+}
+
+.saved-loading-icon,
+.saved-empty-icon{
+  font-size:38px;
+}
+
+.saved-loading h2,
+.saved-empty h2,
+.saved-error strong{
+  display:block;
+  color:#d4af37;
+  font-size:18px;
+  margin:10px 0;
+}
+
+.saved-loading p,
+.saved-empty p,
+.saved-error{
+  color:#888;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.saved-post{
+  padding:18px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.saved-post:last-child{
+  border-bottom:0;
+}
+
+.saved-post-author{
+  color:#d4af37;
+  font-weight:700;
+  font-size:14px;
+  margin-bottom:5px;
+}
+
+.saved-post-date{
+  color:#777;
+  font-size:11px;
+  margin-bottom:10px;
+}
+
+.saved-post-text{
+  color:#eee;
+  font-size:15px;
+  line-height:1.5;
+  white-space:pre-wrap;
+}
+
+.saved-post-image{
+  display:block;
+  width:100%;
+  max-height:420px;
+
+  border-radius:12px;
+  margin-top:12px;
+}
+
+.unsave-button{
+  margin-top:13px;
+  padding:8px 13px;
+  border:1px solid rgba(212,175,55,.35);
+  border-radius:9px;
+  background:#111113;
+  color:#d4af37;
+  cursor:pointer;
+  font-size:12px;
+}
+</style>
+</head>
+
+<body>
+
+<header class="saved-header">
+  <button class="saved-back" onclick="history.back()">‹</button>
+  <div class="saved-title">Saved</div>
+</header>
+
+<main class="saved-content">
+
+<section class="saved-hero">
+  <div class="saved-icon-main">🔖</div>
+  <h1>Saved</h1>
+  <p>Your saved posts in one place.</p>
+</section>
+
+<section class="saved-card">
+
+  <div class="saved-loading" id="savedLoading">
+    <div class="saved-loading-icon">⏳</div>
+    <h2>Loading Saved Posts</h2>
+    <p>Please wait...</p>
+  </div>
+
+  <div id="savedPosts"></div>
+
+</section>
+
+</main>
+
+<script>
+async function loadSavedPosts(){
+
+  const token = localStorage.getItem("token");
+  const loading = document.getElementById("savedLoading");
+  const postsBox = document.getElementById("savedPosts");
+
+  if(!token){
+    window.location.href = "/";
+    return;
+  }
+
+  try{
+    const response = await fetch("/api/posts/saved",{
+      headers:{
+        Authorization:"Bearer " + token
+      }
+    });
+
+    const data = await response.json();
+
+    if(!response.ok){
+      throw new Error(data.message || "Unable to load saved posts");
+    }
+
+    loading.style.display = "none";
+
+    if(!data.posts || data.posts.length === 0){
+      postsBox.innerHTML = `
+        <div class="saved-empty">
+          <div class="saved-empty-icon">🔖</div>
+          <h2>No Saved Posts Yet</h2>
+          <p>Posts you save from BENEDICT will appear here.</p>
+        </div>
+      `;
+      return;
+    }
+
+    postsBox.innerHTML = data.posts.map(post => {
+
+      const author =
+        post.user?.fullName ||
+        post.user?.username ||
+        "BENEDICT User";
+
+      const date = post.createdAt
+        ? new Date(post.createdAt).toLocaleDateString(undefined,{
+            year:"numeric",
+            month:"long",
+            day:"numeric"
+          })
+        : "";
+
+      const image = post.image
+        ? `<img class="saved-post-image" src="${post.image}" alt="Saved post">`
+        : "";
+
+      return `
+        <article class="saved-post">
+          <div class="saved-post-author">
+            ${escapeSavedText(author)}
+          </div>
+
+          <div class="saved-post-date">
+            ${escapeSavedText(date)}
+          </div>
+
+          <div class="saved-post-text">
+            ${escapeSavedText(post.content || "")}
+          </div>
+
+          ${image}
+
+          <button
+            class="unsave-button"
+            onclick="removeSavedPost('${post._id}')">
+            Remove from Saved
+          </button>
+        </article>
+      `;
+
+    }).join("");
+
+  }catch(error){
+
+    console.error("Saved posts error:",error);
+
+    loading.style.display = "none";
+
+    postsBox.innerHTML = `
+      <div class="saved-error">
+        <strong>Unable to load Saved Posts</strong>
+        Please try again later.
+      </div>
+    `;
+  }
+}
+
+async function removeSavedPost(postId){
+
+  const token = localStorage.getItem("token");
+
+  try{
+
+    const response = await fetch(
+      "/api/posts/" + postId + "/save",
+      {
+        method:"DELETE",
+        headers:{
+          Authorization:"Bearer " + token
+        }
+      }
+    );
+
+    if(!response.ok){
+      throw new Error("Unable to remove saved post");
+    }
+
+    loadSavedPosts();
+
+  }catch(error){
+
+    console.error("Remove saved post error:",error);
+
+    alert("Unable to remove this post from Saved.");
+  }
+}
+
+function escapeSavedText(text){
+
+  const div = document.createElement("div");
+
+  div.textContent = text;
+
+  return div.innerHTML;
+}
+
+loadSavedPosts();
+</script>
+
+</body>
+</html>

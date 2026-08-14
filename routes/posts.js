@@ -62,6 +62,89 @@ router.get("/memory", auth, async (req, res) => {
   }
 });
 
+// BENEDICT Saved Posts
+router.post("/:postId/save", auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.postId);
+
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found"
+      });
+    }
+
+    await User.findByIdAndUpdate(
+      req.user.id,
+      { $addToSet: { savedPosts: post._id } }
+    );
+
+    res.json({
+      message: "Post saved successfully",
+      saved: true
+    });
+
+  } catch (error) {
+    console.error("Save post error:", error);
+
+    res.status(500).json({
+      message: "Unable to save post"
+    });
+  }
+});
+
+router.delete("/:postId/save", auth, async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(
+      req.user.id,
+      { $pull: { savedPosts: req.params.postId } }
+    );
+
+    res.json({
+      message: "Post removed from Saved",
+      saved: false
+    });
+
+  } catch (error) {
+    console.error("Unsave post error:", error);
+
+    res.status(500).json({
+      message: "Unable to remove saved post"
+    });
+  }
+});
+
+router.get("/saved", auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id)
+      .populate({
+        path: "savedPosts",
+        populate: {
+          path: "user",
+          select: "_id username fullName profilePicture"
+        }
+      });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found"
+      });
+    }
+
+    const posts = (user.savedPosts || [])
+      .filter(Boolean)
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    res.json({ posts });
+
+  } catch (error) {
+    console.error("Saved posts error:", error);
+
+    res.status(500).json({
+      message: "Unable to load saved posts"
+    });
+  }
+});
+
 // Feed
 router.get("/", auth, async (req, res) => {
   try {
