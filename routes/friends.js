@@ -80,15 +80,6 @@ router.post("/request", auth, async (req, res) => {
       message: "Someone sent you a friend request"
     });
 
-    const io = req.app.get("io");
-
-    if (io) {
-      io.to("user:" + String(receiver)).emit("browserNotification", {
-        title: "BENEDICT",
-        message: "You have a new friend request"
-      });
-    }
-
     res.json({
       message: "Friend request sent",
       request
