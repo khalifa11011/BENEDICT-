@@ -34,18 +34,7 @@ socket.on("newNotification", (notification) => {
 
   console.log("New notification:", notification);
 
-  const box = document.getElementById("notifications");
-
-  if (box) {
-    loadNotifications();
-  }
-
-  const notificationDot =
-    document.querySelector(".header-notification-dot");
-
-  if (notificationDot) {
-    notificationDot.style.display = "block";
-  }
+  loadNotifications();
 
 });
 
@@ -1264,6 +1253,14 @@ function loadNotifications() {
       Array.isArray(data.notifications)
         ? data.notifications
         : [];
+
+    const notificationDot =
+      document.querySelector(".header-notification-dot");
+
+    if (notificationDot) {
+      notificationDot.style.display =
+        Number(data.unread) > 0 ? "block" : "none";
+    }
 
     box.innerHTML = "";
 
