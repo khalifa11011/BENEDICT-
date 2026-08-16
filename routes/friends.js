@@ -57,6 +57,13 @@ router.post("/request", auth, async (req, res) => {
 
         await existing.save();
 
+        await createNotification(req, {
+          user: receiver,
+          fromUser: req.user.id,
+          type: "friend_request",
+          message: "Someone sent you a friend request"
+        });
+
         return res.json({
           message: "Friend request sent",
           request: existing
