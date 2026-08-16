@@ -30,6 +30,25 @@ socket.on("newPost", () => {
 
 });
 
+socket.on("newNotification", (notification) => {
+
+  console.log("New notification:", notification);
+
+  const box = document.getElementById("notifications");
+
+  if (box) {
+    loadNotifications();
+  }
+
+  const notificationDot =
+    document.querySelector(".header-notification-dot");
+
+  if (notificationDot) {
+    notificationDot.style.display = "block";
+  }
+
+});
+
 let onlineUsers = [];
 
 socket.on("onlineUsers", (users) => {
@@ -1217,36 +1236,182 @@ function loadNotifications() {
 
   if (!token) return;
 
+  const box = document.getElementById("notifications");
+
+  if (!box) return;
+
+  box.innerHTML = "<p>Loading notifications...</p>";
+
   fetch("/api/notifications", {
     headers: {
       "Authorization": "Bearer " + token
     }
   })
+  .then(async res => {
 
-  .then(res => res.json())
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Unable to load notifications");
+    }
+
+    return data;
+
+  })
   .then(data => {
 
-    const box = document.getElementById("notifications");
+    const notifications =
+      Array.isArray(data.notifications)
+        ? data.notifications
+        : [];
+
     box.innerHTML = "";
 
-    if (!Array.isArray(data) || data.length === 0) {
-      box.innerHTML = "<p>No notifications.</p>";
+    if (notifications.length === 0) {
+
+      box.innerHTML = `
+        <div class="notification-empty">
+          <div style="font-size:32px;">🔔</div>
+          <h3>No notifications yet</h3>
+          <p>Likes, comments, reactions and friend activity will appear here.</p>
+        </div>
+      `;
+
       return;
     }
 
-    data.forEach(note => {
+    notifications.forEach(note => {
 
-      box.innerHTML += "<div class='post'>" +
-                 "<p>" + note.message + "</p>" +
-                 "</div>";
+      const item = document.createElement("div");
+
+      item.className =
+        "post notification-item" +
+        (note.read ? "" : " notification-unread");
+
+      const sender =
+        note.fromUser?.username ||
+        "Someone";
+
+      const message =
+        note.message ||
+        "You have a new notification.";
+
+      const date =
+        note.createdAt
+          ? new Date(note.createdAt).toLocaleString()
+          : "";
+
+      item.innerHTML = `
+        <div class="notification-content">
+          <strong>@${sender}</strong>
+          <p>${message}</p>
+          <small>${date}</small>
+        </div>
+
+        ${
+          note.read
+            ? ""
+            : `
+              <button
+                type="button"
+                onclick="markNotificationRead('${note._id}')">
+                Mark as read
+              </button>
+            `
+        }
+      `;
+
+      box.appendChild(item);
 
     });
 
   })
-  .catch(() => {
+  .catch(error => {
 
-    document.getElementById("notifications").innerHTML =
-      "<p>Unable to load notifications.</p>";
+    console.error("Notification load error:", error);
+
+    box.innerHTML = `
+      <div class="notification-error">
+        <strong>Unable to load notifications.</strong>
+        <p>${error.message || "Please try again later."}</p>
+      </div>
+    `;
+
+  });
+
+}
+
+function markNotificationRead(notificationId) {
+
+  const token = getToken();
+
+  if (!token || !notificationId) return;
+
+  fetch("/api/notifications/" + notificationId + "/read", {
+    method: "PUT",
+    headers: {
+      "Authorization": "Bearer " + token
+    }
+  })
+  .then(async res => {
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(
+        data.message || "Unable to mark notification as read"
+      );
+    }
+
+    return data;
+
+  })
+  .then(() => {
+
+    loadNotifications();
+
+  })
+  .catch(error => {
+
+    console.error("Mark notification read error:", error);
+
+  });
+
+}
+
+function markAllNotificationsRead() {
+
+  const token = getToken();
+
+  if (!token) return;
+
+  fetch("/api/notifications/read-all", {
+    method: "PUT",
+    headers: {
+      "Authorization": "Bearer " + token
+    }
+  })
+  .then(async res => {
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(
+        data.message || "Unable to update notifications"
+      );
+    }
+
+    return data;
+
+  })
+  .then(() => {
+
+    loadNotifications();
+
+  })
+  .catch(error => {
+
+    console.error("Mark all notifications read error:", error);
 
   });
 

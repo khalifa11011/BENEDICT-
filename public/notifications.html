@@ -40,9 +40,17 @@
         <p>Loading notifications...</p>
       </div>
 
-      <button onclick="loadNotifications()">
-        🔄 Refresh Notifications
-      </button>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:15px;">
+
+        <button onclick="loadNotifications()">
+          🔄 Refresh Notifications
+        </button>
+
+        <button onclick="markAllNotificationsRead()">
+          ✓ Mark All as Read
+        </button>
+
+      </div>
 
     </div>
 
