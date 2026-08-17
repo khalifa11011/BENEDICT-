@@ -1564,7 +1564,7 @@ async function loadStories() {
     const box = document.getElementById("stories");
 
     if (!stories.length) {
-      box.innerHTML = "<p>No stories yet.</p>";
+      box.innerHTML = `<p class="stories-empty">No stories yet.</p>`;
       return;
     }
 
@@ -1575,13 +1575,17 @@ async function loadStories() {
       box.innerHTML += `
         <div class="story" onclick="viewStory('${story.media}', '${story.mediaType}')">
 
-          <strong>${story.user.username}</strong><br>
+          <span class="story-ring">
+            <span class="story-thumb">
+              ${
+                story.mediaType === "video"
+                ? `<video src="${story.media}" muted playsinline preload="metadata"></video>`
+                : `<img src="${story.media}" alt="${story.user.username} story">`
+              }
+            </span>
+          </span>
 
-          ${
-            story.mediaType === "video"
-            ? `<video src="${story.media}" controls width="180"></video>`
-            : `<img src="${story.media}" width="180">`
-          }
+          <span class="story-name">${story.user.username}</span>
 
         </div>
       `;
