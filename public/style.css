@@ -260,26 +260,127 @@ a {
    STORIES
 ========================= */
 
+/* Compact horizontal stories rail (stories.html) */
+
+.stories-rail-section {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  margin: 4px 0 0;
+}
+
+.stories-rail-head {
+  margin: 0 0 8px;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #d4af37;
+  font-weight: 600;
+}
+
 #stories {
   display: flex;
-  gap: 12px;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: 14px;
   overflow-x: auto;
-  padding: 8px 0;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  padding: 2px 2px 8px;
+  scrollbar-width: none;
+}
+
+#stories::-webkit-scrollbar {
+  display: none;
 }
 
 .story {
-  min-width: 150px;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 8px;
-  text-align: center;
+  flex: 0 0 auto;
+  width: 78px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  scroll-snap-align: start;
+}
+
+.story-ring {
+  display: block;
+  width: 78px;
+  height: 104px;
+  padding: 2px;
+  border-radius: 16px;
+  background: linear-gradient(
+    150deg,
+    #f0d77a,
+    #d4af37 45%,
+    rgba(212, 175, 55, 0.25)
+  );
+}
+
+.story.seen .story-ring {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.story-thumb {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #141414;
+  border: 2px solid #0b0b0b;
 }
 
 .story img,
 .story video {
   width: 100%;
-  border-radius: 10px;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;
+}
+
+.story-name {
+  max-width: 78px;
+  font-size: 11px;
+  line-height: 1.2;
+  color: #eaeaea;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.story:hover .story-thumb {
+  border-color: rgba(212, 175, 55, 0.45);
+}
+
+.stories-empty {
+  margin: 0;
+  font-size: 13px;
+  color: #9b9b9b;
+}
+
+@media (max-width: 380px) {
+
+  .story,
+  .story-ring,
+  .story-name {
+    width: 72px;
+    max-width: 72px;
+  }
+
+  .story-ring {
+    height: 96px;
+  }
+
 }
 
 /* =========================
@@ -4590,3 +4691,25 @@ html.login-active .benedict-header .header-actions {
   display: none !important;
 }
 
+
+/* Compact story composer (stories.html) */
+.story-compose {
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+
+.story-compose h2 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+.story-compose input[type="file"] {
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.story-compose button {
+  min-height: 38px;
+  padding: 8px 14px;
+  font-size: 13px;
+}
