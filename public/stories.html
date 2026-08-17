@@ -56,7 +56,7 @@
 
   <div class="center">
 
-    <section class="card">
+    <section class="card story-compose">
 
       <h2>📖 Stories</h2>
 
@@ -72,9 +72,9 @@
 
     </section>
 
-    <section class="card">
+    <section class="stories-rail-section">
 
-      <h2>Recent Stories</h2>
+      <h3 class="stories-rail-head">Recent Stories</h3>
 
       <div id="stories"></div>
 
@@ -84,6 +84,21 @@
 
 </main>
 
+<div
+  id="storyViewer"
+  class="story-viewer"
+  onclick="closeStory()">
+
+  <span class="close-story">&times;</span>
+
+  <div
+    id="storyContent"
+    onclick="event.stopPropagation()">
+  </div>
+
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
 <script src="/app.js"></script>
 
 <script>
