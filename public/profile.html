@@ -1748,6 +1748,12 @@ body {
 
     <div class="profile-avatar-wrap" id="profileAvatar">
 
+  <img class="profile-avatar" id="profileAvatarImage" alt="" style="display:none">
+
+  <div class="profile-avatar profile-avatar-placeholder" id="profileAvatarPlaceholder">
+    👤
+  </div>
+
   <button
     class="profile-picture-button"
     onclick="document.getElementById('profilePictureDirect').click()">
@@ -1883,6 +1889,43 @@ function showProfileTab(tab, button) {
 }
 
 
+function setCoverPhoto(path) {
+
+  const cover = document.getElementById("profileCover");
+
+  if (!cover || !path) return;
+
+  cover.style.setProperty(
+    "background-image",
+    "url('" + path + "?t=" + Date.now() + "')",
+    "important"
+  );
+
+  cover.classList.add("has-cover");
+
+}
+
+
+function setProfileAvatar(path) {
+
+  const img = document.getElementById("profileAvatarImage");
+  const placeholder = document.getElementById("profileAvatarPlaceholder");
+
+  if (!img || !placeholder) return;
+
+  if (path) {
+    img.src = path + "?t=" + Date.now();
+    img.style.display = "";
+    placeholder.style.display = "none";
+  } else {
+    img.removeAttribute("src");
+    img.style.display = "none";
+    placeholder.style.display = "";
+  }
+
+}
+
+
 function loadProfilePage() {
 
   const token = getToken();
@@ -1917,11 +1960,9 @@ function loadProfilePage() {
       const cover = document.getElementById("profileCover");
 
       if (user.coverPhoto) {
-        cover.style.backgroundImage =
-          "url('" + user.coverPhoto + "?t=" + Date.now() + "')";
-        cover.classList.add("has-cover");
+        setCoverPhoto(user.coverPhoto);
       } else {
-        cover.style.backgroundImage = "";
+        cover.style.removeProperty("background-image");
         cover.classList.remove("has-cover");
       }
 
@@ -1929,16 +1970,7 @@ function loadProfilePage() {
 
       /* PROFILE PICTURE */
 
-      document.getElementById("profileAvatar").innerHTML =
-
-        user.profilePicture
-
-        ? `<img class="profile-avatar"
-             src="${user.profilePicture}?t=${Date.now()}">`
-
-        : `<div class="profile-avatar profile-avatar-placeholder">
-             👤
-           </div>`;
+      setProfileAvatar(user.profilePicture);
 
 
       /* NAME + BIO */
@@ -2271,10 +2303,7 @@ async function uploadCoverPhoto() {
       throw new Error(data.error || "Cover photo upload failed");
     }
 
-    document.getElementById("profileCover").style.backgroundImage =
-      "url('" + data.coverPhoto + "?t=" + Date.now() + "')";
-
-    document.getElementById("profileCover").classList.add("has-cover");
+    setCoverPhoto(data.coverPhoto);
 
   } catch (err) {
     console.error(err);
@@ -2305,6 +2334,7 @@ async function uploadProfilePictureDirect() {
       throw new Error(data.error || "Profile picture upload failed");
     }
 
+    setProfileAvatar(data.profilePicture);
 
   } catch (err) {
     console.error(err);
