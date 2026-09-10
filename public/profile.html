@@ -1915,12 +1915,12 @@ function setProfileAvatar(path) {
 
   if (path) {
     img.src = path + "?t=" + Date.now();
-    img.style.display = "";
-    placeholder.style.display = "none";
+    img.style.setProperty("display", "block", "important");
+    placeholder.style.setProperty("display", "none", "important");
   } else {
     img.removeAttribute("src");
-    img.style.display = "none";
-    placeholder.style.display = "";
+    img.style.setProperty("display", "none", "important");
+    placeholder.style.setProperty("display", "flex", "important");
   }
 
 }
