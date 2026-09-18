@@ -97,12 +97,23 @@ const userSchema = new mongoose.Schema({
     }
   ],
 
+// Legacy plain-text field, kept only so old documents can be cleared.
 resetCode: {
+  type: String
+},
+
+// Reset codes are stored hashed.
+resetCodeHash: {
   type: String
 },
 
 resetCodeExpires: {
   type: Date
+},
+
+resetCodeAttempts: {
+  type: Number,
+  default: 0
 }
 
 }, { timestamps: true });
