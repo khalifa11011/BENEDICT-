@@ -164,8 +164,11 @@ router.post("/register", async (req, res) => {
 
     await user.save();
 
+    const token = signToken(user);
+
     res.status(201).json({
       message: "Registration successful",
+      token,
       user: {
         id: user._id,
         username: user.username,

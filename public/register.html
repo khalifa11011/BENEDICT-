@@ -76,11 +76,17 @@ async function registerAccount() {
       return;
     }
 
-    message.textContent = "Account created successfully.";
+    if (!data.token) {
+      message.textContent = "Account created, but automatic login failed. Please log in.";
+      return;
+    }
+
+    localStorage.setItem("token", data.token);
+    message.textContent = "Account created successfully. Welcome to BENEDICT!";
 
     setTimeout(() => {
       window.location.href = "/";
-    }, 1000);
+    }, 500);
 
   } catch (error) {
     message.textContent = "Unable to create account.";
