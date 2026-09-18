@@ -3,10 +3,47 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const User = require("../models/User");
+const { sendPasswordResetEmail } = require("../utils/mailer");
 
 const router = express.Router();
 
 const MIN_PASSWORD_LENGTH = 8;
+
+const RESET_CODE_TTL_MS = 15 * 60 * 1000;
+const MAX_RESET_ATTEMPTS = 5;
+
+// Reset codes are stored as keyed hashes, never in plain text.
+function hashResetCode(code) {
+  const key = process.env.JWT_SECRET || "benedict-reset-code";
+
+  return crypto
+    .createHmac("sha256", key)
+    .update(String(code))
+    .digest("hex");
+}
+
+function matchesResetCode(code, storedHash) {
+  if (typeof storedHash !== "string" || storedHash.length === 0) {
+    return false;
+  }
+
+  const candidate = Buffer.from(hashResetCode(code), "utf8");
+  const stored = Buffer.from(storedHash, "utf8");
+
+  if (candidate.length !== stored.length) {
+    return false;
+  }
+
+  return crypto.timingSafeEqual(candidate, stored);
+}
+
+function clearResetState(user) {
+  user.resetCode = undefined;
+  user.resetCodeHash = undefined;
+  user.resetCodeExpires = undefined;
+  user.resetCodeAttempts = 0;
+}
+
 
 function normalizeEmail(email) {
   return typeof email === "string" ? email.trim().toLowerCase() : "";
@@ -209,6 +246,9 @@ router.post("/login", async (req, res) => {
 
 // Request password reset
 router.post("/forgot-password", async (req, res) => {
+  const genericMessage =
+    "If an account matches those details, reset instructions will be sent";
+
   try {
     const email = normalizeEmail(req.body.email);
     const phone = normalizePhone(req.body.phone);
@@ -225,33 +265,50 @@ router.post("/forgot-password", async (req, res) => {
 
     // Do not reveal whether an account exists.
     if (!user) {
-      return res.json({
-        message: "If an account matches those details, reset instructions will be provided"
-      });
+      return res.json({ message: genericMessage });
     }
 
     const code = crypto
       .randomInt(100000, 1000000)
       .toString();
 
-    user.resetCode = code;
+    // Only the hash of the reset code is stored, so a database leak
+    // cannot be replayed to take over accounts.
+    user.resetCode = undefined;
+    user.resetCodeHash = hashResetCode(code);
+    user.resetCodeAttempts = 0;
     user.resetCodeExpires = new Date(
-      Date.now() + 15 * 60 * 1000
+      Date.now() + RESET_CODE_TTL_MS
     );
 
     await user.save();
 
-    /*
-     * Development note:
-     * The reset code is intentionally NOT returned in the API response.
-     *
-     * A production email/SMS provider should deliver this code to the
-     * account owner. We can integrate that delivery system separately.
-     */
+    if (user.email) {
+      try {
+        await sendPasswordResetEmail({
+          to: user.email,
+          username: user.username,
+          code,
+          expiresInMinutes: Math.round(RESET_CODE_TTL_MS / 60000)
+        });
+      } catch (mailError) {
+        console.error("Reset email delivery error:", mailError);
 
-    res.json({
-      message: "If an account matches those details, reset instructions will be provided"
-    });
+        clearResetState(user);
+        await user.save();
+
+        return res.status(500).json({
+          message: "Unable to send the reset email right now. Please try again later"
+        });
+      }
+    } else {
+      // Phone-only accounts have no delivery channel yet.
+      console.warn(
+        "Password reset requested for an account without an email address"
+      );
+    }
+
+    res.json({ message: genericMessage });
 
   } catch (error) {
     console.error("Forgot-password error:", error);
@@ -294,20 +351,51 @@ router.post("/reset-password", async (req, res) => {
       });
     }
 
-    if (
-      !user.resetCode ||
-      user.resetCode !== code ||
-      !user.resetCodeExpires ||
-      user.resetCodeExpires.getTime() < Date.now()
-    ) {
+    if (!user.resetCodeHash || !user.resetCodeExpires) {
+      return res.status(400).json({
+        message: "Invalid or expired reset code"
+      });
+    }
+
+    if (user.resetCodeExpires.getTime() < Date.now()) {
+      clearResetState(user);
+      await user.save();
+
+      return res.status(400).json({
+        message: "Invalid or expired reset code"
+      });
+    }
+
+    if ((user.resetCodeAttempts || 0) >= MAX_RESET_ATTEMPTS) {
+      clearResetState(user);
+      await user.save();
+
+      return res.status(429).json({
+        message: "Too many incorrect attempts. Request a new reset code"
+      });
+    }
+
+    if (!matchesResetCode(code, user.resetCodeHash)) {
+      user.resetCodeAttempts = (user.resetCodeAttempts || 0) + 1;
+
+      if (user.resetCodeAttempts >= MAX_RESET_ATTEMPTS) {
+        clearResetState(user);
+        await user.save();
+
+        return res.status(429).json({
+          message: "Too many incorrect attempts. Request a new reset code"
+        });
+      }
+
+      await user.save();
+
       return res.status(400).json({
         message: "Invalid or expired reset code"
       });
     }
 
     user.password = await bcrypt.hash(newPassword, 12);
-    user.resetCode = undefined;
-    user.resetCodeExpires = undefined;
+    clearResetState(user);
 
     await user.save();
 
