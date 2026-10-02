@@ -82,6 +82,28 @@ function getCurrentUserId() {
   return payload.id;
 }
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function safeMediaUrl(value) {
+  const raw = String(value ?? "").trim();
+  if (!raw) return "";
+
+  try {
+    const url = new URL(raw, window.location.origin);
+    if (url.protocol !== "http:" && url.protocol !== "https:") return "";
+    return escapeHtml(url.href);
+  } catch {
+    return "";
+  }
+}
+
 function loadChatTitle() {
 
   const receiver = getReceiverId();
@@ -98,7 +120,7 @@ function loadChatTitle() {
 
     if (data.user) {
       document.getElementById("chatTitle").innerHTML =
-      "Chat with " + data.user.username;
+      "Chat with " + escapeHtml(data.user.username || "");
     }
 
   });
@@ -150,17 +172,17 @@ console.log("MEDIA:", msg.media);
 
     box.innerHTML += `
         <div class="message ${mine ? "mine" : "theirs"}">
-            <strong>${msg.sender.username}</strong><br>
-${msg.text ? `<div class="message-text">${msg.text}</div>` : ""}
+            <strong>${escapeHtml(msg.sender?.username || "")}</strong><br>
+${msg.text ? `<div class="message-text">${escapeHtml(msg.text || "")}</div>` : ""}
 ${msg.media
   ? (msg.media.match(/\.(jpg|jpeg|png|gif)$/i)
-      ? `<img src="${msg.media}" style="max-width:250px;border-radius:10px;">`
+      ? `<img src="${safeMediaUrl(msg.media)}" style="max-width:250px;border-radius:10px;">`
       : msg.media.match(/\.(webm|mp3|wav|ogg|m4a)$/i)
         ? `<audio controls style="width:250px;">
-             <source src="${msg.media}">
+             <source src="${safeMediaUrl(msg.media)}">
            </audio>`
         : `<video controls style="max-width:250px;border-radius:10px;">
-             <source src="${msg.media}">
+             <source src="${safeMediaUrl(msg.media)}">
            </video>`)
   : ""}
 

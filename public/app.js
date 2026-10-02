@@ -61,9 +61,9 @@ function loadMyProfile() {
       const user = data.user;
 
       document.getElementById("profile").innerHTML = `
-        <h3>${user.fullName || user.username}</h3>
-<p>@${user.username}</p>
-<p>${user.bio || ""}</p>
+        <h3>${escapeHtml(user.fullName || user.username || "")}</h3>
+<p>@${escapeHtml(user.username || "")}</p>
+<p>${escapeHtml(user.bio || "")}</p>
 
 <p>
 <button onclick="showFollowers('${user._id}')">
@@ -148,8 +148,8 @@ function showFollowers(userId) {
         (data.user.followers.length
           ? data.user.followers.map(user => `
               <div>
-                👤 ${user.fullName || user.username}
-                (@${user.username})
+                👤 ${escapeHtml(user.fullName || user.username || "")}
+                (@${escapeHtml(user.username || "")})
               </div>
             `).join("")
           : "<p>No followers yet.</p>");
@@ -174,8 +174,8 @@ function showFollowing(userId) {
         (data.user.following.length
           ? data.user.following.map(user => `
               <div>
-                👤 ${user.fullName || user.username}
-                (@${user.username})
+                👤 ${escapeHtml(user.fullName || user.username || "")}
+                (@${escapeHtml(user.username || "")})
               </div>
             `).join("")
           : "<p>Not following anyone yet.</p>");
@@ -320,10 +320,10 @@ function loadMyProfile() {
       const user = data.user;
 
       document.getElementById("profile").innerHTML = `
-        ${user.profilePicture ? `<img src="${user.profilePicture}?t=${Date.now()}" width="120">` : ""}
-        <h3>${user.fullName || user.username}</h3>
-        <p>@${user.username}</p>
-        <p>${user.bio || ""}</p>
+        ${user.profilePicture ? `<img src="${safeUrl(user.profilePicture)}?t=${Date.now()}" width="120">` : ""}
+        <h3>${escapeHtml(user.fullName || user.username || "")}</h3>
+        <p>@${escapeHtml(user.username || "")}</p>
+        <p>${escapeHtml(user.bio || "")}</p>
       `;
 
       document.getElementById("editFullName").value = user.fullName || "";
@@ -415,7 +415,7 @@ function loadProfile(id) {
             ? `
               <img
                 class="profile-view-avatar"
-                src="${user.profilePicture}?t=${Date.now()}">
+                src="${safeUrl(user.profilePicture)}?t=${Date.now()}">
             `
             : `
               <div class="profile-view-avatar profile-view-placeholder">
@@ -425,16 +425,16 @@ function loadProfile(id) {
           }
 
           <h2 class="profile-view-name">
-            ${user.fullName || user.username}
+            ${escapeHtml(user.fullName || user.username || "")}
           </h2>
 
           <p class="profile-view-username">
-            @${user.username}
+            @${escapeHtml(user.username || "")}
           </p>
 
           ${
             user.bio
-            ? `<p class="profile-view-bio">${user.bio}</p>`
+            ? `<p class="profile-view-bio">${escapeHtml(user.bio || "")}</p>`
             : ""
           }
 
@@ -477,13 +477,13 @@ function loadProfile(id) {
 
                   ${
                     post.content
-                    ? `<p>${post.content}</p>`
+                    ? `<p>${escapeHtml(post.content || "")}</p>`
                     : ""
                   }
 
                   ${
                     post.image
-                    ? `<img src="${post.image}">`
+                    ? `<img src="${safeUrl(post.image)}">`
                     : ""
                   }
 
@@ -703,12 +703,25 @@ async function loadRealNews(type) {
 }
 
 function escapeHtml(value) {
-  return String(value)
+  return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+}
+
+function safeUrl(value, fallback = "") {
+  const raw = String(value ?? "").trim();
+  if (!raw) return fallback;
+
+  try {
+    const url = new URL(raw, window.location.origin);
+    if (url.protocol !== "http:" && url.protocol !== "https:") return fallback;
+    return escapeHtml(url.href);
+  } catch {
+    return fallback;
+  }
 }
 
 function loadPosts() {
@@ -980,7 +993,11 @@ function renderDiscoveryPosts() {
                     🔖 Save Post
                   </button>
 
-                  <button onclick="editPost('${post._id}', \`${content}\`)">
+                  <button
+                    type="button"
+                    class="edit-post-button"
+                    data-post-id="${escapeHtml(post._id)}"
+                    data-post-content="${escapeHtml(content)}">
                     ✏️ Edit Post
                   </button>
 
@@ -1300,8 +1317,8 @@ function loadNotifications() {
 
       item.innerHTML = `
         <div class="notification-content">
-          <strong>@${sender}</strong>
-          <p>${message}</p>
+          <strong>@${escapeHtml(sender || "")}</strong>
+          <p>${escapeHtml(message || "")}</p>
           <small>${date}</small>
         </div>
 
@@ -1330,13 +1347,29 @@ function loadNotifications() {
     box.innerHTML = `
       <div class="notification-error">
         <strong>Unable to load notifications.</strong>
-        <p>${error.message || "Please try again later."}</p>
+        <p>${escapeHtml(error.message || "Please try again later.")}</p>
       </div>
     `;
 
   });
 
 }
+
+function editPostFromButton(button) {
+  if (!button) return;
+
+  editPost(
+    button.dataset.postId || "",
+    button.dataset.postContent || ""
+  );
+}
+
+document.addEventListener("click", event => {
+  const button = event.target.closest(".edit-post-button");
+  if (!button) return;
+
+  editPostFromButton(button);
+});
 
 function markNotificationRead(notificationId) {
 
@@ -1450,9 +1483,9 @@ function searchUsers() {
 
         <strong>
 ${onlineUsers.includes(user._id) ? "🟢" : "⚪"}
-${user.username}
+${escapeHtml(user.username || "")}
 </strong><br>
-        ${user.email}<br><br>
+        ${escapeHtml(user.email || "")}<br><br>
 
         <button onclick="loadProfile('${user._id}')">
           👤 View Profile
@@ -1501,7 +1534,7 @@ function loadComments(postId) {
       comments.forEach(comment => {
 
         box.innerHTML += `
-          <p><strong>${comment.user.username}</strong>: ${comment.text}</p>
+          <p><strong>${escapeHtml(comment.user?.username || "")}</strong>: ${escapeHtml(comment.text || "")}</p>
         `;
 
       });
@@ -1601,7 +1634,18 @@ async function uploadStory() {
 
     document.getElementById("storyMedia").value = "";
 
-    loadStories();
+
+document.addEventListener("click", event => {
+  const storyEl = event.target.closest(".story[data-story-media]");
+  if (!storyEl) return;
+
+  viewStory(
+    storyEl.dataset.storyMedia || "",
+    storyEl.dataset.storyType || ""
+  );
+});
+
+loadStories();
 
   } catch (err) {
     console.error(err);
@@ -1620,7 +1664,7 @@ async function loadStories() {
     const box = document.getElementById("stories");
 
     if (!stories.length) {
-      box.innerHTML = "<p>No stories yet.</p>";
+      box.innerHTML = `<p class="stories-empty">No stories yet.</p>`;
       return;
     }
 
@@ -1629,15 +1673,19 @@ async function loadStories() {
     stories.forEach(story => {
 
       box.innerHTML += `
-        <div class="story" onclick="viewStory('${story.media}', '${story.mediaType}')">
+        <div class="story" data-story-media="${escapeHtml(story.media || "")}" data-story-type="${escapeHtml(story.mediaType || "")}">
 
-          <strong>${story.user.username}</strong><br>
+          <span class="story-ring">
+            <span class="story-thumb">
+              ${
+                story.mediaType === "video"
+                ? `<video src="${safeUrl(story.media)}" muted playsinline preload="metadata"></video>`
+                : `<img src="${safeUrl(story.media)}" alt="${escapeHtml(story.user?.username || "")} story">`
+              }
+            </span>
+          </span>
 
-          ${
-            story.mediaType === "video"
-            ? `<video src="${story.media}" controls width="180"></video>`
-            : `<img src="${story.media}" width="180">`
-          }
+          <span class="story-name">${escapeHtml(story.user?.username || "")}</span>
 
         </div>
       `;
@@ -1659,10 +1707,10 @@ function viewStory(media, mediaType) {
 
   if (mediaType === "video") {
     content.innerHTML =
-      `<video src="${media}" controls autoplay></video>`;
+      `<video src="${safeUrl(media)}" controls autoplay></video>`;
   } else {
     content.innerHTML =
-      `<img src="${media}">`;
+      `<img src="${safeUrl(media)}">`;
   }
 
   viewer.style.display = "flex";
@@ -1690,7 +1738,7 @@ function showLikes(postId) {
 
       data.likes.forEach(user => {
         box.innerHTML += `
-          <p>👤 ${user.fullName || user.username}</p>
+          <p>👤 ${escapeHtml(user.fullName || user.username || "")}</p>
         `;
       });
 
