@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080808">
+  <title>BENEDICT | Admin Dashboard</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080808;
+      --panel: #141414;
+      --panel2: #1b1b1b;
+      --gold: #d4af37;
+      --gold2: #b8860b;
+      --text: #f5f5f5;
+      --muted: #aaa;
+      --border: #34302a;
+      --danger: #ef7777;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 15px/1.5 system-ui, sans-serif;
+    }
+    button, input, select { font: inherit; }
+    button {
+      cursor: pointer;
+      border: 1px solid var(--gold2);
+      border-radius: 8px;
+      padding: 9px 13px;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #080808;
+      font-weight: 700;
+    }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+    button.secondary {
+      background: #202020;
+      color: var(--text);
+      border-color: #494949;
+    }
+    button.danger {
+      background: #321616;
+      color: #ffb4b4;
+      border-color: #8b3737;
+    }
+    header {
+      padding: 20px max(16px, calc((100% - 1100px)/2));
+      border-bottom: 1px solid var(--border);
+      background: #101010;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .brand { color: var(--gold); font-size: 23px; font-weight: 900; letter-spacing: 3px; }
+    .subtitle { color: var(--muted); font-size: 12px; }
+    main { width: min(1100px, 100% - 28px); margin: 25px auto 60px; }
+    .intro h1 { margin: 0; font-size: clamp(25px, 5vw, 35px); }
+    .intro p { margin-top: 5px; color: var(--muted); }
+    .tabs { display: flex; gap: 9px; margin: 22px 0; flex-wrap: wrap; }
+    .tabs button[aria-selected="true"] { box-shadow: 0 0 0 2px #f1d77a inset; }
+    .toolbar {
+      display: flex; gap: 10px; align-items: center;
+      flex-wrap: wrap; margin: 15px 0;
+    }
+    input, select {
+      min-height: 42px; padding: 9px 11px; border-radius: 8px;
+      border: 1px solid #48433a; background: #111; color: var(--text);
+      max-width: 100%;
+    }
+    input { flex: 1; min-width: 180px; }
+    select { min-width: 130px; }
+    .notice {
+      padding: 12px 14px; margin: 15px 0; border: 1px solid var(--border);
+      border-radius: 9px; color: var(--muted); white-space: pre-wrap;
+    }
+    .notice.error { color: #ffbaba; border-color: #773939; }
+    .notice.success { color: #e8d68d; border-color: #76632b; }
+    .cards { display: grid; gap: 13px; }
+    .item {
+      border: 1px solid var(--border); background: var(--panel);
+      border-radius: 13px; padding: 17px; min-width: 0;
+    }
+    .item h3 { margin: 0 0 8px; overflow-wrap: anywhere; }
+    .meta { color: var(--muted); font-size: 13px; overflow-wrap: anywhere; }
+    .details {
+      background: #0d0d0d; border-left: 3px solid var(--gold2);
+      margin: 12px 0; padding: 11px; border-radius: 4px;
+      white-space: pre-wrap; overflow-wrap: anywhere;
+    }
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+    .actions select { flex: 1; min-width: 130px; }
+    .badge {
+      display: inline-block; color: var(--gold); border: 1px solid #665523;
+      border-radius: 20px; padding: 2px 9px; font-size: 12px;
+    }
+    .empty { text-align: center; padding: 35px 12px; color: var(--muted); }
+    [hidden] { display: none !important; }
+    @media (max-width: 520px) {
+      header { padding: 15px; }
+      main { width: calc(100% - 20px); margin-top: 18px; }
+      .item { padding: 13px; }
+      .actions button { flex: 1 1 42%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <div class="brand">BENEDICT</div>
+      <div class="subtitle">ADMINISTRATION & MODERATION</div>
+    </div>
+    <button id="backButton" class="secondary" type="button">Back to BENEDICT</button>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h1>Admin Dashboard</h1>
+      <p>Review reports, protect the community, and manage accounts.</p>
+    </section>
+
+    <div id="notice" class="notice" role="status" aria-live="polite">
+      Checking administrator access…
+    </div>
+
+    <section id="dashboard" hidden>
+      <nav class="tabs" aria-label="Admin sections">
+        <button type="button" data-tab="reports" aria-selected="true">Reports</button>
+        <button type="button" data-tab="users" aria-selected="false">Manage Users</button>
+      </nav>
+
+      <section id="reportsSection">
+        <h2>Community Reports</h2>
+        <div class="toolbar">
+          <label for="reportFilter">Report status</label>
+          <select id="reportFilter">
+            <option value="open">Open</option>
+            <option value="reviewed">Reviewed</option>
+            <option value="resolved">Resolved</option>
+            <option value="dismissed">Dismissed</option>
+            <option value="all">All reports</option>
+          </select>
+          <button type="button" id="refreshReports" class="secondary">Refresh</button>
+        </div>
+        <div id="reportsList" class="cards"></div>
+      </section>
+
+      <section id="usersSection" hidden>
+        <h2>Manage Users</h2>
+        <form id="userSearch" class="toolbar">
+          <input id="searchInput" type="search" maxlength="80"
+                 placeholder="Search username or full name"
+                 aria-label="Search username or full name">
+          <button type="submit">Search</button>
+          <button type="button" id="refreshUsers" class="secondary">Refresh</button>
+        </form>
+        <div id="usersList" class="cards"></div>
+      </section>
+    </section>
+  </main>
+
+  <script src="/admin.js?v=1" defer></script>
+</body>
+</html>

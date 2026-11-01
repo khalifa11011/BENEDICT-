@@ -29,7 +29,7 @@ router.get("/search", auth, async (req, res) => {
         $options: "i"
       }
     })
-      .select("-password")
+      .select("_id username fullName bio profilePicture")
       .limit(20);
 
     res.json(users);
@@ -49,7 +49,7 @@ router.get("/:id", async (req, res) => {
   try {
 
     const user = await User.findById(req.params.id)
-  .select("-password")
+  .select("_id username fullName bio profilePicture coverPhoto location hometown school occupation relationshipStatus website birthday followers following createdAt")
   .populate("followers", "username fullName profilePicture")
   .populate("following", "username fullName profilePicture");
 

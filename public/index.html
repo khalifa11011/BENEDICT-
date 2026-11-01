@@ -8,6 +8,8 @@
 <link rel="stylesheet" href="style.css?v=5">
 
 <style id="benedict-login-cleanup">
+html.login-active .benedict-header,
+body.benedict-logged-out .benedict-header,
 body.benedict-logged-out .luxury-header,
 body.benedict-logged-out .bottom-nav,
 body.benedict-logged-out .mobile-bottom-nav,
@@ -376,12 +378,12 @@ body.benedict-menu-open {
 
 <!-- =========================
      BENEDICT TOP HEADER
+========================= -->
 <script>
   if (!localStorage.getItem("token")) {
     document.documentElement.classList.add("login-active");
   }
 </script>
-========================= -->
 
 <header class="social-header benedict-header">
 
@@ -431,13 +433,6 @@ body.benedict-menu-open {
       onclick="window.location.href='/messages.html'"
       aria-label="Messages">
       ◉
-    </button>
-
-    <button
-      class="header-icon"
-      onclick="window.location.href='/settings.html'"
-      aria-label="Settings">
-      ⚙
     </button>
 
   </div>
@@ -1118,14 +1113,14 @@ body.benedict-menu-open {
     <small>Explore</small>
   </button>
 
+  <button onclick="window.location.href='/live.html'">
+    <span>◉</span>
+    <small>Live</small>
+  </button>
+
   <button class="create-nav-button" onclick="window.location.href='/create.html'">
     <span>＋</span>
     <small>Create</small>
-  </button>
-
-  <button onclick="window.location.href='/messages.html'">
-    <span>◉</span>
-    <small>Messages</small>
   </button>
 
   <button onclick="window.location.href='/profile.html'">

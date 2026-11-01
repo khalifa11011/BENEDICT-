@@ -42,6 +42,14 @@ async function requireAuth(req, res, next) {
       });
     }
 
+    if (user.accountStatus && user.accountStatus !== "active") {
+      return res.status(403).json({
+        message: user.accountStatus === "banned"
+          ? "This account has been banned"
+          : "This account is suspended"
+      });
+    }
+
     req.user = user;
     req.userId = user._id.toString();
 

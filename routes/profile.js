@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
 const User = require("../models/User");
-const { imageUpload: upload } = require("../middleware/upload");
+const { imageUpload: upload, removeUploadedFile } = require("../middleware/upload");
 
 // =========================
 // GET MY PROFILE
@@ -42,6 +42,8 @@ router.post(
   upload.single("profilePicture"),
   async (req, res) => {
 
+    let keepUploadedFile = false;
+
     try {
 
       if (!req.file) {
@@ -62,6 +64,7 @@ router.post(
         "/uploads/" + req.file.filename;
 
       await user.save();
+      keepUploadedFile = true;
 
       res.json({
         message: "Profile picture updated successfully",
@@ -76,6 +79,10 @@ router.post(
         error: error.message
       });
 
+    } finally {
+      if (req.file && !keepUploadedFile) {
+        await removeUploadedFile(req.file);
+      }
     }
 
   }
@@ -91,6 +98,8 @@ router.post(
   auth,
   upload.single("coverPhoto"),
   async (req, res) => {
+
+    let keepUploadedFile = false;
 
     try {
 
@@ -112,6 +121,7 @@ router.post(
         "/uploads/" + req.file.filename;
 
       await user.save();
+      keepUploadedFile = true;
 
       res.json({
         message: "Cover photo updated successfully",
@@ -126,6 +136,10 @@ router.post(
         error: error.message
       });
 
+    } finally {
+      if (req.file && !keepUploadedFile) {
+        await removeUploadedFile(req.file);
+      }
     }
 
   }

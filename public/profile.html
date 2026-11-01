@@ -1689,6 +1689,70 @@ body {
   }
 }
 
+
+/* BENEDICT PROFILE DETAILS VERTICAL LIST FIX */
+.profile-details {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+  width: 100%;
+  margin-top: 18px;
+}
+
+.profile-details span,
+.profile-details a {
+  display: block;
+  width: 100%;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.profile-details strong {
+  color: #d4af37;
+}
+
+
+/* BENEDICT profile actions: separate Follow and friend/message controls */
+#profileActions #profilePrimaryActions {
+  grid-column: 1 / -1 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  gap: 10px !important;
+  width: 100% !important;
+}
+#profileActions #profileFriendActions,
+#profileActions #profileFriendActions .profile-friend-actions {
+  display: flex !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+#profileActions #profileFriendActions button,
+#profileActions #profileMessageButton,
+#profileActions #profileFollowActions button {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 50px !important;
+  padding: 10px 6px !important;
+  border: 1px solid #d4af37 !important;
+  border-radius: 12px !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+}
+#profileActions #profileFriendActions button {
+  background: linear-gradient(135deg,#d4af37,#a67c16) !important;
+  color: #080808 !important;
+}
+#profileActions #profileMessageButton {
+  background: #191919 !important;
+  color: #f5d76e !important;
+}
+#profileActions #profileFollowActions {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+}
+
 </style>
 
 <script src="/splash.js"></script>
@@ -1748,6 +1812,12 @@ body {
 
     <div class="profile-avatar-wrap" id="profileAvatar">
 
+  <img class="profile-avatar" id="profileAvatarImage" alt="" style="display:none">
+
+  <div class="profile-avatar profile-avatar-placeholder" id="profileAvatarPlaceholder">
+    👤
+  </div>
+
   <button
     class="profile-picture-button"
     onclick="document.getElementById('profilePictureDirect').click()">
@@ -1765,22 +1835,38 @@ body {
 
     <div id="profileIdentity"></div>
 
-    <div class="profile-actions" id="profileActions">
+
+
+
+    
+    <div id="profileStats"></div>
+
+<div class="profile-actions" id="profileActions">
 
       <button id="editProfileButton"
         onclick="window.location.href='/edit-profile.html'">
         ✏️ Edit Profile
       </button>
 
-      <button onclick="window.location.href='/friends.html'">
+      <button id="profileFriendsPageButton"
+        onclick="window.location.href='/friends.html'">
         👥 Friends
       </button>
 
+      <div id="profilePrimaryActions" class="profile-primary-actions">
+        <div id="profileFriendActions"></div>
+        <button id="profileMessageButton" type="button"
+          onclick="window.location.href='/chat.html?user=' + encodeURIComponent(new URLSearchParams(window.location.search).get('id') || '')">
+          💬 Message
+        </button>
+      </div>
+
       <div id="profileFollowActions"></div>
+      <div id="profileDetails"></div>
 
     </div>
 
-    <div id="profileStats"></div>
+
 
   </section>
 
@@ -1883,6 +1969,73 @@ function showProfileTab(tab, button) {
 }
 
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function getSafeProfileUrl(value) {
+  const raw = String(value ?? "").trim();
+  if (!raw) return "";
+
+  try {
+    const url = new URL(raw, window.location.origin);
+    if (url.protocol !== "http:" && url.protocol !== "https:") return "";
+    return url.href;
+  } catch {
+    return "";
+  }
+}
+
+function setCoverPhoto(path) {
+
+  const cover = document.getElementById("profileCover");
+
+  const safePath = getSafeProfileUrl(path);
+  if (!cover || !safePath) return;
+
+  const coverUrl = new URL(safePath);
+  coverUrl.searchParams.set("_t", Date.now());
+
+  cover.style.setProperty(
+    "background-image",
+    `url("${coverUrl.href}")`,
+    "important"
+  );
+
+  cover.classList.add("has-cover");
+
+}
+
+
+function setProfileAvatar(path) {
+
+  const img = document.getElementById("profileAvatarImage");
+  const placeholder = document.getElementById("profileAvatarPlaceholder");
+
+  if (!img || !placeholder) return;
+
+  const safePath = getSafeProfileUrl(path);
+
+  if (safePath) {
+    const avatarUrl = new URL(safePath);
+    avatarUrl.searchParams.set("_t", Date.now());
+    img.src = avatarUrl.href;
+    img.style.setProperty("display", "block", "important");
+    placeholder.style.setProperty("display", "none", "important");
+  } else {
+    img.removeAttribute("src");
+    img.style.setProperty("display", "none", "important");
+    placeholder.style.setProperty("display", "flex", "important");
+  }
+
+}
+
+
 function loadProfilePage() {
 
   const token = getToken();
@@ -1898,6 +2051,11 @@ function loadProfilePage() {
   const requestedUserId = params.get("id");
 
   const profileUserId = requestedUserId || payload.id;
+
+  if (!/^[a-f\d]{24}$/i.test(String(profileUserId || ""))) {
+    window.location.href = "/";
+    return;
+  }
 
 
   fetch("/api/users/" + profileUserId)
@@ -1917,11 +2075,9 @@ function loadProfilePage() {
       const cover = document.getElementById("profileCover");
 
       if (user.coverPhoto) {
-        cover.style.backgroundImage =
-          "url('" + user.coverPhoto + "?t=" + Date.now() + "')";
-        cover.classList.add("has-cover");
+        setCoverPhoto(user.coverPhoto);
       } else {
-        cover.style.backgroundImage = "";
+        cover.style.removeProperty("background-image");
         cover.classList.remove("has-cover");
       }
 
@@ -1929,16 +2085,7 @@ function loadProfilePage() {
 
       /* PROFILE PICTURE */
 
-      document.getElementById("profileAvatar").innerHTML =
-
-        user.profilePicture
-
-        ? `<img class="profile-avatar"
-             src="${user.profilePicture}?t=${Date.now()}">`
-
-        : `<div class="profile-avatar profile-avatar-placeholder">
-             👤
-           </div>`;
+      setProfileAvatar(user.profilePicture);
 
 
       /* NAME + BIO */
@@ -1948,56 +2095,20 @@ function loadProfilePage() {
         <div class="profile-identity">
 
           <h1 class="profile-name">
-            ${user.fullName || user.username}
+            ${escapeHtml(user.fullName || user.username || '')}
           </h1>
 
           <div class="profile-username">
-            @${user.username}
+            @${escapeHtml(user.username || '')}
           </div>
 
           ${
             user.bio
-            ? `<div class="profile-bio">${user.bio}</div>`
+            ? `<div class="profile-bio">${escapeHtml(user.bio)}</div>`
             : ""
           }
 
-          <div class="profile-details">
 
-            ${
-              user.location
-              ? `<span>📍 ${user.location}</span>`
-              : ""
-            }
-
-            ${
-              user.school
-              ? `<span>🏫 ${user.school}</span>`
-              : ""
-            }
-
-            ${
-              user.occupation
-              ? `<span>💼 ${user.occupation}</span>`
-              : ""
-            }
-
-            ${
-              user.website
-              ? `<a href="${user.website}" target="_blank">
-                   🔗 Website
-                 </a>`
-              : ""
-            }
-
-            ${
-              user.birthday
-              ? `<span>
-                   🎂 ${new Date(user.birthday).toLocaleDateString()}
-                 </span>`
-              : ""
-            }
-
-          </div>
 
         </div>
 
@@ -2024,6 +2135,7 @@ function loadProfilePage() {
       } else {
 
         editButton.style.display = "none";
+        document.getElementById("profileFriendsPageButton").style.display = "none";
 
         const isFollowing =
           Array.isArray(user.followers) &&
@@ -2053,8 +2165,7 @@ function loadProfilePage() {
 
       /* FRIEND ACTIONS */
 
-      const friendActions =
-        document.getElementById("profileFollowActions");
+      const friendActions = document.getElementById("profileFriendActions");
 
       if (!isOwnProfile) {
 
@@ -2120,10 +2231,8 @@ function loadProfilePage() {
 
           }
 
-          friendActions.insertAdjacentHTML(
-            "beforeend",
-            `<div class="profile-friend-actions">${friendButton}</div>`
-          );
+          friendActions.innerHTML =
+            `<div class="profile-friend-actions">${friendButton}</div>`;
 
         })
         .catch(err => {
@@ -2132,37 +2241,63 @@ function loadProfilePage() {
 
       }
 
-      /* STATS */
-
+      /* FOLLOWER COUNTS: stay beneath the bio, above the action buttons */
       document.getElementById("profileStats").innerHTML = `
-
         <div class="profile-stats">
-
           <div class="stat">
-            <strong>
-              ${user.followers ? user.followers.length : 0}
-            </strong>
+            <strong>${user.followers ? user.followers.length : 0}</strong>
             <span>Followers</span>
           </div>
-
           <div class="stat">
-            <strong>
-              ${user.following ? user.following.length : 0}
-            </strong>
+            <strong>${user.following ? user.following.length : 0}</strong>
             <span>Following</span>
           </div>
-
-          <div class="stat">
-            <strong id="profilePostCount">0</strong>
-            <span>Posts</span>
-          </div>
-
         </div>
-
       `;
 
-
-
+      /* PERSONAL DETAILS: stay underneath the action buttons */
+      document.getElementById("profileDetails").innerHTML = `
+        <div class="profile-details">
+          ${
+            user.occupation
+            ? `<span>💼 <strong>Work:</strong> ${escapeHtml(user.occupation)}</span>`
+            : ""
+          }
+          ${
+            user.location
+            ? `<span>📍 <strong>Lives in:</strong> ${escapeHtml(user.location)}</span>`
+            : ""
+          }
+          ${
+            user.hometown
+            ? `<span>🏡 <strong>From:</strong> ${escapeHtml(user.hometown)}</span>`
+            : ""
+          }
+          ${
+            user.school
+            ? `<span>🏫 <strong>School:</strong> ${escapeHtml(user.school)}</span>`
+            : ""
+          }
+          ${
+            user.relationshipStatus
+            ? `<span>❤️ <strong>Relationship Status:</strong> ${escapeHtml(user.relationshipStatus)}</span>`
+            : ""
+          }
+          ${
+            getSafeProfileUrl(user.website)
+            ? `<a href="${escapeHtml(getSafeProfileUrl(user.website))}"
+                  target="_blank" rel="noopener noreferrer">
+                 🔗 Website
+               </a>`
+            : ""
+          }
+          ${
+            user.birthday
+            ? `<span>🎂 ${new Date(user.birthday).toLocaleDateString()}</span>`
+            : ""
+          }
+        </div>
+      `;
 
     })
 
@@ -2201,14 +2336,6 @@ function loadProfilePage() {
       });
 
 
-      const postCount =
-        document.getElementById("profilePostCount");
-
-      if (postCount) {
-        postCount.textContent = myPosts.length;
-      }
-
-
       document.getElementById("profilePosts").innerHTML =
 
         myPosts.length
@@ -2219,13 +2346,14 @@ function loadProfilePage() {
 
               ${
                 post.content
-                ? `<p>${post.content}</p>`
+                ? `<p>${escapeHtml(post.content)}</p>`
                 : ""
               }
 
               ${
-                post.image
-                ? `<img src="${post.image}">`
+                getSafeProfileUrl(post.image)
+                ? `<img src="${escapeHtml(getSafeProfileUrl(post.image))}"
+                        alt="Post image" loading="lazy">`
                 : ""
               }
 
@@ -2271,10 +2399,7 @@ async function uploadCoverPhoto() {
       throw new Error(data.error || "Cover photo upload failed");
     }
 
-    document.getElementById("profileCover").style.backgroundImage =
-      "url('" + data.coverPhoto + "?t=" + Date.now() + "')";
-
-    document.getElementById("profileCover").classList.add("has-cover");
+    setCoverPhoto(data.coverPhoto);
 
   } catch (err) {
     console.error(err);
@@ -2305,6 +2430,7 @@ async function uploadProfilePictureDirect() {
       throw new Error(data.error || "Profile picture upload failed");
     }
 
+    setProfileAvatar(data.profilePicture);
 
   } catch (err) {
     console.error(err);
@@ -2552,9 +2678,15 @@ async function followProfileUser(userId) {
       return;
     }
 
-    alert(data.message || "Following user");
-
-    loadProfilePage();
+    const followActions = document.getElementById("profileFollowActions");
+    if (followActions) {
+      followActions.innerHTML = `
+        <button type="button"
+          onclick="unfollowProfileUser('${userId}')">
+          ✓ Following
+        </button>
+      `;
+    }
 
   } catch (err) {
 
@@ -3221,6 +3353,93 @@ body {
   .profile-avatar-wrap {
     transform: translateY(-15px) !important;
     margin-bottom: -15px !important;
+  }
+}
+
+
+/* BENEDICT PROFILE COMPACT DARK HEADER FIX */
+.profile-page,
+.profile-main,
+#profileIdentity,
+#profileStats,
+.profile-identity {
+  background: #080808 !important;
+  color: #f5f5f5 !important;
+}
+
+.profile-stats {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 28px !important;
+  margin: 10px 0 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+.profile-stats .stat,
+.profile-stats .stat:hover {
+  flex: 0 0 auto !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+.profile-stats .stat strong {
+  color: #d4af37 !important;
+}
+
+.profile-stats .stat span {
+  color: #aaa !important;
+}
+
+.profile-details {
+  background: transparent !important;
+  color: #f5f5f5 !important;
+}
+
+
+/* BENEDICT profile actions: final row positioning */
+#profileActions {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  align-items: stretch !important;
+}
+#profileActions > #profilePrimaryActions {
+  grid-column: 1 / -1 !important;
+  grid-row: 1 !important;
+}
+#profileActions > #profileFollowActions {
+  grid-column: 1 / -1 !important;
+  grid-row: 2 !important;
+}
+#profileActions > #profileDetails {
+  grid-column: 1 / -1 !important;
+  grid-row: 3 !important;
+}
+#profileActions #profileFriendActions button,
+#profileActions #profileMessageButton,
+#profileActions #profileFollowActions button {
+  min-height: 50px !important;
+  font-size: 14px !important;
+  cursor: pointer !important;
+}
+@media (max-width: 600px) {
+  #profileActions #profilePrimaryActions {
+    gap: 8px !important;
+  }
+  #profileActions #profileFriendActions button,
+  #profileActions #profileMessageButton,
+  #profileActions #profileFollowActions button {
+    min-height: 50px !important;
+    font-size: 13px !important;
   }
 }
 

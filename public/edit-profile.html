@@ -17,6 +17,34 @@ input,textarea,select{width:100%;padding:13px;background:#0d0d0d;color:#fff;bord
 button{padding:11px 16px;border-radius:8px;border:1px solid #d4af37;font-weight:700}
 .save{background:#d4af37;color:#111;margin-top:18px}
 .back{background:#151515;color:#d4af37;margin-top:12px}
+
+/* BENEDICT UI FIX: READABLE EDIT PROFILE */
+.card input,
+.card textarea,
+.card select {
+  background: #0d0d0d !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(212, 175, 55, 0.5) !important;
+  border-radius: 8px;
+  box-sizing: border-box;
+  color-scheme: dark;
+}
+
+.card input::placeholder,
+.card textarea::placeholder {
+  color: #b8b8b8 !important;
+}
+
+.card input:focus,
+.card textarea:focus,
+.card select:focus {
+  background: #111111 !important;
+  color: #ffffff !important;
+  border-color: #d4af37 !important;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.15);
+}
+
 </style>
 </head>
 <body>
@@ -35,16 +63,16 @@ button{padding:11px 16px;border-radius:8px;border:1px solid #d4af37;font-weight:
     <label>Bio</label>
     <textarea id="bio" rows="4"></textarea>
 
-    <label>Current Location</label>
+    <label>Lives in</label>
     <input id="location">
 
-    <label>Hometown</label>
+    <label>From</label>
     <input id="hometown">
 
     <label>School</label>
     <input id="school">
 
-    <label>Work / Occupation</label>
+    <label>Work</label>
     <input id="occupation">
 
     <label>Relationship Status</label>

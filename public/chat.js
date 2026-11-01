@@ -69,7 +69,12 @@ function getToken() {
 
 function getReceiverId() {
   const params = new URLSearchParams(window.location.search);
-  return params.get("user");
+  const receiver = params.get("user");
+
+  // Accept only valid MongoDB ObjectIds.
+  return receiver && /^[a-f0-9]{24}$/i.test(receiver)
+    ? receiver
+    : null;
 }
 
 function getCurrentUserId() {
@@ -97,7 +102,16 @@ function safeMediaUrl(value) {
 
   try {
     const url = new URL(raw, window.location.origin);
-    if (url.protocol !== "http:" && url.protocol !== "https:") return "";
+
+    // Chat attachments must be served by BENEDICT itself.
+    // Reject external URLs and non-HTTP(S) schemes.
+    if (
+      url.origin !== window.location.origin ||
+      (url.protocol !== "http:" && url.protocol !== "https:")
+    ) {
+      return "";
+    }
+
     return escapeHtml(url.href);
   } catch {
     return "";
@@ -110,7 +124,7 @@ function loadChatTitle() {
 
   if (!receiver) return;
 
-  fetch("/api/users/" + receiver, {
+  fetch("/api/users/" + encodeURIComponent(receiver), {
     headers: {
       "Authorization": "Bearer " + getToken()
     }
@@ -119,8 +133,8 @@ function loadChatTitle() {
   .then(data => {
 
     if (data.user) {
-      document.getElementById("chatTitle").innerHTML =
-      "Chat with " + escapeHtml(data.user.username || "");
+      document.getElementById("chatTitle").textContent =
+        "Chat with " + String(data.user.username || "");
     }
 
   });
@@ -131,11 +145,11 @@ socket.on("typing", () => {
 
   const status = document.getElementById("chatStatus");
 
-  status.innerHTML = "⌨️ Typing...";
+  status.textContent = "⌨️ Typing...";
 
   setTimeout(() => {
 
-    status.innerHTML = "🟢 Online";
+    status.textContent = "🟢 Online";
 
   }, 1500);
 
@@ -147,13 +161,35 @@ socket.on("messageSeen", () => {
 
 });
 
+function loadProtectedMessageMedia(root) {
+  const token = getToken();
+  if (!token || !root) return;
+  root.querySelectorAll("[data-protected-media-id]").forEach(async node => {
+    const id = node.getAttribute("data-protected-media-id") || "";
+    if (!/^[a-f0-9]{24}$/i.test(id)) return;
+    try {
+      const response = await fetch("/api/messages/media/" + encodeURIComponent(id), {
+        headers: { "Authorization": "Bearer " + token }
+      });
+      if (!response.ok) return;
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      node.dataset.objectUrl = objectUrl;
+      node.src = objectUrl;
+      if (node.tagName === "AUDIO" || node.tagName === "VIDEO") node.load();
+    } catch (error) {
+      console.error("Private message media failed to load.");
+    }
+  });
+}
+
 function loadMessages() {
 
   const receiver = getReceiverId();
 
   if (!receiver) return;
 
-  fetch("/api/messages/" + receiver, {
+  fetch("/api/messages/" + encodeURIComponent(receiver), {
     headers: {
       "Authorization": "Bearer " + getToken()
     }
@@ -162,28 +198,39 @@ function loadMessages() {
   .then(messages => {
 
     const box = document.getElementById("messages");
+    box.querySelectorAll("[data-object-url]").forEach(node => URL.revokeObjectURL(node.dataset.objectUrl));
     box.innerHTML = "";
 
     messages.forEach(msg => {
 
     const mine = msg.sender._id === getCurrentUserId();
 
-console.log("MEDIA:", msg.media);
+const mediaUrl = safeMediaUrl(msg.media);
+    let mediaPath = "";
+
+    if (mediaUrl) {
+      try {
+        mediaPath = new URL(
+          mediaUrl,
+          window.location.origin
+        ).pathname.toLowerCase();
+      } catch {
+        mediaPath = "";
+      }
+    }
 
     box.innerHTML += `
         <div class="message ${mine ? "mine" : "theirs"}">
             <strong>${escapeHtml(msg.sender?.username || "")}</strong><br>
 ${msg.text ? `<div class="message-text">${escapeHtml(msg.text || "")}</div>` : ""}
-${msg.media
-  ? (msg.media.match(/\.(jpg|jpeg|png|gif)$/i)
-      ? `<img src="${safeMediaUrl(msg.media)}" style="max-width:250px;border-radius:10px;">`
-      : msg.media.match(/\.(webm|mp3|wav|ogg|m4a)$/i)
-        ? `<audio controls style="width:250px;">
-             <source src="${safeMediaUrl(msg.media)}">
-           </audio>`
-        : `<video controls style="max-width:250px;border-radius:10px;">
-             <source src="${safeMediaUrl(msg.media)}">
-           </video>`)
+${mediaUrl && mediaPath.startsWith("/uploads/messages/")
+  ? (/\.(jpg|jpeg|png|gif|webp)$/i.test(mediaPath)
+      ? `<img data-protected-media-id="${escapeHtml(msg._id)}" alt="Image message" style="max-width:250px;border-radius:10px;">`
+      : /\.(weba|mp3|wav|ogg|m4a)$/i.test(mediaPath)
+        ? `<audio controls data-protected-media-id="${escapeHtml(msg._id)}" style="width:250px;"></audio>`
+        : /\.(mp4|webm|mov|m4v)$/i.test(mediaPath)
+          ? `<video controls data-protected-media-id="${escapeHtml(msg._id)}" style="max-width:250px;border-radius:10px;"></video>`
+          : "")
   : ""}
 
 <small>
@@ -198,11 +245,13 @@ ${mine
 </small>
 
 ${mine
-  ? `<br><button type="button" class="benedict-three-dot" data-message-id="${msg._id}">⋮</button>`
+  ? `<br><button type="button" class="benedict-three-dot" data-message-id="${escapeHtml(msg._id)}">⋮</button>`
   : ""}
         </div>
         `;
      });
+
+loadProtectedMessageMedia(box);
 
 box.scrollTop = box.scrollHeight;
 
@@ -286,9 +335,17 @@ loadMessages();
 
 function deleteMessage(id) {
 
+  id = String(id ?? "").trim();
+
+  // Accept only valid MongoDB ObjectIds.
+  if (!/^[a-f0-9]{24}$/i.test(id)) {
+    console.warn("Invalid message ID; deletion cancelled.");
+    return;
+  }
+
   if (!confirm("Delete this message?")) return;
 
-  fetch("/api/messages/" + id, {
+  fetch("/api/messages/" + encodeURIComponent(id), {
     method: "DELETE",
     headers: {
       "Authorization": "Bearer " + getToken()

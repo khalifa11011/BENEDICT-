@@ -17,6 +17,12 @@ const postSchema = new mongoose.Schema({
     default: null
   },
 
+  sharedFrom: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Post",
+    default: null
+  },
+
   reactions: [
   {
     user: {

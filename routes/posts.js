@@ -10,41 +10,42 @@ const Friend = require("../models/Friend");
 const { createNotification } = require("../utils/notify");
 const auth = require("../middleware/auth");
 const upload = require("../middleware/upload");
+const { removeUploadedFile } = require("../middleware/upload");
 
 // Create post
 router.post("/", auth, upload.single("image"), async (req, res) => {
+  let keepUploadedFile = false;
 
-   try {
-
+  try {
     const { content } = req.body;
 
-const post = new Post({
-  user: req.user.id,
-  content,
-  image: req.file ? "/uploads/" + req.file.filename : null
-});
+    const post = new Post({
+      user: req.user.id,
+      content,
+      image: req.file ? "/uploads/" + req.file.filename : null
+    });
 
     await post.save();
+    keepUploadedFile = true;
 
-const io = req.app.get("io");
-
-if (io) {
-  io.emit("newPost", post);
-}
+    const io = req.app.get("io");
+    if (io) {
+      io.emit("newPost", post);
+    }
 
     res.json({
       message: "Post created successfully",
       post
     });
-
-    } catch(error){
-
+  } catch (error) {
     res.status(500).json({
-      error:error.message
+      error: error.message
     });
-
+  } finally {
+    if (req.file && !keepUploadedFile) {
+      await removeUploadedFile(req.file);
+    }
   }
-
 });
 
 // BENEDICT Memory - current user's posts
@@ -204,6 +205,13 @@ router.get("/", auth, async (req, res) => {
       Post.find(filter)
         .populate("user", "_id username fullName profilePicture")
         .populate("reactions.user", "_id username fullName")
+        .populate({
+          path: "sharedFrom",
+          populate: {
+            path: "user",
+            select: "_id username fullName profilePicture"
+          }
+        })
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)

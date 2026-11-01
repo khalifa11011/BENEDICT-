@@ -32,6 +32,25 @@ function escapeHtml(value) {
     .replace(/'/g, "&#039;");
 }
 
+function safeMongoId(value) {
+  const id = String(value ?? "").trim();
+  return /^[a-f0-9]{24}$/i.test(id) ? id : "";
+}
+
+function safeMediaUrl(value) {
+  const raw = String(value ?? "").trim();
+  if (!raw) return "";
+
+  try {
+    const url = new URL(raw, window.location.origin);
+    if (url.protocol !== "http:" && url.protocol !== "https:") return "";
+    return escapeHtml(url.href);
+  } catch {
+    return "";
+  }
+}
+
+
 function formatTime(dateString) {
   if (!dateString) return "";
 
@@ -72,7 +91,7 @@ function getPreview(conversation) {
       return "🎥 Video";
     }
 
-    if (/\.(webm|mp3|wav|ogg|m4a)$/i.test(media)) {
+    if (/\.(weba|mp3|wav|ogg|m4a)$/i.test(media)) {
       return "🎤 Voice message";
     }
 
@@ -98,7 +117,7 @@ function renderConversations(list) {
     return;
   }
 
-  box.innerHTML = list.map(conversation => {
+  box.innerHTML = list.filter(conversation => safeMongoId(conversation?.user?._id)).map(conversation => {
     const user = conversation.user || {};
     const avatar = user.profilePicture || "";
     const name = user.fullName || user.username || "User";
@@ -107,13 +126,13 @@ function renderConversations(list) {
     return `
       <button
         class="conversation"
-        data-user-id="${escapeHtml(user._id)}">
+        data-user-id="${safeMongoId(user._id)}">
 
         <div class="avatar-wrap">
           ${
             avatar
               ? `<img class="avatar"
-                    src="${escapeHtml(avatar)}"
+                    src="${safeMediaUrl(avatar)}"
                     alt="${escapeHtml(name)}">`
               : `<div class="avatar"
                     style="display:flex;align-items:center;justify-content:center;font-size:22px;">
@@ -172,6 +191,7 @@ function renderConversations(list) {
 }
 
 function openConversation(userId) {
+  userId = safeMongoId(userId);
   if (!userId) return;
 
   window.location.href =
@@ -263,6 +283,7 @@ async function searchPeople(keyword) {
 
     const filteredUsers =
       users.filter(user =>
+        safeMongoId(user?._id) &&
         String(user._id) !== String(me)
       );
 
@@ -290,13 +311,13 @@ async function searchPeople(keyword) {
       return `
         <button
           class="people-result"
-          data-user-id="${escapeHtml(user._id)}">
+          data-user-id="${safeMongoId(user._id)}">
 
           ${
             avatar
               ? `<img
                    class="people-avatar"
-                   src="${escapeHtml(avatar)}"
+                   src="${safeMediaUrl(avatar)}"
                    alt="${escapeHtml(name)}">`
               : `<div class="people-avatar people-placeholder">
                    👤

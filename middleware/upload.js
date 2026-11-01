@@ -1,8 +1,20 @@
 const multer = require("multer");
 const path = require("path");
 const crypto = require("crypto");
+const fs = require("fs");
 
 // Phase 8: collision-proof filenames shared by every upload route.
+async function removeUploadedFile(file) {
+  if (!file || !file.path) return;
+  try {
+    await fs.promises.unlink(file.path);
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      console.error("Upload cleanup failed:", error.message);
+    }
+  }
+}
+
 function makeStorage(destination) {
   return multer.diskStorage({
     destination: function (req, file, cb) {
@@ -59,3 +71,4 @@ const mediaUpload = multer({
 module.exports = imageUpload;
 module.exports.imageUpload = imageUpload;
 module.exports.mediaUpload = mediaUpload;
+module.exports.removeUploadedFile = removeUploadedFile;

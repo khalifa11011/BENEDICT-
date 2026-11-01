@@ -189,6 +189,8 @@ function showFollowing(userId) {
 
 function setLoginPageUI(isLogin) {
   document.body.classList.toggle("login-screen", isLogin);
+  document.body.classList.toggle("benedict-logged-out", isLogin);
+  document.documentElement.classList.toggle("login-active", isLogin);
 
   const mainNav = document.getElementById("mainNav");
   const mobileNav = document.querySelector(".mobile-bottom-nav");
@@ -565,6 +567,82 @@ function createPost() {
 
 }
 
+async function reportPost(postId) {
+  const token = getToken();
+
+  if (!token) {
+    alert("Please log in to report a post.");
+    return;
+  }
+
+  const reasonChoices = [
+    ["spam", "Spam"],
+    ["harassment", "Harassment or bullying"],
+    ["hate_speech", "Hate speech"],
+    ["violence", "Violence"],
+    ["nudity", "Nudity or sexual content"],
+    ["impersonation", "Impersonation"],
+    ["scam", "Scam or fraud"],
+    ["other", "Other"]
+  ];
+
+  const menu = reasonChoices
+    .map((item, index) => (index + 1) + ". " + item[1])
+    .join("\n");
+
+  const choice = prompt(
+    "Report this post to BENEDICT administrators.\n\n" +
+    menu +
+    "\n\nEnter a number from 1 to " + reasonChoices.length + ":"
+  );
+
+  if (choice === null) return;
+
+  const index = Number(choice) - 1;
+  if (!Number.isInteger(index) || index < 0 || index >= reasonChoices.length) {
+    alert("Please enter a valid report reason number.");
+    return;
+  }
+
+  const details = prompt(
+    "Optional: add details about this report (maximum 1000 characters)."
+  );
+
+  if (details === null) return;
+
+  if (details.trim().length > 1000) {
+    alert("Report details must be 1000 characters or fewer.");
+    return;
+  }
+
+  try {
+    const response = await fetch("/api/reports", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + token,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        targetType: "post",
+        targetId: postId,
+        reason: reasonChoices[index][0],
+        details: details.trim()
+      })
+    });
+
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      throw new Error(data.message || "Unable to submit report.");
+    }
+
+    alert("Report submitted. BENEDICT administrators can now review it.");
+  } catch (error) {
+    console.error("Report post error:", error);
+    alert(error.message || "Unable to submit report. Please try again.");
+  }
+}
+
 function togglePostMenu(postId) {
 
   const menu = document.getElementById("post-menu-" + postId);
@@ -652,7 +730,7 @@ async function loadRealNews(type) {
 
         ${article.image ? `
           <img
-            src="${escapeHtml(article.image)}"
+            src="${safeUrl(article.image)}"
             alt=""
             class="news-article-image"
             loading="lazy"
@@ -676,7 +754,7 @@ async function loadRealNews(type) {
           </small>
 
           <a
-            href="${escapeHtml(article.url || "#")}"
+            href="${safeUrl(article.url || "#")}"
             target="_blank"
             rel="noopener noreferrer"
             class="news-read-button"
@@ -710,6 +788,12 @@ function escapeHtml(value) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
+
+function safeMongoId(value) {
+    const id = String(value ?? "").trim();
+    return /^[a-f0-9]{24}$/i.test(id) ? id : "";
+}
+
 
 function safeUrl(value, fallback = "") {
   const raw = String(value ?? "").trim();
@@ -876,7 +960,7 @@ function renderDiscoveryPosts() {
 
     const avatar = user.profilePicture
       ? `<img
-          src="${escapeHtml(user.profilePicture)}"
+          src="${safeUrl(user.profilePicture)}"
           alt=""
           class="benedict-post-avatar"
           loading="lazy"
@@ -889,7 +973,7 @@ function renderDiscoveryPosts() {
       ? `
         <div class="benedict-post-media">
           <img
-            src="${escapeHtml(post.image)}"
+            src="${safeUrl(post.image)}"
             alt="Post Image"
             loading="lazy"
           >
@@ -956,7 +1040,7 @@ function renderDiscoveryPosts() {
 
           <div
             class="benedict-author"
-            onclick="openUserProfile('${post.user?._id || post.user}')"
+            onclick="openUserProfile('${safeMongoId(post.user?._id || post.user)}')"
             style="cursor:pointer;">
 
             ${avatar}
@@ -977,19 +1061,19 @@ function renderDiscoveryPosts() {
             class="post-more-button"
             type="button"
             aria-label="Post options"
-            onclick="togglePostMenu('${post._id}')">
+            onclick="togglePostMenu('${safeMongoId(post._id)}')">
             ⋯
           </button>
 
           <div
-            id="post-menu-${post._id}"
+            id="post-menu-${safeMongoId(post._id)}"
             class="benedict-post-popup"
             style="display:none;">
 
             ${
               String(post.user?._id || post.user) === String(currentUserId)
                 ? `
-                  <button onclick="savePost('${post._id}')">
+                  <button onclick="savePost('${safeMongoId(post._id)}')">
                     🔖 Save Post
                   </button>
 
@@ -1001,24 +1085,24 @@ function renderDiscoveryPosts() {
                     ✏️ Edit Post
                   </button>
 
-                  <button onclick="deletePost('${post._id}')">
+                  <button onclick="deletePost('${safeMongoId(post._id)}')">
                     🗑️ Delete Post
                   </button>
                 `
                 : `
-                  <button onclick="savePost('${post._id}')">
+                  <button onclick="savePost('${safeMongoId(post._id)}')">
                     🔖 Save Post
                   </button>
 
-                  <button onclick="openUserProfile('${post.user?._id || post.user}')">
+                  <button onclick="openUserProfile('${safeMongoId(post.user?._id || post.user)}')">
                     👤 View Profile
                   </button>
 
-                  <button onclick="followUser('${post.user?._id || post.user}')">
+                  <button onclick="followUser('${safeMongoId(post.user?._id || post.user)}')">
                     ➕ Follow
                   </button>
 
-                  <button onclick="alert('Report feature coming soon.')">
+                  <button type="button" onclick="reportPost('${safeMongoId(post._id)}')">
                     🚩 Report Post
                   </button>
                 `
@@ -1028,6 +1112,12 @@ function renderDiscoveryPosts() {
 
         </div>
 
+
+        ${post.sharedFrom ? `
+          <div class="benedict-shared-post">
+            ↗ Shared post
+          </div>
+        ` : ""}
 
         ${content ? `
           <div class="benedict-post-text">
@@ -1045,7 +1135,7 @@ function renderDiscoveryPosts() {
 
           <div class="benedict-stat-links">
 
-            <span onclick="document.getElementById('comments-${post._id}')?.scrollIntoView({behavior:'smooth'})">
+            <span onclick="document.getElementById('comments-${safeMongoId(post._id)}')?.scrollIntoView({behavior:'smooth'})">
               Comments
             </span>
 
@@ -1058,70 +1148,55 @@ function renderDiscoveryPosts() {
         </div>
 
 
-        <div class="benedict-post-actions">
+                <div class="benedict-post-actions">
 
-          <button onclick="reactPost('${post._id}','like')">
-            ❤️
-            <span>Like</span>
-          </button>
+                  <div class="benedict-like-wrap">
+                    <button type="button"
+                            class="benedict-like-button"
+                            onclick="reactPost('${safeMongoId(post._id)}','like')"
+                            aria-label="Like post">
+                      ❤️
+                      <span>Like</span>
+                    </button>
 
-          <button onclick="document.getElementById('comment-${post._id}')?.focus()">
-            💬
-            <span>Comment</span>
-          </button>
+                    <div class="benedict-reaction-picker" hidden>
+                      <button type="button" aria-label="Like" onclick="choosePostReaction(event, '${safeMongoId(post._id)}', 'like')">❤️</button>
+                      <button type="button" aria-label="Love" onclick="choosePostReaction(event, '${safeMongoId(post._id)}', 'love')">😍</button>
+                      <button type="button" aria-label="Haha" onclick="choosePostReaction(event, '${safeMongoId(post._id)}', 'haha')">😂</button>
+                      <button type="button" aria-label="Wow" onclick="choosePostReaction(event, '${safeMongoId(post._id)}', 'wow')">😮</button>
+                      <button type="button" aria-label="Sad" onclick="choosePostReaction(event, '${safeMongoId(post._id)}', 'sad')">😢</button>
+                      <button type="button" aria-label="Angry" onclick="choosePostReaction(event, '${safeMongoId(post._id)}', 'angry')">😡</button>
+                    </div>
+                  </div>
 
-          <button onclick="sharePost('${post._id}')">
-            ↗
-            <span>Share</span>
-          </button>
+                  <button type="button" onclick="document.getElementById('comment-${safeMongoId(post._id)}')?.focus()">
+                    💬
+                    <span>Comment</span>
+                  </button>
 
-        </div>
+                  <button type="button" onclick="sharePost('${safeMongoId(post._id)}')">
+                    ↗
+                    <span>Share</span>
+                  </button>
 
-
-        <div class="benedict-reaction-picker">
-
-          <button onclick="reactPost('${post._id}','like')">
-            ❤️
-          </button>
-
-          <button onclick="reactPost('${post._id}','love')">
-            😍
-          </button>
-
-          <button onclick="reactPost('${post._id}','haha')">
-            😂
-          </button>
-
-          <button onclick="reactPost('${post._id}','wow')">
-            😮
-          </button>
-
-          <button onclick="reactPost('${post._id}','sad')">
-            😢
-          </button>
-
-          <button onclick="reactPost('${post._id}','angry')">
-            😡
-          </button>
-
-        </div>
+                </div>
 
 
-        <div class="benedict-post-details">
+<div class="benedict-post-details">
 
           <button
             class="view-likes-button"
-            onclick="showLikes('${post._id}')">
+            onclick="showLikes('${safeMongoId(post._id)}')">
             👥 View ${totalReactions} reactions
           </button>
 
-          <div id="likes-${post._id}"></div>
+          <div id="likes-${safeMongoId(post._id)}"></div>
 
         </div>
 
 
         <div
-          id="comments-${post._id}"
+          id="comments-${safeMongoId(post._id)}"
           class="benedict-comments">
           <p>Loading comments...</p>
         </div>
@@ -1130,12 +1205,12 @@ function renderDiscoveryPosts() {
         <div class="benedict-comment-box">
 
           <input
-            id="comment-${post._id}"
+            id="comment-${safeMongoId(post._id)}"
             placeholder="Write a comment..."
           >
 
           <button
-            onclick="addComment('${post._id}')">
+            onclick="addComment('${safeMongoId(post._id)}')">
             ➤
           </button>
 
@@ -1478,20 +1553,23 @@ function searchUsers() {
 
     users.forEach(user => {
 
+      const userId = safeMongoId(user?._id);
+      if (!userId) return;
+
       results.innerHTML += `
       <div class="result">
 
         <strong>
-${onlineUsers.includes(user._id) ? "🟢" : "⚪"}
+⚪
 ${escapeHtml(user.username || "")}
 </strong><br>
         ${escapeHtml(user.email || "")}<br><br>
 
-        <button onclick="loadProfile('${user._id}')">
+        <button onclick="openUserProfile('${userId}')">
           👤 View Profile
         </button>
 
-        <button onclick="window.location.href='/chat.html?user=${user._id}'">
+        <button onclick="window.location.href='/chat.html?user=${userId}'">
           💬 Message
         </button>
 
@@ -1502,8 +1580,9 @@ ${escapeHtml(user.username || "")}
     });
 
   })
-  .catch(() => {
-    alert("Search failed.");
+  .catch((error) => {
+    console.error("User search failed:", error);
+    alert("Search failed: " + (error.message || "Check the browser console."));
   });
 
  }
@@ -1910,6 +1989,118 @@ function reactPost(postId, type) {
     alert("Failed to add reaction.");
   });
 
+}
+
+
+
+/* BENEDICT TWO-SECOND REACTION PICKER */
+(function installBenedictReactionPicker() {
+  if (window.__benedictReactionPickerInstalled) return;
+  window.__benedictReactionPickerInstalled = true;
+
+  let holdTimer = null;
+  let activeButton = null;
+  let activePicker = null;
+  let holdTriggered = false;
+  let suppressClickUntil = 0;
+
+  function clearHoldTimer() {
+    if (holdTimer !== null) {
+      clearTimeout(holdTimer);
+      holdTimer = null;
+    }
+  }
+
+  function hidePicker(picker) {
+    if (picker) picker.hidden = true;
+  }
+
+  document.addEventListener("pointerdown", function(event) {
+    const button = event.target.closest(".benedict-like-button");
+    if (!button || event.button !== 0) return;
+
+    clearHoldTimer();
+    if (activePicker) hidePicker(activePicker);
+
+    activeButton = button;
+    activePicker = button.parentElement.querySelector(".benedict-reaction-picker");
+    holdTriggered = false;
+
+    holdTimer = setTimeout(function() {
+      if (!activeButton || !activePicker || !activeButton.isConnected) return;
+      holdTriggered = true;
+      suppressClickUntil = Date.now() + 900;
+      activePicker.hidden = false;
+    }, 2000);
+  }, true);
+
+  document.addEventListener("pointerup", function() {
+    clearHoldTimer();
+    if (holdTriggered) {
+      // Keep the picker open after the long press so the user can choose.
+      suppressClickUntil = Date.now() + 900;
+    }
+  }, true);
+
+  document.addEventListener("pointercancel", function() {
+    clearHoldTimer();
+
+    // Android may cancel the pointer after a long press.
+    // If the picker has already opened, leave it visible.
+    if (holdTriggered) return;
+
+    if (activePicker) hidePicker(activePicker);
+    activeButton = null;
+    activePicker = null;
+  }, true);
+
+  document.addEventListener("click", function(event) {
+    // Do not suppress clicks on the six reaction choices themselves.
+    if (event.target.closest(".benedict-reaction-picker button")) return;
+
+    if (holdTriggered && Date.now() < suppressClickUntil &&
+        event.target.closest(".benedict-like-button")) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      holdTriggered = false;
+    }
+  }, true);
+
+  document.addEventListener("click", function(event) {
+    const choice = event.target.closest(".benedict-reaction-picker button");
+    if (choice) {
+      // choosePostReaction handles submission and closing.
+      return;
+    }
+
+    if (!event.target.closest(".benedict-like-wrap")) {
+      if (activePicker) hidePicker(activePicker);
+    }
+  });
+
+  document.addEventListener("visibilitychange", function() {
+    if (document.hidden) {
+      clearHoldTimer();
+      if (activePicker) hidePicker(activePicker);
+      activeButton = null;
+      activePicker = null;
+      holdTriggered = false;
+    }
+  });
+})();
+
+function choosePostReaction(event, postId, type) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  const picker = event && event.target
+    ? event.target.closest(".benedict-reaction-picker")
+    : null;
+
+  if (picker) picker.hidden = true;
+  reactPost(postId, type);
 }
 
 

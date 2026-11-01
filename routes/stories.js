@@ -3,13 +3,14 @@ const router = express.Router();
 
 const Story = require("../models/Story");
 const auth = require("../middleware/auth");
-const { mediaUpload } = require("../middleware/upload");
+const { mediaUpload, removeUploadedFile } = require("../middleware/upload");
 
 router.post(
   "/",
   auth,
   mediaUpload.single("media"),
   async (req, res) => {
+    let keepUploadedFile = false;
     try {
       if (!req.file) {
         return res.status(400).json({
@@ -28,19 +29,25 @@ router.post(
       });
 
       await story.save();
+      keepUploadedFile = true;
 
       res.json({
         message: "Story uploaded successfully.",
         story
       });
 
-    } catch (err) {
-    console.error(err);
-    res.status(500).json({
-      message: "Server error."
-    });
+      } catch (err) {
+      console.error(err);
+      res.status(500).json({
+        message: "Server error."
+      });
+    } finally {
+      if (req.file && !keepUploadedFile) {
+        await removeUploadedFile(req.file);
+      }
+    }
   }
-});
+);
 
 router.get("/", async (req, res) => {
   try {

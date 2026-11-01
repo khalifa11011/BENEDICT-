@@ -8,9 +8,141 @@
 
 <link rel="stylesheet" href="style.css?v=5">
 <script src="/splash.js"></script>
+
+<style id="BENEDICT_CREATE_PAGE_GOLD_FIX">
+/* Scoped to the standalone Create Post page only */
+body.create-post-page {
+  background: #080808;
+  color: #f5f5f5;
+}
+
+.create-post-page .container {
+  max-width: 760px;
+  margin: 28px auto;
+  padding: 0 14px 40px;
+}
+
+.create-post-page .center {
+  width: 100%;
+}
+
+.create-post-page .card {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 22px;
+  background: linear-gradient(145deg, #171717, #0c0c0c);
+  color: #f5f5f5;
+  border: 1px solid rgba(212, 175, 55, .5);
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .35);
+}
+
+.create-post-page .card h2 {
+  color: #d4af37;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.create-post-page #content {
+  display: block;
+  width: 100%;
+  min-height: 150px;
+  box-sizing: border-box;
+  padding: 14px;
+  background: #101010;
+  color: #ffffff;
+  border: 1px solid rgba(212, 175, 55, .45);
+  border-radius: 10px;
+  font: inherit;
+  resize: vertical;
+}
+
+.create-post-page #content::placeholder {
+  color: #b8b8b8;
+}
+
+.create-post-page #content:focus,
+.create-post-page #image:focus {
+  outline: none;
+  border-color: #d4af37;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, .15);
+}
+
+.create-post-page #image {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 14px 0;
+  padding: 10px;
+  background: #111111;
+  color: #f5f5f5;
+  border: 1px solid rgba(212, 175, 55, .35);
+  border-radius: 9px;
+}
+
+.create-post-page .card button {
+  min-height: 44px;
+  padding: 11px 20px;
+  background: linear-gradient(135deg, #e5c65a, #b88a16);
+  color: #111111;
+  border: 1px solid #d4af37;
+  border-radius: 9px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.create-post-page .card button:hover {
+  background: #f0d675;
+}
+
+@media (max-width: 600px) {
+  .create-post-page .container {
+    margin-top: 18px;
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .create-post-page .card {
+    padding: 16px;
+  }
+
+  .create-post-page .card button {
+    width: 100%;
+  }
+}
+
+/* BENEDICT_CREATE_HEADER_GOLD_FIX */
+.create-post-page .luxury-header {
+  background: #080808 !important;
+  color: #f5f5f5 !important;
+  border-bottom: 1px solid rgba(212, 175, 55, .55);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, .35);
+}
+
+.create-post-page .luxury-header .logo,
+.create-post-page .luxury-header .gold {
+  color: #d4af37 !important;
+}
+
+.create-post-page .luxury-header .main-nav button {
+  background: #151515 !important;
+  color: #d4af37 !important;
+  border: 1px solid rgba(212, 175, 55, .35);
+  border-radius: 8px;
+}
+
+.create-post-page .luxury-header .main-nav button:hover {
+  background: #29220f !important;
+  color: #f5d76e !important;
+  border-color: #d4af37;
+}
+
+</style>
+
 </head>
 
-<body>
+<body class="create-post-page">
 
 <header class="luxury-header">
 

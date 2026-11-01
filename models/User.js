@@ -97,7 +97,22 @@ const userSchema = new mongoose.Schema({
     }
   ],
 
-// Legacy plain-text field, kept only so old documents can be cleared.
+// BENEDICT authorization and account moderation.
+  role: {
+    type: String,
+    enum: ["user", "admin"],
+    default: "user",
+    required: true
+  },
+
+  accountStatus: {
+    type: String,
+    enum: ["active", "suspended", "banned"],
+    default: "active",
+    required: true
+  },
+
+  // Legacy plain-text field, kept only so old documents can be cleared.
 resetCode: {
   type: String
 },

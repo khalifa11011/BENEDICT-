@@ -5,6 +5,108 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Notifications — BENEDICT</title>
 <link rel="stylesheet" href="style.css?v=5">
+
+<style id="BENEDICT_NOTIFICATIONS_GOLD_REDESIGN">
+html, body {
+  min-height: 100% !important;
+  background: #09090b !important;
+  color: #f5f5f5 !important;
+}
+body { font-family: Arial, Helvetica, sans-serif !important; }
+.luxury-header {
+  background: #09090b !important;
+  border-bottom: 1px solid rgba(212,175,55,.4) !important;
+  box-shadow: 0 5px 20px rgba(0,0,0,.35) !important;
+}
+.luxury-header .logo, .luxury-header .gold {
+  color: #e8c957 !important;
+}
+.luxury-header .main-nav button {
+  background: #19191e !important;
+  color: #f5f5f5 !important;
+  border: 1px solid rgba(212,175,55,.55) !important;
+}
+.container {
+  max-width: 850px !important;
+  margin: 20px auto !important;
+  padding: 12px !important;
+}
+.center { max-width: 720px !important; }
+.container .card {
+  background: linear-gradient(155deg,#19191d,#101013) !important;
+  color: #f5f5f5 !important;
+  border: 1px solid rgba(212,175,55,.48) !important;
+  border-radius: 20px !important;
+  padding: 22px !important;
+  box-shadow: 0 12px 35px rgba(0,0,0,.45) !important;
+}
+.container .card h2,
+.container .card h3 {
+  color: #e8c957 !important;
+}
+#notifications { color: #f3f3f3 !important; }
+.notification-item {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 14px !important;
+  margin: 12px 0 !important;
+  padding: 16px !important;
+  background: #202025 !important;
+  color: #f5f5f5 !important;
+  border: 1px solid rgba(212,175,55,.3) !important;
+  border-radius: 15px !important;
+  box-shadow: 0 5px 16px rgba(0,0,0,.22) !important;
+}
+.notification-item.notification-unread {
+  background: linear-gradient(110deg,#29251a,#1d1d21) !important;
+  border-color: rgba(232,201,87,.8) !important;
+  box-shadow: inset 3px 0 #d4af37, 0 5px 16px rgba(0,0,0,.25) !important;
+}
+.notification-content { min-width: 0; flex: 1; }
+.notification-content strong {
+  color: #f0d675 !important;
+  overflow-wrap: anywhere;
+}
+.notification-content p {
+  color: #f2f2f2 !important;
+  line-height: 1.5;
+  margin: 7px 0 !important;
+}
+.notification-content small {
+  color: #aaaab2 !important;
+  font-size: 12px !important;
+}
+.notification-item button,
+.container .card > div > button {
+  background: linear-gradient(135deg,#e7c64e,#c99e2b) !important;
+  color: #17130a !important;
+  border: 1px solid #f0d675 !important;
+  border-radius: 11px !important;
+  font-weight: 800 !important;
+}
+.notification-item button { flex-shrink: 0; }
+.notification-empty,
+.notification-error {
+  padding: 22px !important;
+  margin: 12px 0 !important;
+  background: #202025 !important;
+  color: #f4f4f4 !important;
+  border: 1px solid rgba(212,175,55,.32) !important;
+  border-radius: 15px !important;
+}
+.notification-empty h3,
+.notification-error strong { color: #e8c957 !important; }
+.notification-empty p,
+.notification-error p { color: #bcbcc3 !important; line-height: 1.5; }
+@media (max-width: 600px) {
+  .container { margin: 10px auto !important; padding: 8px !important; }
+  .container .card { padding: 16px !important; border-radius: 17px !important; }
+  .notification-item { align-items: flex-start !important; padding: 13px !important; gap: 9px !important; }
+  .notification-item button { white-space: normal !important; padding: 9px !important; font-size: 12px !important; }
+}
+</style>
+
 </head>
 
 <body>
