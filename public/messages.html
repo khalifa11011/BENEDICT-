@@ -2,256 +2,78 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
 <title>Messenger | BENEDICT</title>
 
-<style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  background: #0b0b0d;
-  color: #fff;
-  font-family: Arial, sans-serif;
-}
-
-.luxury-header {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  background: #0b0b0d;
-  border-bottom: 1px solid rgba(212,175,55,.35);
-  padding: 14px 16px;
-  box-shadow: 0 5px 20px rgba(0,0,0,.45);
-}
-
-.logo {
-  text-align: center;
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: 1px;
-}
-
-.gold {
-  color: #d4af37;
-}
-
-.main-nav {
-  display: flex;
-  gap: 7px;
-  margin-top: 12px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.main-nav::-webkit-scrollbar {
-  display: none;
-}
-
-.main-nav button {
-  flex: 0 0 auto;
-  min-height: 40px;
-  padding: 8px 12px;
-  background: #151518;
-  color: #fff;
-  border: 1px solid rgba(212,175,55,.45);
-  border-radius: 10px;
-}
-
-.page {
-  width: 100%;
-  max-width: 700px;
-  margin: 18px auto;
-  padding: 0 12px 30px;
-}
-
-.card {
-  background: #151518;
-  border: 1px solid rgba(212,175,55,.45);
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,.45);
-}
-
-.inbox-title {
-  padding: 18px 16px 10px;
-}
-
-.inbox-title h1 {
-  margin: 0;
-  color: #d4af37;
-  font-size: 25px;
-}
-
-.inbox-title p {
-  margin: 5px 0 0;
-  color: #999;
-  font-size: 13px;
-}
-
-.search-box {
-  padding: 0 16px 14px;
-}
-
-#conversationSearch {
-  width: 100%;
-  padding: 13px 14px;
-  background: #0f0f11;
-  color: #fff;
-  border: 1px solid rgba(212,175,55,.45);
-  border-radius: 12px;
-  outline: none;
-  font-size: 15px;
-}
-
-#conversationSearch:focus {
-  border-color: #d4af37;
-}
-
-#conversationList {
-  border-top: 1px solid rgba(212,175,55,.2);
-}
-
-.conversation {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  padding: 13px 16px;
-  background: transparent;
-  color: #fff;
-  border: 0;
-  border-bottom: 1px solid rgba(255,255,255,.06);
-  text-align: left;
-  cursor: pointer;
-}
-
-.conversation:active {
-  background: #1c1c20;
-}
-
-.avatar-wrap {
-  position: relative;
-  flex: 0 0 auto;
-}
-
-.avatar {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: #25252a;
-  border: 2px solid rgba(212,175,55,.65);
-}
-
-.online-dot {
-  position: absolute;
-  right: 1px;
-  bottom: 2px;
-  width: 13px;
-  height: 13px;
-  background: #22c55e;
-  border: 2px solid #151518;
-  border-radius: 50%;
-}
-
-.conversation-main {
-  min-width: 0;
-  flex: 1;
-}
-
-.row-top {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.username {
-  font-weight: 700;
-  color: #fff;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.time {
-  color: #777;
-  font-size: 11px;
-  flex: 0 0 auto;
-}
-
-.preview-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 5px;
-}
-
-.preview {
-  flex: 1;
-  color: #999;
-  font-size: 13px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.unread {
-  min-width: 22px;
-  height: 22px;
-  padding: 0 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #d4af37;
-  color: #000;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.empty,
-.loading,
-.error {
-  padding: 35px 20px;
-  text-align: center;
-  color: #999;
-}
-
-.error {
-  color: #e5a3a3;
-}
-
-.retry {
-  margin-top: 12px;
-  padding: 10px 16px;
-  background: #1c1c20;
-  color: #d4af37;
-  border: 1px solid #d4af37;
-  border-radius: 10px;
-}
-
-@media (max-width: 600px) {
-  .luxury-header {
-    padding: 11px 10px;
-  }
-
-  .logo {
-    font-size: 19px;
-  }
-
-  .page {
-    margin-top: 10px;
-    padding-left: 8px;
-    padding-right: 8px;
-  }
-
-  .card {
-    border-radius: 14px;
-  }
+<style id="BENEDICT_INBOX_V2">
+:root{--gold:#d4af37;--gold-hi:#f0d675;--ink:#09090b;--panel:#121215;--panel-2:#1b1b20;--line:rgba(212,175,55,.22);--muted:#9a9aa3;--text:#f4f4f5}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--ink);color:var(--text);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;display:flex;flex-direction:column;height:100dvh;overflow:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+button:active{transform:scale(.98)}
+/* Header (same look as the chat screen) */
+.luxury-header{flex:0 0 auto;position:relative;z-index:20;background:var(--ink);padding:8px 6px 8px;border-bottom:1px solid var(--line)}
+.logo{text-align:center;padding:0 0 6px}
+.gold{color:var(--gold-hi);letter-spacing:.08em}
+.main-nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:0 2px}
+.main-nav::-webkit-scrollbar{display:none}
+.main-nav button{flex:1 0 auto;min-height:40px;padding:8px 10px;background:#1c1c20;color:#fff;border:1px solid rgba(212,175,55,.45);border-radius:10px;font-size:13px;white-space:nowrap}
+/* Shell */
+.page{flex:1 1 auto;min-height:0;width:100%;max-width:760px;margin:0 auto;padding:8px 8px max(8px,env(safe-area-inset-bottom))}
+.card{height:100%;display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,.45)}
+.inbox-title{flex:0 0 auto;padding:14px 16px 8px;background:linear-gradient(180deg,#18181c,#131316)}
+.inbox-title h1{margin:0;color:var(--gold-hi);font-size:22px;font-weight:800;letter-spacing:.01em}
+.inbox-title p{margin:2px 0 0;color:var(--muted);font-size:12.5px}
+/* Search */
+.search-box{flex:0 0 auto;position:relative;display:flex;flex-direction:column;padding:6px 12px 12px;background:#131316;border-bottom:1px solid var(--line)}
+#conversationSearch{order:1;width:100%;height:42px;padding:0 14px 0 40px;border-radius:21px;border:1px solid rgba(212,175,55,.3);outline:none;font-size:16px;color:#fff;
+  background:#1d1d22 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-4-4'/%3E%3C/svg%3E") no-repeat 15px center}
+#conversationSearch:focus{border-color:var(--gold)}
+#conversationSearch::placeholder{color:#8a8a93}
+#peopleSearchResults{order:2;margin-top:10px;max-height:min(40vh,300px);overflow-y:auto;background:var(--panel-2);border:1px solid var(--line);border-radius:14px;padding:4px}
+.people-label{padding:6px 10px 4px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.people-result{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;background:transparent;border:0;border-radius:10px;text-align:left}
+.people-result:hover{background:#24242a}
+.people-avatar{flex:0 0 40px;width:40px;height:40px;border-radius:50%;object-fit:cover;background:#25252a;border:1.5px solid rgba(212,175,55,.6)}
+.people-placeholder{display:grid;place-items:center;font-size:18px}
+.people-info{flex:1;min-width:0;display:flex;flex-direction:column}
+.people-info strong{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.people-info span{font-size:12px;color:var(--muted)}
+.message-person{flex:0 0 auto;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ead06a,#c59a2b);font-size:15px}
+.search-empty{padding:12px;text-align:center;font-size:13px;color:var(--muted)}
+/* Conversation list */
+#conversationList{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:4px 0;
+  background:radial-gradient(circle at 20% 0%,rgba(212,175,55,.05),transparent 45%),#0c0c0f}
+.conversation{display:flex;align-items:center;gap:12px;width:100%;min-height:72px;padding:10px 14px;background:transparent;color:var(--text);border:0;text-align:left;position:relative}
+.conversation::after{content:"";position:absolute;left:78px;right:14px;bottom:0;height:1px;background:rgba(255,255,255,.05)}
+.conversation:last-child::after{display:none}
+.conversation:hover{background:#15151a}
+.conversation:active{background:#1c1c22;transform:none}
+.avatar-wrap{position:relative;flex:0 0 auto}
+.avatar{width:52px;height:52px;border-radius:50%;object-fit:cover;background:#25252a;border:2px solid rgba(212,175,55,.55)}
+.conversation.has-unread .avatar{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.15)}
+.online-dot{position:absolute;right:1px;bottom:2px;width:13px;height:13px;background:#22c55e;border:2.5px solid #0c0c0f;border-radius:50%}
+.conversation-main{min-width:0;flex:1}
+.row-top{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.username{font-weight:600;font-size:15px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.time{flex:0 0 auto;color:#7d7d86;font-size:11.5px}
+.preview-row{display:flex;align-items:center;gap:8px;margin-top:3px}
+.preview{flex:1;min-width:0;color:var(--muted);font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.conversation.has-unread .username{font-weight:800;color:#fff}
+.conversation.has-unread .preview{color:#e9e9ec;font-weight:600}
+.conversation.has-unread .time{color:var(--gold-hi);font-weight:700}
+.unread{flex:0 0 auto;min-width:20px;height:20px;padding:0 6px;display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#ead06a,#c59a2b);color:#17130a;border-radius:999px;font-size:11px;font-weight:800}
+.empty,.loading,.error{padding:48px 20px;text-align:center;color:var(--muted);font-size:14px}
+.error{color:#e5a3a3}
+.retry{margin-top:12px;height:38px;padding:0 18px;background:linear-gradient(135deg,#ead06a,#c59a2b);color:#17130a;font-weight:800;border:0;border-radius:19px}
+@media (max-width:600px){
+  .page{padding:0}
+  .card{border-radius:0;border-left:0;border-right:0}
+  .main-nav button{flex:0 0 auto;font-size:12px;padding:8px 10px}
+  .conversation{padding:10px 12px}
+  .conversation::after{left:76px;right:12px}
 }
 </style>
 
@@ -297,7 +119,7 @@ body {
     <input
         id="conversationSearch"
         type="search"
-        placeholder="Search conversations..."
+        placeholder="Search chats or people"
         autocomplete="off">
     </div>
 
@@ -309,7 +131,7 @@ body {
 
 </main>
 
-<script src="/messages.js?v=2"></script>
+<script src="/messages.js?v=3"></script>
 
 </body>
 </html>
