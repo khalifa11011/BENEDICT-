@@ -15,7 +15,9 @@ const btn = document.getElementById("recordBtn");
   // Stop recording
   if (mediaRecorder && mediaRecorder.state === "recording") {
     mediaRecorder.stop();
-    btn.innerText = "🎤 Record";
+    btn.innerText = "🎤";
+    btn.classList.remove("recording");
+    btn.setAttribute("aria-label", "Record voice");
     return;
   }
 
@@ -43,12 +45,15 @@ const btn = document.getElementById("recordBtn");
       });
 
       stream.getTracks().forEach(track => track.stop());
+      updateAttachChip();
 
     };
 
     mediaRecorder.start();
 
-    btn.innerText = "⏹ Stop";
+    btn.innerText = "⏹";
+    btn.classList.add("recording");
+    btn.setAttribute("aria-label", "Stop recording");
 
   } catch (err) {
     alert("Microphone error: " + err.message);
@@ -219,36 +224,28 @@ const mediaUrl = safeMediaUrl(msg.media);
       }
     }
 
-    box.innerHTML += `
-        <div class="message ${mine ? "mine" : "theirs"}">
-            <strong>${escapeHtml(msg.sender?.username || "")}</strong><br>
-${msg.text ? `<div class="message-text">${escapeHtml(msg.text || "")}</div>` : ""}
-${mediaUrl && mediaPath.startsWith("/uploads/messages/")
+    const sentAt = new Date(msg.createdAt);
+    const timeLabel = isNaN(sentAt) ? "" : sentAt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    const fullTime = isNaN(sentAt) ? "" : sentAt.toLocaleString();
+    const ticks = mine
+      ? (msg.read
+          ? `<span class="msg-ticks seen" title="Seen">✔✔</span>`
+          : (msg.delivered
+              ? `<span class="msg-ticks" title="Delivered">✔✔</span>`
+              : `<span class="msg-ticks" title="Sent">✔</span>`))
+      : "";
+
+    box.innerHTML += `<div class="message ${mine ? "mine" : "theirs"}">${msg.text ? `<div class="message-text">${escapeHtml(msg.text || "")}</div>` : ""}${mediaUrl && mediaPath.startsWith("/uploads/messages/")
   ? (/\.(jpg|jpeg|png|gif|webp)$/i.test(mediaPath)
-      ? `<img data-protected-media-id="${escapeHtml(msg._id)}" alt="Image message" style="max-width:250px;border-radius:10px;">`
+      ? `<img data-protected-media-id="${escapeHtml(msg._id)}" alt="Image message">`
       : /\.(weba|mp3|wav|ogg|m4a)$/i.test(mediaPath)
-        ? `<audio controls data-protected-media-id="${escapeHtml(msg._id)}" style="width:250px;"></audio>`
+        ? `<audio controls data-protected-media-id="${escapeHtml(msg._id)}"></audio>`
         : /\.(mp4|webm|mov|m4v)$/i.test(mediaPath)
-          ? `<video controls data-protected-media-id="${escapeHtml(msg._id)}" style="max-width:250px;border-radius:10px;"></video>`
+          ? `<video controls playsinline data-protected-media-id="${escapeHtml(msg._id)}"></video>`
           : "")
-  : ""}
-
-<small>
-${new Date(msg.createdAt).toLocaleString()}
-${mine
-  ? (msg.read
-      ? " ✔✔ Seen"
-      : (msg.delivered
-          ? " ✔✔ Delivered"
-          : " ✔ Sent"))
-  : ""}
-</small>
-
-${mine
-  ? `<br><button type="button" class="benedict-three-dot" data-message-id="${escapeHtml(msg._id)}">⋮</button>`
-  : ""}
-        </div>
-        `;
+  : ""}<div class="msg-meta"><span title="${escapeHtml(fullTime)}">${escapeHtml(timeLabel)}</span>${ticks}${mine
+  ? `<button type="button" class="benedict-three-dot" data-message-id="${escapeHtml(msg._id)}" aria-label="Message options">⋮</button>`
+  : ""}</div></div>`;
      });
 
 loadProtectedMessageMedia(box);
@@ -322,7 +319,9 @@ document.getElementById("messageMedia").value = "";
 
 recordedAudio = null;
 audioChunks = [];
-document.getElementById("recordBtn").innerText = "🎤 Record";
+document.getElementById("recordBtn").innerText = "🎤";
+document.getElementById("recordBtn").classList.remove("recording");
+updateAttachChip();
 
 loadMessages();
 
@@ -526,3 +525,42 @@ document.addEventListener("touchend", function(e) {
 }, { passive: false });
 
 window.addEventListener("resize", closeMessageMenu);
+
+
+/* ==========================================
+   BENEDICT MESSENGER V2 — COMPOSER HELPERS
+   ========================================== */
+
+function updateAttachChip() {
+  const input = document.getElementById("messageMedia");
+  const chip = document.getElementById("attachChip");
+  const name = document.getElementById("attachName");
+  if (!input || !chip || !name) return;
+  const file = input.files && input.files[0];
+  if (file) {
+    name.textContent = "📎 " + file.name;
+    chip.classList.add("show");
+  } else if (recordedAudio) {
+    name.textContent = "🎙️ Voice message ready — tap Send";
+    chip.classList.add("show");
+  } else {
+    name.textContent = "";
+    chip.classList.remove("show");
+  }
+}
+
+function clearAttachment() {
+  document.getElementById("messageMedia").value = "";
+  recordedAudio = null;
+  audioChunks = [];
+  updateAttachChip();
+}
+
+document.getElementById("messageMedia").addEventListener("change", updateAttachChip);
+
+document.getElementById("messageText").addEventListener("keydown", function(e) {
+  if (e.key === "Enter" && !e.shiftKey && !e.isComposing) {
+    e.preventDefault();
+    sendMessage();
+  }
+});
