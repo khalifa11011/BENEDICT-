@@ -1805,11 +1805,22 @@ function closeStory() {
 
 function showLikes(postId) {
 
-  fetch("/api/posts/" + postId + "/likes")
-    .then(res => res.json())
+  const token = getToken();
+  const headers = token ? { "Authorization": "Bearer " + token } : {};
+
+  fetch("/api/posts/" + postId + "/likes", { headers })
+    .then(res => {
+      if (!res.ok) {
+        return res.json().then(errData => {
+          throw new Error(errData.error || errData.message || "Could not load likes.");
+        });
+      }
+      return res.json();
+    })
     .then(data => {
 
       const box = document.getElementById("likes-" + postId);
+      if (!box) return;
 
       if (!data.likes || data.likes.length === 0) {
         box.innerHTML = "<p>No likes yet.</p>";
@@ -1827,6 +1838,10 @@ function showLikes(postId) {
     })
     .catch(err => {
       console.error(err);
+      const box = document.getElementById("likes-" + postId);
+      if (box) {
+        box.innerHTML = `<p>${escapeHtml(err.message || "Could not load likes.")}</p>`;
+      }
     });
 
 }

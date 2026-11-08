@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 const Post = require("../models/Post");
@@ -287,18 +288,22 @@ router.put("/:id/react", auth, async (req, res) => {
     }
 
     const author = await User.findById(post.user).select("profileVisibility followers");
-    if (author) {
-      const visibility = author.profileVisibility || "public";
-      const isAuthor = String(author._id) === String(req.user.id);
-      const isFollower = (author.followers || []).some(
-        follower => String(follower) === String(req.user.id)
-      );
+    if (!author) {
+      return res.status(403).json({
+        error: "This user profile is private"
+      });
+    }
 
-      if (!isAuthor && (visibility === "private" || (visibility === "followers" && !isFollower))) {
-        return res.status(403).json({
-          error: "This user profile is private"
-        });
-      }
+    const visibility = author.profileVisibility || "public";
+    const isAuthor = String(author._id) === String(req.user.id);
+    const isFollower = (author.followers || []).some(
+      follower => String(follower) === String(req.user.id)
+    );
+
+    if (!isAuthor && (visibility === "private" || (visibility === "followers" && !isFollower))) {
+      return res.status(403).json({
+        error: "This user profile is private"
+      });
     }
 
     const allowedReactionTypes = [
@@ -555,12 +560,67 @@ router.get("/:id/likes", async (req, res) => {
 
   try {
 
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        error: "Invalid post ID"
+      });
+    }
+
     const post = await Post.findById(req.params.id)
       .populate("reactions.user", "username fullName");
 
     if (!post) {
       return res.status(404).json({
         error: "Post not found"
+      });
+    }
+
+    let viewerId = null;
+    const authorization = req.headers.authorization || "";
+
+    // Optional authentication: public profiles remain accessible without login.
+    if (authorization.startsWith("Bearer ")) {
+      try {
+        const secret = process.env.JWT_SECRET;
+        if (secret) {
+          const decoded = jwt.verify(authorization.slice(7), secret);
+
+          if (decoded && decoded.id) {
+            const viewer = await User.findById(decoded.id)
+              .select("accountStatus")
+              .lean();
+
+            if (viewer && viewer.accountStatus === "active") {
+              viewerId = String(decoded.id);
+            }
+          }
+        }
+      } catch (tokenError) {
+        // Invalid or expired optional tokens are treated as anonymous visitors.
+        viewerId = null;
+      }
+    }
+
+    const author = await User.findById(post.user).select("profileVisibility followers");
+    if (!author) {
+      // Fail closed if author record is missing
+      return res.status(403).json({
+        error: "This user profile is private"
+      });
+    }
+
+    const visibility = author.profileVisibility || "public";
+    const isAuthor = viewerId && viewerId === String(author._id);
+    const isFollower = viewerId && (author.followers || []).some(
+      follower => String(follower) === viewerId
+    );
+
+    const canView = visibility === "public" || isAuthor ||
+      (visibility === "followers" && isFollower);
+
+    if (!canView) {
+      return res.status(403).json({
+        error: "This user profile is private"
       });
     }
 
