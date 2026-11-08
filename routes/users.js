@@ -4,6 +4,7 @@ const router = express.Router();
 
 const User = require("../models/User");
 const Post = require("../models/Post");
+const Comment = require("../models/Comment");
 const Friend = require("../models/Friend");
 const auth = require("../middleware/auth");
 const { createNotification } = require("../utils/notify");
@@ -108,9 +109,30 @@ router.get("/:id", async (req, res) => {
       { path: "following", select: "username fullName profilePicture" }
     ]);
 
-    const posts = await Post.find({
+    const rawPosts = await Post.find({
       user: user._id
-    }).sort({ createdAt: -1 });
+    })
+      .populate("reactions.user", "_id username fullName")
+      .sort({ createdAt: -1 })
+      .lean();
+
+    const postIds = rawPosts.map(p => p._id);
+    const commentCounts = postIds.length > 0
+      ? await Comment.aggregate([
+          { $match: { post: { $in: postIds } } },
+          { $group: { _id: "$post", count: { $sum: 1 } } }
+        ])
+      : [];
+
+    const commentCountMap = new Map();
+    commentCounts.forEach(item => {
+      commentCountMap.set(String(item._id), item.count);
+    });
+
+    const posts = rawPosts.map(p => ({
+      ...p,
+      commentCount: commentCountMap.get(String(p._id)) || 0
+    }));
 
     const profileData = user.toObject();
 

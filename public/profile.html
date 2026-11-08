@@ -2393,9 +2393,24 @@ function loadProfilePage() {
 
         myPosts.length
 
-        ? myPosts.map(post => `
+        ? myPosts.map(post => {
 
-            <article class="profile-post">
+            const reactions = Array.isArray(post.reactions) ? post.reactions : [];
+            const isLiked = Boolean(
+              payload && payload.id &&
+              reactions.some(r => {
+                const uid = r && (r.user?._id || r.user);
+                return String(uid) === String(payload.id);
+              })
+            );
+            const reactionCount = reactions.length;
+            const commentCount = typeof post.commentCount === "number"
+              ? post.commentCount
+              : (Array.isArray(post.comments) ? post.comments.length : 0);
+
+            return `
+
+            <article class="profile-post" id="profile-post-${escapeHtml(post._id)}">
 
               ${
                 post.content
@@ -2410,12 +2425,30 @@ function loadProfilePage() {
                 : ""
               }
 
+              <div class="profile-post-stats" id="profile-post-stats-${escapeHtml(post._id)}">
+                <span class="profile-post-stat-reactions ${reactionCount > 0 ? "has-reactions" : ""}"
+                      id="profile-reactions-count-${escapeHtml(post._id)}">
+                  ${formatProfileReactionCount(reactionCount)}
+                </span>
+                <span class="profile-post-stat-comments"
+                      id="profile-comments-count-${escapeHtml(post._id)}"
+                      onclick="document.getElementById('profile-comment-input-${escapeHtml(post._id)}')?.focus()"
+                      title="Click to comment">
+                  ${formatProfileCommentCount(commentCount)}
+                </span>
+              </div>
+
               <div class="profile-post-actions">
                 <button type="button"
-                  onclick="profilePostLike('${escapeHtml(post._id)}', this)">
-                  ❤️ Like
+                  id="profile-like-btn-${escapeHtml(post._id)}"
+                  class="profile-like-btn ${isLiked ? "liked" : ""}"
+                  data-liked="${isLiked ? "true" : "false"}"
+                  aria-pressed="${isLiked ? "true" : "false"}"
+                  onclick="profilePostToggleLike('${escapeHtml(post._id)}')">
+                  ${isLiked ? "❤️ Liked" : "🤍 Like"}
                 </button>
                 <button type="button"
+                  class="profile-comment-btn"
                   onclick="document.getElementById('profile-comment-input-${escapeHtml(post._id)}')?.focus()">
                   💬 Comment
                 </button>
@@ -2423,13 +2456,14 @@ function loadProfilePage() {
 
               <div class="profile-post-comments"
                 id="profile-comments-${escapeHtml(post._id)}">
-                <p>Loading comments...</p>
+                <p class="profile-no-comments">Loading comments...</p>
               </div>
 
               <div class="profile-post-comment-box">
                 <input id="profile-comment-input-${escapeHtml(post._id)}"
                   type="text" maxlength="2000"
-                  placeholder="Write a comment...">
+                  placeholder="Write a comment..."
+                  onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();profilePostAddComment('${escapeHtml(post._id)}');}">
                 <button type="button"
                   onclick="profilePostAddComment('${escapeHtml(post._id)}')">
                   Post
@@ -2438,10 +2472,14 @@ function loadProfilePage() {
 
             </article>
 
-          `).join("")
+          `;
+          }).join("")
 
-        : "<p>No posts yet. Create your first post!</p>";
-    myPosts.forEach(post => profilePostLoadComments(post._id));
+        : (isOwnProfile
+            ? "<p>No posts yet. Create your first post!</p>"
+            : "<p>No posts yet.</p>");
+
+      myPosts.forEach(post => profilePostLoadComments(post._id));
 
     })
 
@@ -2457,28 +2495,91 @@ function loadProfilePage() {
 }
 
 
-async function profilePostLike(postId, button) {
+function formatProfileReactionCount(count) {
+  const safeCount = Number.isInteger(count) && count > 0 ? count : 0;
+  if (safeCount === 0) {
+    return '<span class="profile-stat-muted">No reactions yet</span>';
+  }
+  return `❤️ <span>${safeCount}</span> ${safeCount === 1 ? "reaction" : "reactions"}`;
+}
+
+function formatProfileCommentCount(count) {
+  const safeCount = Number.isInteger(count) && count > 0 ? count : 0;
+  return `💬 <span>${safeCount}</span> ${safeCount === 1 ? "comment" : "comments"}`;
+}
+
+async function profilePostToggleLike(postId) {
+  const token = getToken();
+  if (!token) {
+    alert("Please log in to like posts.");
+    return;
+  }
+
+  const btn = document.getElementById("profile-like-btn-" + postId);
+  const countEl = document.getElementById("profile-reactions-count-" + postId);
+  const isCurrentlyLiked = btn ? btn.getAttribute("data-liked") === "true" : false;
+
+  const endpoint = isCurrentlyLiked
+    ? "/api/posts/" + encodeURIComponent(postId) + "/remove-reaction"
+    : "/api/posts/" + encodeURIComponent(postId) + "/react";
+
+  const options = {
+    method: "PUT",
+    headers: {
+      "Authorization": "Bearer " + token,
+      "Content-Type": "application/json"
+    }
+  };
+
+  if (!isCurrentlyLiked) {
+    options.body = JSON.stringify({ type: "like" });
+  }
+
+  if (btn) btn.disabled = true;
+
   try {
-    const res = await fetch("/api/posts/" + encodeURIComponent(postId) + "/react", {
-      method: "PUT",
-      headers: {
-        "Authorization": "Bearer " + getToken(),
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ type: "like" })
-    });
+    const res = await fetch(endpoint, options);
     const data = await res.json();
 
     if (!res.ok || data.error) {
-      alert(data.error || "Could not like this post.");
+      alert(data.error || data.message || (isCurrentlyLiked ? "Could not unlike post." : "Could not like post."));
       return;
     }
 
-    if (button) button.textContent = "❤️ Liked";
+    const nextLiked = !isCurrentlyLiked;
+    const reactions = Array.isArray(data.reactions) ? data.reactions : [];
+    const newCount = reactions.length;
+
+    if (btn) {
+      btn.setAttribute("data-liked", nextLiked ? "true" : "false");
+      btn.setAttribute("aria-pressed", nextLiked ? "true" : "false");
+      if (nextLiked) {
+        btn.classList.add("liked");
+        btn.innerHTML = "❤️ Liked";
+      } else {
+        btn.classList.remove("liked");
+        btn.innerHTML = "🤍 Like";
+      }
+    }
+
+    if (countEl) {
+      countEl.innerHTML = formatProfileReactionCount(newCount);
+      if (newCount > 0) {
+        countEl.classList.add("has-reactions");
+      } else {
+        countEl.classList.remove("has-reactions");
+      }
+    }
   } catch (err) {
-    console.error(err);
-    alert("Failed to like post.");
+    console.error("Toggle like error:", err);
+    alert("Failed to update reaction.");
+  } finally {
+    if (btn) btn.disabled = false;
   }
+}
+
+function profilePostLike(postId, button) {
+  return profilePostToggleLike(postId);
 }
 
 async function profilePostLoadComments(postId) {
@@ -2489,9 +2590,14 @@ async function profilePostLoadComments(postId) {
     const res = await fetch("/api/comments/" + encodeURIComponent(postId));
     const data = await res.json();
 
-    if (!res.ok) throw new Error(data.error || "Could not load comments.");
+    if (!res.ok) throw new Error(data.error || data.message || "Could not load comments.");
 
     const comments = Array.isArray(data) ? data : (data.comments || []);
+
+    const countEl = document.getElementById("profile-comments-count-" + postId);
+    if (countEl) {
+      countEl.innerHTML = formatProfileCommentCount(comments.length);
+    }
 
     box.innerHTML = comments.length
       ? comments.map(comment => {
@@ -2499,10 +2605,10 @@ async function profilePostLoadComments(postId) {
             comment.user?.fullName || "User";
           return `<p><strong>${escapeHtml(username)}</strong>: ${escapeHtml(comment.text || "")}</p>`;
         }).join("")
-      : "<p>No comments yet.</p>";
+      : '<p class="profile-no-comments">No comments yet.</p>';
   } catch (err) {
     console.error(err);
-    box.innerHTML = "<p>Could not load comments.</p>";
+    box.innerHTML = '<p class="profile-no-comments">Could not load comments.</p>';
   }
 }
 
@@ -2516,27 +2622,44 @@ async function profilePostAddComment(postId) {
     return;
   }
 
+  const token = getToken();
+  if (!token) {
+    alert("Please log in to comment.");
+    return;
+  }
+
+  const btn = input.parentElement ? input.parentElement.querySelector("button") : null;
+  if (btn) btn.disabled = true;
+
   try {
     const res = await fetch("/api/comments/" + encodeURIComponent(postId), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer " + getToken()
+        "Authorization": "Bearer " + token
       },
       body: JSON.stringify({ text })
     });
     const data = await res.json();
 
     if (!res.ok || data.error) {
-      alert(data.error || "Could not post your comment.");
+      alert(data.error || data.message || "Could not post your comment.");
       return;
     }
 
     input.value = "";
+    if (typeof data.commentCount === "number") {
+      const countEl = document.getElementById("profile-comments-count-" + postId);
+      if (countEl) {
+        countEl.innerHTML = formatProfileCommentCount(data.commentCount);
+      }
+    }
     await profilePostLoadComments(postId);
   } catch (err) {
     console.error(err);
     alert("Failed to post comment.");
+  } finally {
+    if (btn) btn.disabled = false;
   }
 }
 
@@ -2999,6 +3122,44 @@ loadProfilePage();
   border-radius: 11px !important;
 }
 
+.profile-post-stats {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  padding: 7px 2px 9px !important;
+  border-bottom: 1px solid rgba(212,175,55,.14) !important;
+  color: #c9b370 !important;
+  font-size: 13px !important;
+}
+
+.profile-post-stat-reactions,
+.profile-post-stat-comments {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  font-weight: 600 !important;
+}
+
+.profile-post-stat-reactions.has-reactions {
+  color: #ffd875 !important;
+}
+
+.profile-post-stat-comments {
+  cursor: pointer !important;
+  transition: color .15s ease !important;
+}
+
+.profile-post-stat-comments:hover {
+  color: #ffd875 !important;
+  text-decoration: underline !important;
+}
+
+.profile-stat-muted {
+  color: #888888 !important;
+  font-weight: 400 !important;
+}
+
 .profile-post-actions {
   display: flex !important;
   gap: 9px !important;
@@ -3019,6 +3180,14 @@ loadProfilePage();
   font-size: 13px !important;
   font-weight: 700 !important;
   cursor: pointer !important;
+  transition: all .15s ease !important;
+}
+
+.profile-post-actions button.liked {
+  background: linear-gradient(145deg, #3d2f13, #221a0a) !important;
+  border-color: #ffd700 !important;
+  color: #ffd700 !important;
+  box-shadow: 0 0 10px rgba(212,175,55,.30) !important;
 }
 
 .profile-post-actions button:active,
@@ -3032,6 +3201,26 @@ loadProfilePage();
   font-size: 13px !important;
   line-height: 1.5 !important;
   overflow-wrap: anywhere !important;
+}
+
+.profile-post-comments p {
+  margin: 0 0 6px !important;
+  padding: 6px 10px !important;
+  border-radius: 8px !important;
+  background: rgba(255,255,255,.04) !important;
+  border-left: 2px solid rgba(212,175,55,.4) !important;
+}
+
+.profile-post-comments p strong {
+  color: #e3bd55 !important;
+}
+
+.profile-post-comments p.profile-no-comments {
+  border-left: none !important;
+  background: none !important;
+  color: #888888 !important;
+  font-style: italic !important;
+  padding: 4px 2px !important;
 }
 
 .profile-post-comment-box {

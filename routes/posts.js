@@ -286,6 +286,21 @@ router.put("/:id/react", auth, async (req, res) => {
       });
     }
 
+    const author = await User.findById(post.user).select("profileVisibility followers");
+    if (author) {
+      const visibility = author.profileVisibility || "public";
+      const isAuthor = String(author._id) === String(req.user.id);
+      const isFollower = (author.followers || []).some(
+        follower => String(follower) === String(req.user.id)
+      );
+
+      if (!isAuthor && (visibility === "private" || (visibility === "followers" && !isFollower))) {
+        return res.status(403).json({
+          error: "This user profile is private"
+        });
+      }
+    }
+
     const allowedReactionTypes = [
       "like",
       "love",
@@ -307,7 +322,7 @@ router.put("/:id/react", auth, async (req, res) => {
     }
 
     const existingReaction = post.reactions.find(
-      reaction => reaction.user.toString() === req.user.id
+      reaction => reaction.user && reaction.user.toString() === req.user.id
     );
 
     if (existingReaction) {
@@ -371,6 +386,21 @@ return res.status(404).json({
 error:"Post not found"
 });
 
+}
+
+const author = await User.findById(post.user).select("profileVisibility followers");
+if (author) {
+  const visibility = author.profileVisibility || "public";
+  const isAuthor = String(author._id) === String(req.user.id);
+  const isFollower = (author.followers || []).some(
+    follower => String(follower) === String(req.user.id)
+  );
+
+  if (!isAuthor && (visibility === "private" || (visibility === "followers" && !isFollower))) {
+    return res.status(403).json({
+      error: "This user profile is private"
+    });
+  }
 }
 
 
@@ -485,7 +515,7 @@ router.put("/:id/remove-reaction", auth, async (req, res) => {
     }
 
     post.reactions = post.reactions.filter(
-      reaction => reaction.user.toString() !== req.user.id
+      reaction => reaction.user && reaction.user.toString() !== req.user.id
     );
 
     await post.save();
