@@ -1600,7 +1600,10 @@ ${escapeHtml(user.username || "")}
 
 function loadComments(postId) {
 
-  fetch("/api/comments/" + postId)
+  const token = getToken();
+  const headers = token ? { "Authorization": "Bearer " + token } : {};
+
+  fetch("/api/comments/" + postId, { headers })
     .then(res => res.json())
     .then(comments => {
 

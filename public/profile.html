@@ -2587,7 +2587,11 @@ async function profilePostLoadComments(postId) {
   if (!box) return;
 
   try {
-    const res = await fetch("/api/comments/" + encodeURIComponent(postId));
+    const token = getToken();
+    const headers = token ? { "Authorization": "Bearer " + token } : {};
+    const res = await fetch("/api/comments/" + encodeURIComponent(postId), {
+      headers
+    });
     const data = await res.json();
 
     if (!res.ok) throw new Error(data.error || data.message || "Could not load comments.");

@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 const Comment = require("../models/Comment");
@@ -101,6 +102,58 @@ router.get("/:postId", async (req, res) => {
       return res.status(400).json({
         message: "Invalid post ID"
       });
+    }
+
+    const post = await Post.findById(req.params.postId);
+
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found"
+      });
+    }
+
+    let viewerId = null;
+    const authorization = req.headers.authorization || "";
+
+    // Optional authentication: public profiles remain accessible without login.
+    if (authorization.startsWith("Bearer ")) {
+      try {
+        const secret = process.env.JWT_SECRET;
+        if (secret) {
+          const decoded = jwt.verify(authorization.slice(7), secret);
+
+          if (decoded && decoded.id) {
+            const viewer = await User.findById(decoded.id)
+              .select("accountStatus")
+              .lean();
+
+            if (viewer && viewer.accountStatus === "active") {
+              viewerId = String(decoded.id);
+            }
+          }
+        }
+      } catch (tokenError) {
+        // Invalid or expired optional tokens are treated as anonymous visitors.
+        viewerId = null;
+      }
+    }
+
+    const author = await User.findById(post.user).select("profileVisibility followers");
+    if (author) {
+      const visibility = author.profileVisibility || "public";
+      const isAuthor = viewerId && viewerId === String(author._id);
+      const isFollower = viewerId && (author.followers || []).some(
+        follower => String(follower) === viewerId
+      );
+
+      const canView = visibility === "public" || isAuthor ||
+        (visibility === "followers" && isFollower);
+
+      if (!canView) {
+        return res.status(403).json({
+          message: "This user profile is private"
+        });
+      }
     }
 
     const comments = await Comment.find({

@@ -514,6 +514,21 @@ router.put("/:id/remove-reaction", auth, async (req, res) => {
       });
     }
 
+    const author = await User.findById(post.user).select("profileVisibility followers");
+    if (author) {
+      const visibility = author.profileVisibility || "public";
+      const isAuthor = String(author._id) === String(req.user.id);
+      const isFollower = (author.followers || []).some(
+        follower => String(follower) === String(req.user.id)
+      );
+
+      if (!isAuthor && (visibility === "private" || (visibility === "followers" && !isFollower))) {
+        return res.status(403).json({
+          error: "This user profile is private"
+        });
+      }
+    }
+
     post.reactions = post.reactions.filter(
       reaction => reaction.user && reaction.user.toString() !== req.user.id
     );
