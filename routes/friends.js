@@ -183,7 +183,7 @@ router.get("/requests", auth, async (req, res) => {
     const requests = await Friend.find({
       receiver: req.user.id,
       status: "pending"
-    }).populate("sender", "username email");
+    }).populate("sender", "username");
 
     res.json(requests);
   } catch (err) {

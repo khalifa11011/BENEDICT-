@@ -4,6 +4,7 @@ const router = express.Router();
 const Comment = require("../models/Comment");
 const Post = require("../models/Post");
 const auth = require("../middleware/auth");
+const { createNotification } = require("../utils/notify");
 
 // Add a comment
 router.post("/:postId", auth, async (req, res) => {
@@ -33,6 +34,21 @@ router.post("/:postId", auth, async (req, res) => {
     });
 
     await comment.save();
+
+    // Notify the post owner, but never notify someone about their own comment.
+    if (String(post.user) !== String(req.user.id)) {
+      try {
+        await createNotification(req, {
+          user: post.user,
+          fromUser: req.user.id,
+          type: "comment",
+          post: post._id,
+          message: "commented on your post"
+        });
+      } catch (notificationError) {
+        console.error("Comment notification error:", notificationError);
+      }
+    }
 
     // Phase 2: return the author details and the up-to-date comment count.
     const populated = await Comment.findById(comment._id)

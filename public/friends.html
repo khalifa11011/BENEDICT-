@@ -164,6 +164,123 @@ button:active {
     flex: 1;
   }
 }
+
+/* BENEDICT FRIENDS BLACK GOLD MOBILE FIX V1 */
+
+/* Luxury navigation */
+.luxury-header {
+  width: 100%;
+  margin: 0 auto 24px;
+}
+
+.main-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+}
+
+.main-nav button {
+  background: #111 !important;
+  color: #d4af37 !important;
+  border: 1px solid #d4af37 !important;
+  border-radius: 12px;
+  min-height: 48px;
+  padding: 10px 16px;
+  font-weight: 700;
+  box-shadow: 0 3px 10px rgba(212,175,55,.12);
+}
+
+.main-nav button:hover,
+.main-nav button:focus-visible {
+  background: #d4af37 !important;
+  color: #000 !important;
+}
+
+/* Keep the current Friends destination highlighted */
+.main-nav button[onclick*="'/friends.html'"] {
+  background: #d4af37 !important;
+  color: #000 !important;
+}
+
+/* Request card: avatar, username and actions get separate space */
+.request {
+  display: grid;
+  grid-template-columns: 55px minmax(0, 1fr);
+  align-items: center;
+  column-gap: 14px;
+  row-gap: 12px;
+}
+
+.request .avatar {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+}
+
+.request .info {
+  grid-column: 2;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.request .info h3 {
+  color: #f2d675;
+  overflow-wrap: anywhere;
+}
+
+.request .actions {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+}
+
+.request .actions button {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 6px;
+  white-space: nowrap;
+}
+
+.request .accept {
+  background: #d4af37;
+  color: #000;
+  border-color: #d4af37;
+}
+
+.request .reject {
+  background: #111;
+  color: #fff;
+  border-color: #d4af37;
+}
+
+@media (max-width: 600px) {
+  .luxury-header {
+    margin-bottom: 20px;
+  }
+
+  .main-nav {
+    gap: 7px;
+  }
+
+  .main-nav button {
+    flex: 1 1 30%;
+    padding: 10px 7px;
+    font-size: 14px;
+  }
+
+  .request {
+    column-gap: 10px;
+    padding: 12px;
+  }
+
+  .request .actions {
+    gap: 7px;
+  }
+}
+
 </style>
 <script src="/splash.js"></script>
 </head>
@@ -177,13 +294,13 @@ button:active {
   </div>
 
   <nav class="main-nav">
-    <button onclick="window.location.href='/'">🏠 Home</button>
-    <button onclick="window.location.href='/search.html'">🔍 Search</button>
-    <button onclick="window.location.href='/stories.html'">📖 Stories</button>
-    <button onclick="window.location.href='/notifications.html'">🔔 Alerts</button>
-    <button onclick="window.location.href='/profile.html'">👤 Profile</button>
-    <button onclick="window.location.href='/friends.html'">👥 Friends</button>
-    <button onclick="window.location.href='/myfriends.html'">🤝 My Friends</button>
+    <button onclick="window.location.href='/'">⌂ Home</button>
+    <button onclick="window.location.href='/search.html'">⌕ Search</button>
+    <button onclick="window.location.href='/stories.html'">▤ Stories</button>
+    <button onclick="window.location.href='/notifications.html'">♢ Alerts</button>
+    <button onclick="window.location.href='/profile.html'">◉ Profile</button>
+    <button onclick="window.location.href='/friends.html'">♙ Friends</button>
+    <button onclick="window.location.href='/myfriends.html'">♧ My Friends</button>
   </nav>
 
 </header>
@@ -196,7 +313,7 @@ button:active {
   </div>
 
   <div class="card">
-    <h2 class="section-title">👥 Friend Requests</h2>
+    <h2 class="section-title">♙ Friend Requests</h2>
 
     <div id="requests">
       <div class="empty">Loading requests...</div>
@@ -204,7 +321,7 @@ button:active {
   </div>
 
   <div class="card">
-    <h2 class="section-title">🤝 My Friends</h2>
+    <h2 class="section-title">♧ My Friends</h2>
 
     <div id="friends">
       <div class="empty">Loading friends...</div>

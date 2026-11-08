@@ -527,11 +527,6 @@ body.benedict-menu-open {
 
   </div>
 
-  <button class="benedict-see-more" id="benedictSeeMore">
-    <span>⌄</span>
-    <label>See More</label>
-  </button>
-
   <div class="benedict-menu-list">
 
     <button onclick="window.location.href='/benedict-info.html'">
@@ -555,6 +550,11 @@ body.benedict-menu-open {
     </button>
 
   </div>
+
+  <button class="benedict-see-more" id="benedictSeeMore">
+    <span>⌄</span>
+    <label>See More</label>
+  </button>
 
 </div>
 
@@ -585,7 +585,12 @@ body.benedict-menu-open {
   left: 10px;
   width: min(320px, calc(100vw - 32px));
   max-height: calc(100vh - 80px);
+  max-height: calc(100dvh - 74px);
   overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
   background: #111113;
   color: #fff;
   border: 1px solid rgba(212,175,55,.45);
@@ -1113,12 +1118,12 @@ body.benedict-menu-open {
     <small>Explore</small>
   </button>
 
-  <button onclick="window.location.href='/live.html'">
+  <button class="create-nav-button" onclick="window.location.href='/live.html'">
     <span>◉</span>
     <small>Live</small>
   </button>
 
-  <button class="create-nav-button" onclick="window.location.href='/create.html'">
+  <button onclick="window.location.href='/create.html'">
     <span>＋</span>
     <small>Create</small>
   </button>

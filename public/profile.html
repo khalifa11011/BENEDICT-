@@ -1757,6 +1757,43 @@ body {
 
 <script src="/splash.js"></script>
 
+
+<style>
+.profile-post-actions {
+  display: flex;
+  gap: 10px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(212,175,55,.25);
+  border-bottom: 1px solid rgba(212,175,55,.25);
+}
+.profile-post-actions button,
+.profile-post-comment-box button {
+  background: #171717;
+  color: #d4af37;
+  border: 1px solid #8f7428;
+  border-radius: 8px;
+  padding: 9px 14px;
+}
+.profile-post-comments {
+  padding: 8px 0;
+  overflow-wrap: anywhere;
+}
+.profile-post-comment-box {
+  display: flex;
+  gap: 8px;
+  padding-bottom: 12px;
+}
+.profile-post-comment-box input {
+  flex: 1;
+  min-width: 0;
+  background: #171717;
+  color: #fff;
+  border: 1px solid #8f7428;
+  border-radius: 8px;
+  padding: 10px;
+}
+</style>
+
 </head>
 
 <body>
@@ -2058,7 +2095,9 @@ function loadProfilePage() {
   }
 
 
-  fetch("/api/users/" + profileUserId)
+  fetch("/api/users/" + profileUserId, {
+    headers: { "Authorization": "Bearer " + token }
+  })
 
     .then(res => res.json())
 
@@ -2069,12 +2108,13 @@ function loadProfilePage() {
       }
 
       const user = data.user;
+      const isPrivate = data.isPrivate === true;
 
       /* COVER PHOTO */
 
       const cover = document.getElementById("profileCover");
 
-      if (user.coverPhoto) {
+      if (user.coverPhoto && !isPrivate) {
         setCoverPhoto(user.coverPhoto);
       } else {
         cover.style.removeProperty("background-image");
@@ -2103,7 +2143,7 @@ function loadProfilePage() {
           </div>
 
           ${
-            user.bio
+            user.bio && !isPrivate
             ? `<div class="profile-bio">${escapeHtml(user.bio)}</div>`
             : ""
           }
@@ -2167,7 +2207,9 @@ function loadProfilePage() {
 
       const friendActions = document.getElementById("profileFriendActions");
 
-      if (!isOwnProfile) {
+      if (!isOwnProfile && !isPrivate) {
+
+        friendActions.style.display = "";
 
         fetch("/api/friends/status/" + profileUserId, {
           headers: {
@@ -2241,6 +2283,11 @@ function loadProfilePage() {
 
       }
 
+      /* Hide private information from unauthorized profile viewers */
+      friendActions.style.display = isPrivate ? "none" : "";
+      document.getElementById("profileStats").style.display = isPrivate ? "none" : "";
+      document.getElementById("profileDetails").style.display = isPrivate ? "none" : "";
+
       /* FOLLOWER COUNTS: stay beneath the bio, above the action buttons */
       document.getElementById("profileStats").innerHTML = `
         <div class="profile-stats">
@@ -2313,15 +2360,21 @@ function loadProfilePage() {
 
   /* POSTS */
 
-  fetch("/api/posts")
+  fetch("/api/users/" + profileUserId, {
+    headers: { "Authorization": "Bearer " + token }
+  })
 
     .then(res => res.json())
 
     .then(data => {
 
-      const posts = Array.isArray(data)
-        ? data
-        : (data.posts || []);
+      if (data.isPrivate) {
+        document.getElementById("profilePosts").innerHTML =
+          "<p>This account is private. Follow this account to see its posts.</p>";
+        return;
+      }
+
+      const posts = Array.isArray(data.posts) ? data.posts : [];
 
       const myPosts = posts.filter(post => {
 
@@ -2357,11 +2410,38 @@ function loadProfilePage() {
                 : ""
               }
 
+              <div class="profile-post-actions">
+                <button type="button"
+                  onclick="profilePostLike('${escapeHtml(post._id)}', this)">
+                  ❤️ Like
+                </button>
+                <button type="button"
+                  onclick="document.getElementById('profile-comment-input-${escapeHtml(post._id)}')?.focus()">
+                  💬 Comment
+                </button>
+              </div>
+
+              <div class="profile-post-comments"
+                id="profile-comments-${escapeHtml(post._id)}">
+                <p>Loading comments...</p>
+              </div>
+
+              <div class="profile-post-comment-box">
+                <input id="profile-comment-input-${escapeHtml(post._id)}"
+                  type="text" maxlength="2000"
+                  placeholder="Write a comment...">
+                <button type="button"
+                  onclick="profilePostAddComment('${escapeHtml(post._id)}')">
+                  Post
+                </button>
+              </div>
+
             </article>
 
           `).join("")
 
         : "<p>No posts yet. Create your first post!</p>";
+    myPosts.forEach(post => profilePostLoadComments(post._id));
 
     })
 
@@ -2374,6 +2454,90 @@ function loadProfilePage() {
 
     });
 
+}
+
+
+async function profilePostLike(postId, button) {
+  try {
+    const res = await fetch("/api/posts/" + encodeURIComponent(postId) + "/react", {
+      method: "PUT",
+      headers: {
+        "Authorization": "Bearer " + getToken(),
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ type: "like" })
+    });
+    const data = await res.json();
+
+    if (!res.ok || data.error) {
+      alert(data.error || "Could not like this post.");
+      return;
+    }
+
+    if (button) button.textContent = "❤️ Liked";
+  } catch (err) {
+    console.error(err);
+    alert("Failed to like post.");
+  }
+}
+
+async function profilePostLoadComments(postId) {
+  const box = document.getElementById("profile-comments-" + postId);
+  if (!box) return;
+
+  try {
+    const res = await fetch("/api/comments/" + encodeURIComponent(postId));
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.error || "Could not load comments.");
+
+    const comments = Array.isArray(data) ? data : (data.comments || []);
+
+    box.innerHTML = comments.length
+      ? comments.map(comment => {
+          const username = comment.user?.username ||
+            comment.user?.fullName || "User";
+          return `<p><strong>${escapeHtml(username)}</strong>: ${escapeHtml(comment.text || "")}</p>`;
+        }).join("")
+      : "<p>No comments yet.</p>";
+  } catch (err) {
+    console.error(err);
+    box.innerHTML = "<p>Could not load comments.</p>";
+  }
+}
+
+async function profilePostAddComment(postId) {
+  const input = document.getElementById("profile-comment-input-" + postId);
+  if (!input) return;
+
+  const text = input.value.trim();
+  if (!text) {
+    alert("Please enter a comment.");
+    return;
+  }
+
+  try {
+    const res = await fetch("/api/comments/" + encodeURIComponent(postId), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + getToken()
+      },
+      body: JSON.stringify({ text })
+    });
+    const data = await res.json();
+
+    if (!res.ok || data.error) {
+      alert(data.error || "Could not post your comment.");
+      return;
+    }
+
+    input.value = "";
+    await profilePostLoadComments(postId);
+  } catch (err) {
+    console.error(err);
+    alert("Failed to post comment.");
+  }
 }
 
 
@@ -2800,6 +2964,137 @@ loadProfilePage();
 
 </nav>
 
+
+<style>
+/* BENEDICT PROFILE POST POLISH V1 */
+#profilePosts {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  padding: 12px !important;
+}
+
+.profile-post {
+  padding: 14px !important;
+  margin: 0 !important;
+  border-radius: 14px !important;
+  background: linear-gradient(155deg,#1b1b1b,#101010) !important;
+  border: 1px solid rgba(212,175,55,.24) !important;
+  box-shadow: 0 7px 22px rgba(0,0,0,.28) !important;
+}
+
+.profile-post p {
+  margin: 0 0 10px !important;
+  font-size: 14px !important;
+  line-height: 1.55 !important;
+  color: #eeeeee !important;
+}
+
+.profile-post img {
+  display: block !important;
+  width: 100% !important;
+  max-height: 520px !important;
+  margin: 8px 0 10px !important;
+  object-fit: cover !important;
+  border-radius: 11px !important;
+}
+
+.profile-post-actions {
+  display: flex !important;
+  gap: 9px !important;
+  padding: 10px 0 !important;
+  border-top: 1px solid rgba(212,175,55,.18) !important;
+  border-bottom: 1px solid rgba(212,175,55,.18) !important;
+}
+
+.profile-post-actions button,
+.profile-post-comment-box button {
+  flex: 1 !important;
+  min-height: 40px !important;
+  padding: 9px 12px !important;
+  border: 1px solid rgba(212,175,55,.65) !important;
+  border-radius: 9px !important;
+  background: linear-gradient(145deg,#242018,#151515) !important;
+  color: #e3bd55 !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+}
+
+.profile-post-actions button:active,
+.profile-post-comment-box button:active {
+  background: #342b16 !important;
+}
+
+.profile-post-comments {
+  padding: 10px 0 6px !important;
+  color: #dddddd !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  overflow-wrap: anywhere !important;
+}
+
+.profile-post-comment-box {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 5px 0 2px !important;
+}
+
+.profile-post-comment-box input {
+  flex: 1 !important;
+  min-width: 0 !important;
+  min-height: 40px !important;
+  padding: 9px 11px !important;
+  border: 1px solid rgba(212,175,55,.38) !important;
+  border-radius: 9px !important;
+  background: #090909 !important;
+  color: #ffffff !important;
+  font-size: 13px !important;
+}
+
+.profile-post-comment-box input:focus {
+  outline: none !important;
+  border-color: #d4af37 !important;
+  box-shadow: 0 0 0 2px rgba(212,175,55,.10) !important;
+}
+
+@media (max-width: 600px) {
+  #profilePosts {
+    padding: 9px !important;
+    gap: 10px !important;
+  }
+
+  .profile-post {
+    padding: 12px !important;
+  }
+
+  .profile-post img {
+    max-height: 440px !important;
+  }
+
+  .profile-post-actions button,
+  .profile-post-comment-box button {
+    min-height: 39px !important;
+    padding: 8px 7px !important;
+    font-size: 12px !important;
+  }
+}
+</style>
+
+
+<style>
+/* BENEDICT PROFILE BOTTOM NAV CLEARANCE V1 */
+@media (max-width: 600px) {
+  body {
+    padding-bottom: calc(125px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .profile-page {
+    padding-bottom: calc(130px + env(safe-area-inset-bottom)) !important;
+  }
+}
+</style>
 </body>
 </html>
 

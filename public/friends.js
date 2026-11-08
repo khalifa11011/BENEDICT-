@@ -28,7 +28,7 @@ function loadRequests() {
 
       const avatar = sender.profilePicture
         ? sender.profilePicture
-        : "https://via.placeholder.com/100";
+        : "/benedict-avatar.svg";
 
       box.innerHTML += `
         <div class="request">
@@ -37,12 +37,12 @@ function loadRequests() {
             class="avatar"
             src="${avatar}"
             alt="Profile"
-            onerror="this.src='https://via.placeholder.com/100'"
+            onerror="this.src='"/benedict-avatar.svg"'"
           >
 
           <div class="info">
             <h3>${sender.username || "Unknown user"}</h3>
-            <p>${sender.email || ""}</p>
+
           </div>
 
           <div class="actions">
@@ -116,7 +116,7 @@ function loadFriends() {
 
       const avatar = friend.profilePicture
         ? friend.profilePicture
-        : "https://via.placeholder.com/100";
+        : "/benedict-avatar.svg";
 
       box.innerHTML += `
         <div class="friend">
@@ -125,7 +125,7 @@ function loadFriends() {
             class="avatar"
             src="${avatar}"
             alt="Profile"
-            onerror="this.src='https://via.placeholder.com/100'"
+            onerror="this.src='"/benedict-avatar.svg"'"
           >
 
           <div class="info">

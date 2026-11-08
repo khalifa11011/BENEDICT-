@@ -2,219 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Messenger</title>
-
-<style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  padding: 0 0 30px;
-  font-family: Arial, sans-serif;
-  background: #0b0b0d;
-  color: #fff;
-}
-
-.container {
-  width: 100%;
-  max-width: 700px;
-  margin: 20px auto;
-  padding: 0 12px;
-}
-
-.card {
-  background: #151518;
-  border: 1px solid rgba(212,175,55,.45);
-  border-radius: 16px;
-  padding: 15px;
-  box-shadow: 0 8px 25px rgba(0,0,0,.4);
-}
-
-#chatHeader {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-#chatAvatar {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: #1c1c20;
-  border: 2px solid #d4af37;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 30px;
-  color: #fff;
-  margin-right: 15px;
-  flex-shrink: 0;
-}
-
-#chatInfo h2 {
-  margin: 0;
-  font-size: 24px;
-  color: #d4af37;
-}
-
-#chatStatus {
-  margin: 5px 0 0;
-  color: #aaa;
-  font-size: 14px;
-}
-
-#messages {
-  height: 400px;
-  overflow-y: auto;
-  border: 1px solid rgba(212,175,55,.35);
-  padding: 10px;
-  border-radius: 12px;
-  background: #0f0f11;
-  margin: 15px 0;
-}
-
-.message {
-  padding: 10px;
-  border-radius: 12px;
-  margin-bottom: 10px;
-  max-width: 75%;
-  word-wrap: break-word;
-}
-
-.mine {
-  background: #d4af37;
-  color: #000;
-  margin-left: auto;
-  text-align: right;
-}
-
-.theirs {
-  background: #1c1c20;
-  color: #fff;
-  margin-right: auto;
-  text-align: left;
-  border: 1px solid rgba(212,175,55,.25);
-}
-
-input {
-  width: 100%;
-  padding: 12px;
-  margin: 0;
-  box-sizing: border-box;
-  background: #0f0f11;
-  color: #fff;
-  border: 1px solid rgba(212,175,55,.5);
-  border-radius: 12px;
-  font-size: 16px;
-  min-width: 0;
-}
-
-button {
-  min-height: 44px;
-  padding: 10px 14px;
-  background: #1c1c20;
-  color: #fff;
-  border: 1px solid #d4af37;
-  border-radius: 10px;
-  margin: 0;
-  font-size: 15px;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-#messageComposer {
-  display: grid;
-  grid-template-columns: 48px minmax(0, 1fr) auto auto;
-  gap: 8px;
-  align-items: center;
-  margin-top: 12px;
-}
-
-#messageComposer button {
-  height: 48px;
-}
-
-#messageText {
-  height: 48px;
-}
-
-#messageMedia {
-  margin-top: 10px;
-}
-
-#composerActions {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-#composerActions button {
-  flex: 1;
-}
-
-@media (max-width: 600px) {
-  #messageComposer {
-    grid-template-columns: 44px minmax(0, 1fr) 58px;
-  }
-
-  #recordBtn {
-    font-size: 0;
-    width: 58px;
-  }
-
-  #recordBtn::before {
-    content: "🎤";
-    font-size: 20px;
-  }
-
-  #messageComposer > button:last-child {
-    display: none;
-  }
-
-  #composerActions {
-    flex-direction: row;
-  }
-
-  #composerActions button {
-    font-size: 14px;
-  }
-}
-
-button:active {
-  transform: scale(.98);
-}
-
-#emojiPicker {
-  padding: 8px;
-  background: #0f0f11;
-  border: 1px solid rgba(212,175,55,.35);
-  border-radius: 10px;
-}
-
-#emojiPicker span {
-  display: inline-block;
-  padding: 6px;
-  font-size: 22px;
-  cursor: pointer;
-}
-
-@media (max-width: 600px) {
-  .container {
-    margin-top: 12px;
-  }
-
-  .card {
-    padding: 12px;
-  }
-
-  #messages {
-    height: 55vh;
-  }
-}
-</style>
 
 <script src="/splash.js"></script>
 <script src="/socket.io/socket.io.js"></script>
@@ -262,47 +51,6 @@ button:active {
   }
 }
 </style>
-
-
-
-
-<style id="BENEDICT_MESSAGE_THREE_DOT_MENU">
-/* BENEDICT MESSENGER — THREE DOT MESSAGE MENU */
-
-#messages button[onclick*="deleteMessage"] {
-  display: inline-flex !important;
-  align-items: center;
-  justify-content: center;
-
-  width: 38px !important;
-  min-width: 38px !important;
-  height: 34px !important;
-
-  margin: 4px 0 0 auto !important;
-  padding: 0 !important;
-
-  border-radius: 10px !important;
-  border: 1px solid rgba(212,175,55,.35) !important;
-
-  background: #18181c !important;
-  color: #d4af37 !important;
-
-  font-size: 24px !important;
-  line-height: 1 !important;
-}
-
-#messages button[onclick*="deleteMessage"]:hover {
-  background: #222228 !important;
-}
-
-#messages button[onclick*="deleteMessage"]:active {
-  transform: scale(.94);
-}
-</style>
-
-
-
-
 
 <style id="BENEDICT_MESSAGE_POPUP_MENU">
 .benedict-message-popup-menu {
@@ -366,322 +114,73 @@ button:active {
 }
 </style>
 
-
-
-
-
-<style id="BENEDICT_MESSENGER_FINAL_DESIGN">
-:root {
-  --msg-gold: #d4af37;
-  --msg-gold-light: #f0d675;
-  --msg-black: #09090b;
-  --msg-panel: #151519;
-  --msg-muted: #a5a5ad;
-}
-
-html, body {
-  background: var(--msg-black) !important;
-  color: #f5f5f5 !important;
-}
-
-.container {
-  width: min(100% - 16px, 820px) !important;
-  max-width: 820px !important;
-  margin: 12px auto !important;
-  padding: 0 !important;
-}
-
-.container > .card {
-  background: linear-gradient(160deg,#19191d,#101013) !important;
-  border: 1px solid rgba(212,175,55,.35) !important;
-  border-radius: 18px !important;
-  padding: clamp(12px,3vw,20px) !important;
-  box-shadow: 0 12px 35px rgba(0,0,0,.35) !important;
-}
-
-#chatHeader {
-  display: flex !important;
-  align-items: center !important;
-  gap: 12px !important;
-  padding: 4px 2px 14px !important;
-  margin-bottom: 10px !important;
-  border-bottom: 1px solid rgba(212,175,55,.22) !important;
-}
-
-#chatAvatar {
-  flex: 0 0 48px !important;
-  width: 48px !important;
-  height: 48px !important;
-  border: 1px solid var(--msg-gold) !important;
-  border-radius: 50% !important;
-  display: grid !important;
-  place-items: center !important;
-}
-
-#chatTitle, #chatInfo h2 {
-  color: var(--msg-gold-light) !important;
-  font-size: 19px !important;
-  margin: 0 0 4px !important;
-}
-
-#chatStatus {
-  color: var(--msg-muted) !important;
-  font-size: 12px !important;
-  margin: 0 !important;
-}
-
-#messages {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 9px !important;
-  height: min(58vh,540px) !important;
-  min-height: 300px !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  padding: 14px 10px !important;
-  margin: 12px 0 !important;
-  box-sizing: border-box !important;
-  background: #0c0c0f !important;
-  border: 1px solid rgba(212,175,55,.2) !important;
-  border-radius: 15px !important;
-  scroll-behavior: smooth !important;
-  -webkit-overflow-scrolling: touch !important;
-}
-
-#messages .message {
-  position: relative !important;
-  display: block !important;
-  width: fit-content !important;
-  max-width: min(78%, 480px) !important;
-  box-sizing: border-box !important;
-  padding: 9px 12px !important;
-  margin: 0 !important;
-  border-radius: 15px !important;
-  line-height: 1.45 !important;
-  overflow-wrap: anywhere !important;
-  word-break: break-word !important;
-  box-shadow: 0 3px 10px rgba(0,0,0,.2) !important;
-}
-
-#messages .message.mine {
-  align-self: flex-end !important;
-  margin-left: auto !important;
-  background: linear-gradient(145deg,#dfbd49,#bd9225) !important;
-  color: #17130a !important;
-  border: 1px solid #e8cb65 !important;
-  border-bottom-right-radius: 4px !important;
-}
-
-#messages .message.theirs {
-  align-self: flex-start !important;
-  margin-right: auto !important;
-  background: #202025 !important;
-  color: #f5f5f5 !important;
-  border: 1px solid rgba(212,175,55,.2) !important;
-  border-bottom-left-radius: 4px !important;
-}
-
-#messages .message > strong {
-  display: block !important;
-  font-size: 11px !important;
-  font-weight: 800 !important;
-  margin-bottom: 4px !important;
-  color: #f0d675 !important;
-}
-
-#messages .message.mine > strong {
-  color: #4a3910 !important;
-}
-
-#messages .message .message-text {
-  font-size: 14px !important;
-  white-space: pre-wrap !important;
-}
-
-#messages .message img,
-#messages .message video {
-  display: block !important;
-  max-width: min(100%,280px) !important;
-  height: auto !important;
-  border-radius: 10px !important;
-  margin-top: 6px !important;
-}
-
-#messages .message audio {
-  display: block !important;
-  max-width: 100% !important;
-  margin-top: 6px !important;
-}
-
-#messages .message small {
-  display: block !important;
-  margin-top: 7px !important;
-  padding-top: 5px !important;
-  border-top: 1px solid rgba(0,0,0,.12) !important;
-  font-size: 10px !important;
-  line-height: 1.4 !important;
-  text-align: right !important;
-  opacity: .8 !important;
-}
-
-#messages .message.theirs small {
-  color: #b9b9c0 !important;
-  border-top-color: rgba(255,255,255,.1) !important;
-}
-
-#messages .benedict-three-dot {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 25px !important;
-  height: 25px !important;
-  padding: 0 !important;
-  margin-top: 3px !important;
-  border: 0 !important;
-  border-radius: 50% !important;
-  background: rgba(0,0,0,.12) !important;
-  color: #211a08 !important;
-}
-
-#messageComposer {
-  display: grid !important;
-  grid-template-columns: 42px minmax(0,1fr) 42px 64px !important;
-  gap: 6px !important;
-  align-items: center !important;
-  margin-top: 12px !important;
-}
-
-#messageComposer button {
-  width: 100% !important;
-  min-width: 0 !important;
-  height: 44px !important;
-  min-height: 44px !important;
-  padding: 4px !important;
-  margin: 0 !important;
-  border-radius: 12px !important;
-  border: 1px solid rgba(212,175,55,.5) !important;
-  background: #202025 !important;
-  color: var(--msg-gold-light) !important;
-  font-weight: 700 !important;
-}
-
-#messageComposer > button:last-child {
-  background: linear-gradient(135deg,#e8ca5d,#c59a2b) !important;
-  color: #17130a !important;
-  border-color: #e8ca5d !important;
-}
-
-#messageText {
-  width: 100% !important;
-  min-width: 0 !important;
-  height: 44px !important;
-  box-sizing: border-box !important;
-  margin: 0 !important;
-  padding: 0 12px !important;
-  border-radius: 12px !important;
-  border: 1px solid rgba(212,175,55,.35) !important;
-  background: #202025 !important;
-  color: #fff !important;
-}
-
-#messageText::placeholder {
-  color: #9999a1 !important;
-}
-
-#messageMedia {
-  display: block !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
-  margin: 10px 0 4px !important;
-  padding: 8px !important;
-  border: 1px dashed rgba(212,175,55,.55) !important;
-  border-radius: 11px !important;
-  background: #151519 !important;
-  color: #d8d8dc !important;
-  font-size: 12px !important;
-}
-
-#messageMedia::file-selector-button {
-  padding: 8px 12px !important;
-  margin-right: 10px !important;
-  border: 1px solid #d4af37 !important;
-  border-radius: 8px !important;
-  background: #282318 !important;
-  color: #f0d675 !important;
-}
-
-#emojiPicker {
-  background: #19191e !important;
-  border: 1px solid rgba(212,175,55,.35) !important;
-  border-radius: 12px !important;
-  padding: 8px !important;
-}
-
-#emojiPicker span {
-  display: inline-block !important;
-  padding: 7px !important;
-  cursor: pointer !important;
-}
-
-#composerActions {
-  display: flex !important;
-  justify-content: flex-end !important;
-  margin-top: 7px !important;
-}
-
-#composerActions button:first-child {
-  display: none !important;
-}
-
-#composerActions button:last-child {
-  min-height: 34px !important;
-  padding: 6px 12px !important;
-  border-radius: 9px !important;
-  border: 1px solid rgba(212,175,55,.4) !important;
-  background: #202025 !important;
-  color: #f0d675 !important;
-}
-
-@media (max-width: 600px) {
-  .container {
-    width: calc(100% - 12px) !important;
-    margin: 7px auto !important;
-  }
-
-  .container > .card {
-    padding: 10px !important;
-    border-radius: 14px !important;
-  }
-
-  #messages {
-    height: 56vh !important;
-    min-height: 290px !important;
-    padding: 10px 7px !important;
-  }
-
-  #messages .message {
-    max-width: 86% !important;
-    padding: 8px 10px !important;
-  }
-
-  #messageComposer {
-    grid-template-columns: 36px minmax(0,1fr) 36px 56px !important;
-    gap: 5px !important;
-  }
-
-  #messageComposer button,
-  #messageText {
-    height: 42px !important;
-    min-height: 42px !important;
-    font-size: 13px !important;
-  }
-}
-
-@media (max-width: 360px) {
-  #messageComposer {
-    grid-template-columns: 32px minmax(0,1fr) 32px 52px !important;
-    gap: 4px !important;
-  }
+<style id="BENEDICT_MESSENGER_V2">
+:root{--gold:#d4af37;--gold-hi:#f0d675;--gold-lo:#b8902a;--ink:#09090b;--panel:#121215;--panel-2:#1b1b20;--line:rgba(212,175,55,.22);--muted:#9a9aa3;--text:#f4f4f5}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--ink);color:var(--text);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;display:flex;flex-direction:column;height:100dvh;overflow:hidden}
+.luxury-header{flex:0 0 auto}
+.container{flex:1 1 auto;min-height:0;width:100%;max-width:760px;margin:0 auto;padding:8px 8px max(8px,env(safe-area-inset-bottom))}
+.card{height:100%;display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,.45)}
+button{font:inherit;cursor:pointer;color:inherit}
+.luxury-header .gold{color:var(--gold-hi);letter-spacing:.08em}
+.luxury-header .main-nav button{min-height:40px;background:#1c1c20;color:#fff;border:1px solid rgba(212,175,55,.45);border-radius:10px}
+button:active{transform:scale(.96)}
+/* Header */
+#chatHeader{flex:0 0 auto;display:flex;align-items:center;gap:12px;padding:10px 12px;background:linear-gradient(180deg,#18181c,#131316);border-bottom:1px solid var(--line)}
+#chatAvatar{flex:0 0 44px;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:22px;background:#202026;border:2px solid var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.12)}
+#chatInfo{flex:1;min-width:0}
+#chatTitle{margin:0;font-size:16px;font-weight:700;color:var(--gold-hi);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#chatStatus{margin:2px 0 0;font-size:12px;color:var(--muted)}
+.icon-btn{flex:0 0 auto;width:40px;height:40px;min-height:0;padding:0;border-radius:50%;border:1px solid var(--line);background:#1d1d22;color:var(--gold-hi);font-size:17px;display:grid;place-items:center}
+.icon-btn:hover{background:#26262c}
+/* Thread */
+#messages{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:14px 12px;margin:0;border:0;border-radius:0;
+  background:radial-gradient(circle at 20% 0%,rgba(212,175,55,.06),transparent 45%),#0c0c0f;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+#messages:empty::before{content:"No messages yet. Say hello.";margin:auto;align-self:center;color:var(--muted);font-size:13px}
+#messages .message{flex:0 0 auto;position:relative;width:fit-content;max-width:min(78%,480px);height:auto;margin:0;padding:7px 10px 5px;border-radius:16px;line-height:1.38;font-size:14.5px;overflow-wrap:anywhere;word-break:break-word;text-align:left;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+#messages .message.theirs{align-self:flex-start;background:var(--panel-2);color:var(--text);border:1px solid rgba(212,175,55,.16);border-bottom-left-radius:5px}
+#messages .message.mine{align-self:flex-end;background:linear-gradient(150deg,#e2c257,#c39a2c);color:#1a1408;border:0;border-bottom-right-radius:5px}
+#messages .message + .message.mine,#messages .message + .message.theirs{margin-top:2px}
+#messages .message.mine + .message.theirs,#messages .message.theirs + .message.mine{margin-top:8px}
+#messages .message .message-text{white-space:pre-wrap}
+#messages .message img,#messages .message video{display:block;max-width:min(100%,260px);max-height:320px;width:auto;height:auto;border-radius:12px;margin:2px 0 4px;background:#000}
+#messages .message audio{display:block;width:min(240px,62vw);height:40px;margin:2px 0 4px}
+.msg-meta{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:2px;font-size:10.5px;line-height:1;opacity:.75;white-space:nowrap}
+.message.theirs .msg-meta{color:var(--muted);opacity:1}
+.msg-ticks.seen{color:#1d4ed8;opacity:1}
+#messages .benedict-three-dot{width:22px;height:22px;min-height:0;padding:0;margin:0 -4px 0 0;border:0;border-radius:50%;background:transparent;color:inherit;font-size:15px;line-height:1;display:inline-grid;place-items:center}
+#messages .benedict-three-dot:hover{background:rgba(0,0,0,.12)}
+/* Emoji tray */
+#emojiPicker{flex:0 0 auto;display:none;margin:0;padding:6px 8px;background:#16161a;border-top:1px solid var(--line);white-space:nowrap;overflow-x:auto}
+#emojiPicker span{display:inline-block;padding:6px;font-size:22px;cursor:pointer;border-radius:10px}
+#emojiPicker span:hover{background:#24242a}
+/* Attachment chip */
+#attachChip{flex:0 0 auto;display:none;align-items:center;gap:8px;margin:0;padding:6px 12px;background:#16161a;border-top:1px solid var(--line);font-size:12px;color:var(--gold-hi)}
+#attachChip.show{display:flex}
+#attachChip span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#attachChip button{min-height:0;height:24px;width:24px;padding:0;border:0;border-radius:50%;background:#2a2a30;color:#fff}
+/* Composer */
+#messageComposer{flex:0 0 auto;display:flex;align-items:center;gap:6px;margin:0;padding:8px;background:#141417;border-top:1px solid var(--line)}
+#messageComposer .icon-btn{width:40px;height:40px}
+#messageMedia{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+#attachBtn{cursor:pointer}
+#messageText{flex:1 1 auto;min-width:0;width:auto;height:42px;margin:0;padding:0 14px;border-radius:21px;border:1px solid rgba(212,175,55,.3);background:#1d1d22;color:#fff;font-size:16px;outline:none}
+#messageText:focus{border-color:var(--gold)}
+#messageText::placeholder{color:#8a8a93}
+#recordBtn.recording{background:#7f1d1d;border-color:#ef4444;color:#fff;animation:pulse 1.2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 6px rgba(239,68,68,.2)}}
+#sendBtn{flex:0 0 auto;height:42px;min-height:0;padding:0 16px;border-radius:21px;border:0;background:linear-gradient(135deg,#ead06a,#c59a2b);color:#17130a;font-weight:800;font-size:14px;display:inline-flex;align-items:center;gap:6px}
+@media (max-width:600px){
+  .container{padding:0}
+  .card{border-radius:0;border-left:0;border-right:0}
+  #messages{padding:10px 8px}
+  #messages .message{max-width:84%}
+  #messageComposer{gap:4px;padding:6px 6px max(6px,env(safe-area-inset-bottom))}
+  #messageComposer .icon-btn{width:36px;height:36px;font-size:16px}
+  #sendBtn{padding:0 12px}
+  #sendBtn .send-label{display:none}
+  #sendBtn{width:42px;justify-content:center;padding:0}
 }
 </style>
 
@@ -709,12 +208,15 @@ html, body {
 <div class="card">
 
 <div id="chatHeader">
+  <button type="button" class="icon-btn" onclick="window.location.href='/messages.html'" aria-label="Back to conversations">←</button>
   <div id="chatAvatar">👤</div>
 
   <div id="chatInfo">
     <h2 id="chatTitle">Messenger</h2>
     <p id="chatStatus">🟢 Online</p>
   </div>
+
+  <button type="button" class="icon-btn" onclick="loadMessages()" aria-label="Refresh messages">↻</button>
 </div>
 
 <input
@@ -723,29 +225,7 @@ type="hidden">
 
 <div id="messages"></div>
 
-<div id="messageComposer">
-
-  <button type="button" onclick="toggleEmojiPicker()" aria-label="Emoji">😊</button>
-
-  <input
-    id="messageText"
-    type="text"
-    placeholder="Type your message"
-    autocomplete="off">
-
-  <button
-    type="button"
-    id="recordBtn"
-    onclick="toggleRecording()"
-    aria-label="Record voice">🎤</button>
-
-  <button
-    type="button"
-    onclick="sendMessage()">Send</button>
-
-</div>
-
-<div id="emojiPicker" style="display:none;margin-top:8px;">
+<div id="emojiPicker" style="display:none;">
   <span onclick="addEmoji('😀')">😀</span>
   <span onclick="addEmoji('😂')">😂</span>
   <span onclick="addEmoji('😍')">😍</span>
@@ -760,27 +240,48 @@ type="hidden">
   <span onclick="addEmoji('🙏')">🙏</span>
 </div>
 
-<input
-  id="messageMedia"
-  type="file"
-  accept="image/*,video/*">
+<div id="attachChip" aria-live="polite">
+  <span id="attachName"></span>
+  <button type="button" onclick="clearAttachment()" aria-label="Remove attachment">✕</button>
+</div>
 
-<div id="composerActions">
-  <button type="button" onclick="sendMessage()">📤 Send Message</button>
-  <button type="button" onclick="loadMessages()">🔄 Refresh</button>
+<div id="messageComposer">
+
+  <button type="button" class="icon-btn" onclick="toggleEmojiPicker()" aria-label="Emoji">😊</button>
+
+  <label id="attachBtn" class="icon-btn" for="messageMedia" aria-label="Attach photo or video">📎</label>
+  <input
+    id="messageMedia"
+    type="file"
+    accept="image/*,video/*">
+
+  <input
+    id="messageText"
+    type="text"
+    placeholder="Type a message"
+    autocomplete="off"
+    enterkeyhint="send">
+
+  <button
+    type="button"
+    id="recordBtn"
+    class="icon-btn"
+    onclick="toggleRecording()"
+    aria-label="Record voice">🎤</button>
+
+  <button
+    type="button"
+    id="sendBtn"
+    onclick="sendMessage()"
+    aria-label="Send"><span class="send-label">Send</span> ➤</button>
+
 </div>
 
 </div>
 
 </div>
 
-<script src="chat.js?v=2"></script>
+<script src="chat.js?v=3"></script>
 
 </body>
 </html>
-
-
-
-
-
-

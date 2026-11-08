@@ -125,7 +125,8 @@ function renderConversations(list) {
 
     return `
       <button
-        class="conversation"
+        type="button"
+        class="conversation${unread > 0 ? " has-unread" : ""}"
         data-user-id="${safeMongoId(user._id)}">
 
         <div class="avatar-wrap">
@@ -298,7 +299,7 @@ async function searchPeople(keyword) {
       return;
     }
 
-    results.innerHTML = filteredUsers.map(user => {
+    results.innerHTML = `<div class="people-label">People</div>` + filteredUsers.map(user => {
 
       const name =
         user.fullName ||
@@ -310,6 +311,7 @@ async function searchPeople(keyword) {
 
       return `
         <button
+          type="button"
           class="people-result"
           data-user-id="${safeMongoId(user._id)}">
 

@@ -5,6 +5,83 @@ const router = express.Router();
 const Notification = require("../models/Notification");
 const auth = require("../middleware/auth");
 
+const preferenceKeys = [
+  "likes",
+  "comments",
+  "friendRequests",
+  "followers",
+  "messages"
+];
+
+// Get my notification preferences
+router.get("/preferences", auth, async (req, res) => {
+  try {
+    const user = await require("../models/User").findById(req.user.id)
+      .select("notificationPreferences")
+      .lean();
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const saved = user.notificationPreferences || {};
+    const preferences = {};
+
+    for (const key of preferenceKeys) {
+      preferences[key] = saved[key] !== false;
+    }
+
+    res.json({ preferences });
+  } catch (error) {
+    console.error("Notification preferences load error:", error);
+    res.status(500).json({ message: "Unable to load notification preferences" });
+  }
+});
+
+// Update my notification preferences
+router.put("/preferences", auth, async (req, res) => {
+  try {
+    const submitted = req.body && req.body.preferences;
+
+    if (!submitted || typeof submitted !== "object" || Array.isArray(submitted)) {
+      return res.status(400).json({ message: "Invalid notification preferences" });
+    }
+
+    for (const key of preferenceKeys) {
+      if (typeof submitted[key] !== "boolean") {
+        return res.status(400).json({
+          message: "All notification preferences must be true or false"
+        });
+      }
+    }
+
+    const User = require("../models/User");
+    const updates = {};
+
+    for (const key of preferenceKeys) {
+      updates["notificationPreferences." + key] = submitted[key];
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      { $set: updates },
+      { new: true, runValidators: true }
+    ).select("notificationPreferences");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({
+      message: "Notification preferences saved",
+      preferences: user.notificationPreferences
+    });
+  } catch (error) {
+    console.error("Notification preferences save error:", error);
+    res.status(500).json({ message: "Unable to save notification preferences" });
+  }
+});
+
 // Get my notifications
 router.get("/", auth, async (req, res) => {
   try {

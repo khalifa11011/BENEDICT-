@@ -1,4 +1,5 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 const User = require("../models/User");
@@ -44,38 +45,88 @@ router.get("/search", auth, async (req, res) => {
 });
 
 
-// View user profile
+// View user profile with privacy enforcement.
 router.get("/:id", async (req, res) => {
   try {
+    let viewerId = null;
+    const authorization = req.headers.authorization || "";
+
+    // Optional authentication: public profiles remain accessible without login.
+    if (authorization.startsWith("Bearer ")) {
+      try {
+        const secret = process.env.JWT_SECRET;
+        if (secret) {
+          const decoded = jwt.verify(authorization.slice(7), secret);
+
+          if (decoded && decoded.id) {
+            const viewer = await User.findById(decoded.id)
+              .select("accountStatus")
+              .lean();
+
+            if (viewer && viewer.accountStatus === "active") {
+              viewerId = String(decoded.id);
+            }
+          }
+        }
+      } catch (tokenError) {
+        // Invalid or expired optional tokens are treated as anonymous visitors.
+        viewerId = null;
+      }
+    }
 
     const user = await User.findById(req.params.id)
-  .select("_id username fullName bio profilePicture coverPhoto location hometown school occupation relationshipStatus website birthday followers following createdAt")
-  .populate("followers", "username fullName profilePicture")
-  .populate("following", "username fullName profilePicture");
+      .select("_id username fullName bio profilePicture coverPhoto location hometown school occupation relationshipStatus website birthday followers following createdAt profileVisibility");
 
     if (!user) {
-      return res.status(404).json({
-        error: "User not found"
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const owner = viewerId && viewerId === String(user._id);
+    const visibility = user.profileVisibility || "public";
+    const isFollower = viewerId && user.followers.some(
+      follower => String(follower) === viewerId
+    );
+
+    const canView = visibility === "public" || owner ||
+      (visibility === "followers" && isFollower);
+
+    if (!canView) {
+      return res.json({
+        user: {
+          _id: user._id,
+          username: user.username,
+          fullName: user.fullName,
+          profilePicture: user.profilePicture
+        },
+        posts: [],
+        isPrivate: true
       });
     }
 
+    await user.populate([
+      { path: "followers", select: "username fullName profilePicture" },
+      { path: "following", select: "username fullName profilePicture" }
+    ]);
+
     const posts = await Post.find({
-      user: req.params.id
-    }).sort({
-      createdAt: -1
-    });
+      user: user._id
+    }).sort({ createdAt: -1 });
+
+    const profileData = user.toObject();
+
+    // Birthday is visible only to the profile owner.
+    if (!owner) {
+      delete profileData.birthday;
+    }
 
     res.json({
-      user,
-      posts
+      user: profileData,
+      posts,
+      isPrivate: false
     });
 
   } catch (error) {
-
-    res.status(500).json({
-      error: error.message
-    });
-
+    res.status(500).json({ error: error.message });
   }
 });
 
@@ -110,6 +161,17 @@ other.followers.push(me._id);
 
 await me.save();
 await other.save();
+
+    try {
+      await createNotification(req, {
+        user: other._id,
+        fromUser: me._id,
+        type: "follow",
+        message: "started following you"
+      });
+    } catch (notificationError) {
+      console.error("Follow notification error:", notificationError);
+    }
 
     res.json({
       message: "User follow successful"

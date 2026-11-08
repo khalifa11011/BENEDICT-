@@ -176,9 +176,36 @@ router.get("/", auth, async (req, res) => {
 
     const authorIds = [...user.following, ...friendIds, user._id];
 
-    const following = [
+    const uniqueAuthorIds = [
       ...new Map(authorIds.map(id => [String(id), id])).values()
     ];
+
+    // Accepted friendship alone does not bypass follower-only privacy.
+    const authorPrivacy = await User.find({
+      _id: { $in: uniqueAuthorIds }
+    }).select("_id profileVisibility followers").lean();
+
+    const following = authorPrivacy
+      .filter(author => {
+        const visibility = author.profileVisibility || "public";
+
+        if (String(author._id) === String(user._id)) {
+          return true;
+        }
+
+        if (visibility === "public") {
+          return true;
+        }
+
+        if (visibility === "followers") {
+          return (author.followers || []).some(
+            follower => String(follower) === String(user._id)
+          );
+        }
+
+        return false;
+      })
+      .map(author => author._id);
 
     let page = Number.parseInt(req.query.page, 10);
     let limit = Number.parseInt(req.query.limit, 10);

@@ -76,6 +76,20 @@ const userSchema = new mongoose.Schema({
     type: Date
   },
 
+  profileVisibility: {
+    type: String,
+    enum: ["public", "followers", "private"],
+    default: "public"
+  },
+
+  notificationPreferences: {
+    likes: { type: Boolean, default: true },
+    comments: { type: Boolean, default: true },
+    friendRequests: { type: Boolean, default: true },
+    followers: { type: Boolean, default: true },
+    messages: { type: Boolean, default: true }
+  },
+
   followers: [
     {
       type: mongoose.Schema.Types.ObjectId,

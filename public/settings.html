@@ -169,6 +169,58 @@ body {
   font-size: 11px;
   margin-top: 18px;
 }
+
+.password-panel {
+  background: #151518;
+  border: 1px solid rgba(212,175,55,.35);
+  border-radius: 14px;
+  padding: 18px;
+  margin: -5px 0 16px;
+}
+.password-panel h3 {
+  color: #d4af37;
+  margin: 0 0 8px;
+}
+.password-panel p {
+  color: #aaa;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.password-panel label {
+  display: block;
+  color: #d4af37;
+  font-size: 13px;
+  margin: 14px 0 6px;
+}
+.password-panel input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid rgba(212,175,55,.3);
+  border-radius: 9px;
+  background: #0d0d0f;
+  color: #fff;
+  outline: none;
+}
+.password-panel input:focus {
+  border-color: #d4af37;
+}
+.password-panel button {
+  width: 100%;
+  padding: 13px;
+  margin-top: 18px;
+  border: 0;
+  border-radius: 9px;
+  background: #d4af37;
+  color: #111;
+  font-weight: 700;
+  cursor: pointer;
+}
+#passwordSettingsMessage {
+  color: #d4af37;
+  font-size: 13px;
+  margin-top: 12px;
+}
+
 </style>
 </head>
 
@@ -200,7 +252,7 @@ body {
         <span class="settings-arrow">›</span>
       </button>
 
-      <button class="settings-item">
+      <button class="settings-item" type="button" onclick="togglePasswordForm()" aria-expanded="false" id="passwordSettingsButton">
         <span class="settings-icon">🔒</span>
         <span class="settings-text">
           <span class="settings-name">Password & Security</span>
@@ -211,11 +263,30 @@ body {
 
     </section>
 
+    <div id="passwordSettingsPanel" class="password-panel" hidden>
+      <h3>Change Password</h3>
+      <p>Enter your current password and choose a new secure password.</p>
+
+      <form id="changePasswordForm">
+        <label for="currentPassword">Current password</label>
+        <input id="currentPassword" type="password" autocomplete="current-password" required>
+
+        <label for="newPassword">New password</label>
+        <input id="newPassword" type="password" minlength="8" maxlength="128" autocomplete="new-password" required>
+
+        <label for="confirmNewPassword">Confirm new password</label>
+        <input id="confirmNewPassword" type="password" minlength="8" maxlength="128" autocomplete="new-password" required>
+
+        <button type="submit" id="changePasswordSubmit">Update Password</button>
+      </form>
+      <div id="passwordSettingsMessage" role="status"></div>
+    </div>
+
     <section class="settings-section">
 
       <div class="settings-section-title">Privacy</div>
 
-      <button class="settings-item">
+      <button class="settings-item" type="button" onclick="togglePrivacyForm()">
         <span class="settings-icon">🛡</span>
         <span class="settings-text">
           <span class="settings-name">Privacy Settings</span>
@@ -224,12 +295,44 @@ body {
         <span class="settings-arrow">›</span>
       </button>
 
-      <button class="settings-item">
+      <button class="settings-item" type="button" onclick="togglePrivacyForm()">
         <span class="settings-icon">👁</span>
         <span class="settings-text">
           <span class="settings-name">Visibility</span>
           <span class="settings-description">Manage your profile visibility</span>
-        </span>
+
+
+<div id="privacySettingsPanel" class="password-panel" hidden>
+  <h3>Profile Visibility</h3>
+  <p>Choose who can see your profile and posts.</p>
+
+  <label for="profileVisibilitySelect">Who can view your profile?</label>
+  <fieldset style="border:0;padding:0;margin:16px 0;">
+    <label style="display:flex;align-items:center;gap:12px;padding:14px;margin-bottom:10px;border:1px solid #b58a35;border-radius:10px;cursor:pointer;">
+      <input type="radio" name="profileVisibility" value="public"
+        style="width:20px;height:20px;accent-color:#d4af37;flex-shrink:0;">
+      <span><strong>Public</strong><br><small>Everyone can view your profile and posts.</small></span>
+    </label>
+
+    <label style="display:flex;align-items:center;gap:12px;padding:14px;margin-bottom:10px;border:1px solid #b58a35;border-radius:10px;cursor:pointer;">
+      <input type="radio" name="profileVisibility" value="followers"
+        style="width:20px;height:20px;accent-color:#d4af37;flex-shrink:0;">
+      <span><strong>Followers</strong><br><small>Only people who follow you can view your profile and posts.</small></span>
+    </label>
+
+    <label style="display:flex;align-items:center;gap:12px;padding:14px;border:1px solid #b58a35;border-radius:10px;cursor:pointer;">
+      <input type="radio" name="profileVisibility" value="private"
+        style="width:20px;height:20px;accent-color:#d4af37;flex-shrink:0;">
+      <span><strong>Private</strong><br><small>Only you can view your profile and posts.</small></span>
+    </label>
+  </fieldset>
+
+  <button id="savePrivacySettingsButton" type="button" onclick="savePrivacySettings()">
+    Save Privacy Settings
+  </button>
+  <p id="privacySettingsMessage" role="status"></p>
+</div>
+   </span>
         <span class="settings-arrow">›</span>
       </button>
 
@@ -239,7 +342,10 @@ body {
 
       <div class="settings-section-title">Preferences</div>
 
-      <button class="settings-item">
+      <button class="settings-item" type="button"
+        id="notificationSettingsButton"
+        onclick="toggleNotificationSettings()"
+        aria-expanded="false">
         <span class="settings-icon">🔔</span>
         <span class="settings-text">
           <span class="settings-name">Notifications</span>
@@ -247,6 +353,42 @@ body {
         </span>
         <span class="settings-arrow">›</span>
       </button>
+
+      <div id="notificationSettingsPanel" class="password-panel" hidden>
+        <h3>Notification Preferences</h3>
+        <p>Choose which notifications you want to receive.</p>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid #333;">
+          <label for="notifyLikes">Post likes and reactions</label>
+          <input id="notifyLikes" type="checkbox" style="width:22px;height:22px;accent-color:#d4af37;">
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid #333;">
+          <label for="notifyComments">Post comments</label>
+          <input id="notifyComments" type="checkbox" style="width:22px;height:22px;accent-color:#d4af37;">
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid #333;">
+          <label for="notifyFriendRequests">Friend requests and acceptances</label>
+          <input id="notifyFriendRequests" type="checkbox" style="width:22px;height:22px;accent-color:#d4af37;">
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid #333;">
+          <label for="notifyFollowers">New followers</label>
+          <input id="notifyFollowers" type="checkbox" style="width:22px;height:22px;accent-color:#d4af37;">
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid #333;">
+          <label for="notifyMessages">New messages</label>
+          <input id="notifyMessages" type="checkbox" style="width:22px;height:22px;accent-color:#d4af37;">
+        </div>
+
+        <button id="saveNotificationSettingsButton" type="button"
+          onclick="saveNotificationSettings()">
+          Save Notification Settings
+        </button>
+        <p id="notificationSettingsMessage" role="status"></p>
+      </div>
 
       <button class="settings-item">
         <span class="settings-icon">🌐</span>
@@ -298,6 +440,73 @@ body {
 </div>
 
 <script>
+
+function togglePasswordForm() {
+  const panel = document.getElementById("passwordSettingsPanel");
+  const button = document.getElementById("passwordSettingsButton");
+  const opening = panel.hidden;
+
+  panel.hidden = !opening;
+  button.setAttribute("aria-expanded", String(opening));
+}
+
+document.getElementById("changePasswordForm").addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  const currentPassword = document.getElementById("currentPassword").value;
+  const newPassword = document.getElementById("newPassword").value;
+  const confirmPassword = document.getElementById("confirmNewPassword").value;
+  const message = document.getElementById("passwordSettingsMessage");
+  const submit = document.getElementById("changePasswordSubmit");
+  const token = localStorage.getItem("token");
+
+  message.textContent = "";
+
+  if (!token) {
+    message.textContent = "Please log in again to change your password.";
+    return;
+  }
+
+  if (newPassword !== confirmPassword) {
+    message.textContent = "The new passwords do not match.";
+    return;
+  }
+
+  if (newPassword.length < 8 || newPassword.length > 128) {
+    message.textContent = "Your new password must be 8–128 characters.";
+    return;
+  }
+
+  submit.disabled = true;
+  submit.textContent = "Updating...";
+
+  try {
+    const response = await fetch("/api/profile/change-password", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+      },
+      body: JSON.stringify({ currentPassword, newPassword })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.message || "Password update failed.");
+    }
+
+    message.textContent = result.message || "Password changed successfully.";
+    document.getElementById("changePasswordForm").reset();
+
+  } catch (error) {
+    message.textContent = error.message || "Unable to update password.";
+  } finally {
+    submit.disabled = false;
+    submit.textContent = "Update Password";
+  }
+});
+
 function logoutAccount() {
   const confirmed = confirm("Are you sure you want to logout of BENEDICT?");
 
@@ -307,6 +516,176 @@ function logoutAccount() {
   localStorage.removeItem("user");
   window.location.href = "/";
 }
+
+function togglePrivacyForm() {
+  const panel = document.getElementById("privacySettingsPanel");
+  panel.hidden = !panel.hidden;
+  if (!panel.hidden) loadPrivacySettings();
+}
+
+async function loadPrivacySettings() {
+  const message = document.getElementById("privacySettingsMessage");
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    message.textContent = "Please log in again to manage privacy settings.";
+    return;
+  }
+
+  try {
+    const response = await fetch("/api/profile/privacy", {
+      headers: { "Authorization": "Bearer " + token }
+    });
+    const data = await response.json();
+
+    if (!response.ok) throw new Error(data.message || "Could not load privacy settings.");
+
+    const selectedVisibility = document.querySelector(
+      'input[name="profileVisibility"][value="' +
+      (data.profileVisibility || "public") + '"]'
+    );
+    if (selectedVisibility) selectedVisibility.checked = true;
+    message.textContent = "";
+  } catch (error) {
+    message.textContent = error.message || "Could not load privacy settings.";
+  }
+}
+
+async function savePrivacySettings() {
+  const button = document.getElementById("savePrivacySettingsButton");
+  const message = document.getElementById("privacySettingsMessage");
+  const token = localStorage.getItem("token");
+  const selectedVisibility = document.querySelector(
+    'input[name="profileVisibility"]:checked'
+  );
+
+  if (!selectedVisibility) {
+    message.textContent = "Please select a profile visibility option.";
+    return;
+  }
+
+  const profileVisibility = selectedVisibility.value;
+
+  if (!token) {
+    message.textContent = "Please log in again.";
+    return;
+  }
+
+  button.disabled = true;
+  message.textContent = "Saving...";
+
+  try {
+    const response = await fetch("/api/profile/privacy", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+      },
+      body: JSON.stringify({ profileVisibility })
+    });
+    const data = await response.json();
+
+    if (!response.ok) throw new Error(data.message || "Could not save privacy settings.");
+
+    message.textContent = "Privacy settings saved successfully.";
+  } catch (error) {
+    message.textContent = error.message || "Could not save privacy settings.";
+  } finally {
+    button.disabled = false;
+  }
+}
+
+
+function toggleNotificationSettings() {
+  const panel = document.getElementById("notificationSettingsPanel");
+  const button = document.getElementById("notificationSettingsButton");
+  const opening = panel.hidden;
+
+  panel.hidden = !opening;
+  button.setAttribute("aria-expanded", String(opening));
+
+  if (opening) loadNotificationSettings();
+}
+
+async function loadNotificationSettings() {
+  const message = document.getElementById("notificationSettingsMessage");
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    message.textContent = "Please log in again to manage notification settings.";
+    return;
+  }
+
+  message.textContent = "Loading settings...";
+
+  try {
+    const response = await fetch("/api/notifications/preferences", {
+      headers: { "Authorization": "Bearer " + token }
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Could not load notification settings.");
+    }
+
+    const preferences = data.preferences || {};
+    document.getElementById("notifyLikes").checked = preferences.likes !== false;
+    document.getElementById("notifyComments").checked = preferences.comments !== false;
+    document.getElementById("notifyFriendRequests").checked = preferences.friendRequests !== false;
+    document.getElementById("notifyFollowers").checked = preferences.followers !== false;
+    document.getElementById("notifyMessages").checked = preferences.messages !== false;
+
+    message.textContent = "";
+  } catch (error) {
+    message.textContent = error.message || "Could not load notification settings.";
+  }
+}
+
+async function saveNotificationSettings() {
+  const button = document.getElementById("saveNotificationSettingsButton");
+  const message = document.getElementById("notificationSettingsMessage");
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    message.textContent = "Please log in again.";
+    return;
+  }
+
+  const preferences = {
+    likes: document.getElementById("notifyLikes").checked,
+    comments: document.getElementById("notifyComments").checked,
+    friendRequests: document.getElementById("notifyFriendRequests").checked,
+    followers: document.getElementById("notifyFollowers").checked,
+    messages: document.getElementById("notifyMessages").checked
+  };
+
+  button.disabled = true;
+  message.textContent = "Saving...";
+
+  try {
+    const response = await fetch("/api/notifications/preferences", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+      },
+      body: JSON.stringify({ preferences })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Could not save notification settings.");
+    }
+
+    message.textContent = "Notification settings saved successfully.";
+  } catch (error) {
+    message.textContent = error.message || "Could not save notification settings.";
+  } finally {
+    button.disabled = false;
+  }
+}
+
 </script>
 
 </body>

@@ -5,6 +5,7 @@ const auth = require("../middleware/auth");
 const Message = require("../models/Message");
 const User = require("../models/User");
 const mongoose = require("mongoose");
+const { createNotification } = require("../utils/notify");
 
 const multer = require("multer");
 const fs = require("fs");
@@ -171,6 +172,17 @@ router.post(
 
       // Keep the upload only after the message is saved successfully.
       keepUploadedFile = true;
+
+      try {
+        await createNotification(req, {
+          user: receiver,
+          fromUser: req.user.id,
+          type: "message",
+          message: "sent you a message"
+        });
+      } catch (notificationError) {
+        console.error("Message notification error:", notificationError);
+      }
 
       const io = req.app.get("io");
 
