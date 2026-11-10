@@ -4793,3 +4793,771 @@ line-height: 1.2;
 white-space: nowrap;
 }
 }
+
+
+/* =========================================================
+   BENEDICT HOME FEED POLISH (BLACK & GOLD LUXURY)
+   ========================================================= */
+
+/* COMPOSER */
+#homePanel .composer-card {
+  background: linear-gradient(180deg, #18181d 0%, #121216 100%) !important;
+  border: 1px solid rgba(212, 175, 55, 0.32) !important;
+  border-radius: 18px !important;
+  padding: 18px 20px !important;
+  margin-bottom: 20px !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+#homePanel .composer-card:focus-within {
+  border-color: rgba(212, 175, 55, 0.55) !important;
+  box-shadow: 0 14px 42px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(212, 175, 55, 0.25);
+}
+
+#homePanel .composer-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#homePanel .current-user-avatar {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, #24242c 0%, #15151a 100%);
+  border: 1.5px solid rgba(212, 175, 55, 0.6);
+  color: #d4af37;
+  font-size: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+#homePanel .composer-input {
+  flex: 1;
+  min-height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  background: #1c1c22;
+  color: #9c9ca6;
+  text-align: left;
+  padding: 0 18px;
+  font-size: 14.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+#homePanel .composer-input:hover {
+  background: #24242c;
+  border-color: rgba(212, 175, 55, 0.35);
+  color: #e5e5eb;
+}
+
+#homePanel .photo-button {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.08);
+  color: #d4af37;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#homePanel .photo-button:hover {
+  background: rgba(212, 175, 55, 0.2);
+  border-color: rgba(212, 175, 55, 0.6);
+  transform: scale(1.05);
+  color: #f0d675;
+}
+
+#homePanel .composer-expanded {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(212, 175, 55, 0.12);
+}
+
+#homePanel .composer-expanded textarea#content {
+  width: 100%;
+  box-sizing: border-box;
+  background: #0d0d11;
+  color: #f5f5f7;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 15px;
+  line-height: 1.55;
+  font-family: inherit;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#homePanel .composer-expanded textarea#content::placeholder {
+  color: #72727e;
+}
+
+#homePanel .composer-expanded textarea#content:focus {
+  border-color: #d4af37;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+}
+
+#homePanel .composer-expanded input[type="file"]#image {
+  margin: 12px 0 14px;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 13px;
+  color: #9c9ca6;
+}
+
+#homePanel .composer-expanded input[type="file"]#image::file-selector-button {
+  background: #202028;
+  color: #d4af37;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 8px;
+  padding: 6px 14px;
+  margin-right: 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#homePanel .composer-expanded input[type="file"]#image::file-selector-button:hover {
+  background: #2a2a34;
+  border-color: #d4af37;
+  color: #f0d675;
+}
+
+#homePanel .composer-expanded .primary-button {
+  background: linear-gradient(135deg, #d4af37 0%, #b88a16 100%);
+  color: #0b0b0e;
+  border: none;
+  border-radius: 12px;
+  padding: 11px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(212, 175, 55, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+#homePanel .composer-expanded .primary-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(212, 175, 55, 0.38);
+  filter: brightness(1.08);
+}
+
+#homePanel .composer-expanded .primary-button:active {
+  transform: translateY(0);
+  filter: brightness(0.95);
+}
+
+/* FEED DISCOVERY HEADER & TABS */
+#homePanel .feed-section {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin-bottom: 24px;
+}
+
+#homePanel .discovery-heading h2 {
+  font-size: 21px;
+  font-weight: 700;
+  color: #f5f5f7;
+  letter-spacing: -0.3px;
+  margin: 0;
+}
+
+#homePanel .discovery-heading p {
+  color: #8c8c98;
+  font-size: 13px;
+  margin: 4px 0 0;
+}
+
+#homePanel .discovery-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 14px 2px 18px;
+  scrollbar-width: none;
+}
+
+#homePanel .discovery-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+#homePanel .discovery-tab {
+  flex: 0 0 auto;
+  background: #18181d;
+  color: #a4a4b0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#homePanel .discovery-tab:hover {
+  background: #22222a;
+  border-color: rgba(212, 175, 55, 0.35);
+  color: #ffffff;
+}
+
+#homePanel .discovery-tab.active {
+  background: linear-gradient(135deg, #d4af37 0%, #b88a16 100%) !important;
+  color: #0b0b0e !important;
+  border-color: #d4af37 !important;
+  font-weight: 700 !important;
+  box-shadow: 0 3px 14px rgba(212, 175, 55, 0.3);
+}
+
+/* POST CARDS */
+#posts .post,
+#posts article.post,
+#homePanel #posts .benedict-post {
+  position: relative;
+  background: linear-gradient(180deg, #17171c 0%, #121216 100%) !important;
+  border: 1px solid rgba(212, 175, 55, 0.22) !important;
+  border-radius: 18px !important;
+  padding: 18px 20px !important;
+  margin-bottom: 20px !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.38) !important;
+  overflow: visible !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#posts .post:hover,
+#homePanel #posts .benedict-post:hover {
+  border-color: rgba(212, 175, 55, 0.35) !important;
+  box-shadow: 0 14px 42px rgba(0, 0, 0, 0.48) !important;
+}
+
+/* POST HEADER */
+#posts .benedict-post-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+#posts .benedict-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  text-decoration: none;
+}
+
+#posts .benedict-post-avatar {
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(212, 175, 55, 0.65) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+#posts .avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, #24242c 0%, #15151a 100%) !important;
+  color: #d4af37 !important;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+#posts .benedict-author-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+#posts .benedict-author-info strong {
+  color: #f5f5f7 !important;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.15s ease;
+}
+
+#posts .benedict-author:hover .benedict-author-info strong {
+  color: #d4af37 !important;
+}
+
+#posts .benedict-author-info span {
+  color: #8c8c98 !important;
+  font-size: 12.5px;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+#posts .post-more-button {
+  width: 36px;
+  height: 36px;
+  min-height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #8a8a96;
+  font-size: 22px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#posts .post-more-button:hover {
+  background: rgba(212, 175, 55, 0.12);
+  color: #d4af37;
+}
+
+#posts .benedict-post-popup {
+  position: absolute;
+  right: 14px;
+  top: 58px;
+  z-index: 120;
+  min-width: 180px;
+  padding: 6px;
+  background: #1c1c22;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+#posts .benedict-post-popup button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: #e4e4eb;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+#posts .benedict-post-popup button:hover {
+  background: rgba(212, 175, 55, 0.15);
+  color: #d4af37;
+}
+
+/* SHARED POST INDICATOR */
+#posts .benedict-shared-post {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(212, 175, 55, 0.08);
+  border-left: 3px solid #d4af37;
+  border-radius: 4px 8px 8px 4px;
+  padding: 6px 12px;
+  margin: 12px 0 6px;
+  color: #d4af37;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+/* POST CONTENT TYPOGRAPHY & SPACING */
+#posts .benedict-post-text {
+  padding: 14px 2px 10px !important;
+  color: #e8e8ed !important;
+  font-size: 15px !important;
+  line-height: 1.62 !important;
+  letter-spacing: 0.1px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* MEDIA PRESENTATION */
+#posts .benedict-post-media {
+  margin: 12px 0 14px !important;
+  background: #09090c;
+  border: 1px solid rgba(212, 175, 55, 0.18);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+#posts .benedict-post-media img {
+  display: block !important;
+  width: 100% !important;
+  max-height: 580px !important;
+  object-fit: cover !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  transition: opacity 0.2s ease;
+}
+
+/* POST STATS ROW */
+#posts .benedict-post-stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 2px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+#posts .benedict-reaction-summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #a4a4b0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+#posts .benedict-reaction-summary.empty {
+  color: #72727e;
+  font-weight: 400;
+  font-size: 12.5px;
+}
+
+#posts .reaction-icons {
+  letter-spacing: -2px;
+  margin-right: 4px;
+  font-size: 14px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+}
+
+#posts .benedict-stat-links {
+  display: flex;
+  gap: 14px;
+  color: #8c8c98;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+#posts .benedict-stat-links span {
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+#posts .benedict-stat-links span:hover {
+  color: #d4af37;
+}
+
+/* LIKE, COMMENT, SHARE CONTROLS */
+#posts .benedict-post-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 10px 0 8px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+#posts .benedict-like-wrap {
+  flex: 1;
+  position: relative;
+  display: inline-flex;
+}
+
+#posts .benedict-post-actions button,
+#posts .benedict-like-button {
+  flex: 1;
+  width: 100%;
+  min-height: 42px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  color: #b4b4be;
+  font-size: 13.5px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+#posts .benedict-post-actions button:hover,
+#posts .benedict-like-button:hover {
+  background: rgba(212, 175, 55, 0.12);
+  border-color: rgba(212, 175, 55, 0.4);
+  color: #d4af37;
+  transform: translateY(-1px);
+}
+
+#posts .benedict-post-actions button:active,
+#posts .benedict-like-button:active {
+  transform: translateY(0);
+}
+
+#posts .benedict-post-actions button span {
+  margin-left: 2px;
+}
+
+/* REACTION PICKER */
+#posts .benedict-reaction-picker[hidden] {
+  display: none !important;
+}
+
+#posts .benedict-reaction-picker:not([hidden]) {
+  display: flex !important;
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 10px);
+  z-index: 150;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: #1c1c22;
+  border: 1px solid rgba(212, 175, 55, 0.65);
+  border-radius: 32px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65), 0 0 15px rgba(212, 175, 55, 0.2);
+  white-space: nowrap;
+  animation: pickerPop 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes pickerPop {
+  0% { opacity: 0; transform: translateY(6px) scale(0.92); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+#posts .benedict-reaction-picker button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  min-width: 38px;
+  height: 38px;
+  min-height: 38px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+#posts .benedict-reaction-picker button:hover {
+  background: rgba(212, 175, 55, 0.2);
+  transform: scale(1.28);
+}
+
+/* POST DETAILS & LIKES LIST */
+#posts .benedict-post-details {
+  padding: 8px 2px 4px;
+}
+
+#posts .view-likes-button {
+  background: transparent;
+  border: none;
+  color: #8c8c98;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: color 0.15s ease;
+}
+
+#posts .view-likes-button:hover {
+  color: #d4af37;
+}
+
+#posts [id^="likes-"] {
+  margin-top: 6px;
+  font-size: 12.5px;
+  color: #c4c4ce;
+  background: rgba(212, 175, 55, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+
+#posts [id^="likes-"] p {
+  margin: 4px 0;
+}
+
+/* COMMENTS LIST */
+#posts .benedict-comments {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#posts .benedict-comments p {
+  margin: 0;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #dedee4;
+}
+
+#posts .benedict-comments p strong {
+  color: #d4af37;
+  font-weight: 600;
+}
+
+/* COMMENT BOX */
+#posts .benedict-comment-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+#posts .benedict-comment-box input[id^="comment-"] {
+  flex: 1;
+  min-height: 42px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 10px 16px;
+  border-radius: 22px;
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  background: #101014;
+  color: #ffffff;
+  font-size: 13.5px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#posts .benedict-comment-box input[id^="comment-"]::placeholder {
+  color: #72727e;
+}
+
+#posts .benedict-comment-box input[id^="comment-"]:focus {
+  border-color: #d4af37;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+}
+
+#posts .benedict-comment-box button {
+  width: 42px;
+  height: 42px;
+  min-height: 42px;
+  min-width: 42px;
+  padding: 0;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, #d4af37 0%, #b88a16 100%);
+  color: #0b0b0e;
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(212, 175, 55, 0.25);
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+#posts .benedict-comment-box button:hover {
+  transform: scale(1.06);
+  filter: brightness(1.1);
+}
+
+#posts .benedict-comment-box button:active {
+  transform: scale(0.96);
+}
+
+/* EMPTY STATE */
+#posts .benedict-empty-state {
+  text-align: center;
+  padding: 48px 20px;
+  background: linear-gradient(180deg, #17171c 0%, #121216 100%) !important;
+  border: 1px solid rgba(212, 175, 55, 0.2) !important;
+  border-radius: 18px !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+}
+
+#posts .benedict-empty-state .empty-icon {
+  font-size: 36px;
+  color: #d4af37;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 2px 8px rgba(212, 175, 55, 0.3));
+}
+
+#posts .benedict-empty-state h3 {
+  margin: 0 0 6px;
+  color: #f5f5f7 !important;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+#posts .benedict-empty-state p {
+  margin: 0;
+  color: #8c8c98 !important;
+  font-size: 13.5px;
+}
+
+/* RESPONSIVE POLISH */
+@media (max-width: 600px) {
+  #posts .post,
+  #posts article.post,
+  #homePanel #posts .benedict-post {
+    border-radius: 15px !important;
+    padding: 14px !important;
+    margin-bottom: 14px !important;
+  }
+
+  #posts .benedict-post-actions button,
+  #posts .benedict-like-button {
+    min-height: 38px;
+    padding: 6px 8px;
+    font-size: 12.5px;
+  }
+
+  #posts .benedict-post-avatar {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+  }
+
+  #posts .benedict-reaction-picker:not([hidden]) {
+    gap: 4px;
+    padding: 6px 8px;
+  }
+
+  #posts .benedict-reaction-picker button {
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    min-height: 32px;
+    font-size: 18px;
+  }
+}
